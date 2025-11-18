@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_LastSelectedProfileId>D:\Source\Visual Studio\C#\AlgorithmDeveloper\AlgorithmDeveloper\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Resources\UI\Controls\AbstractAlgoModelling\AbstractAlgoWorkspace.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Resources\UI\Controls\AbstractAlgoModelling\AbstractAlgoController.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Resources\UI\Controls\CustomizableTabControl\CustomTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Resources\UI\Controls\CustomizableTabControl\TabEntryControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Resources\UI\Controls\CustomizableToolStrip\CustomizableToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Resources\UI\Controls\LASInputControls\LASGraphicKeyboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Resources\UI\Controls\LASInputControls\LASInputRichTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Resources\UI\Controls\LASInputControls\LASInputTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Resources\UI\Controls\Viewports\ImageViewport.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Resources\UI\Controls\Viewports\MASViewport.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Resources\UI\Forms\TerminalForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="ЛСА.txt">
+      <SubType>Component</SubType>
+    </None>
+  </ItemGroup>
+</Project>
