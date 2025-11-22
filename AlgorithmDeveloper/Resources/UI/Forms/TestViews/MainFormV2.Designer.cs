@@ -413,7 +413,7 @@ namespace AlgorithmDeveloper
             groupBox2.Size = new Size(740, 200);
             groupBox2.TabIndex = 15;
             groupBox2.TabStop = false;
-            groupBox2.Text = "Терминал";
+            groupBox2.Text = "Журнал";
             // 
             // _mainTerminal
             // 
@@ -502,7 +502,7 @@ namespace AlgorithmDeveloper
             _mainTabControl_SettingsPage.Padding = new Padding(3);
             _mainTabControl_SettingsPage.Size = new Size(192, 70);
             _mainTabControl_SettingsPage.TabIndex = 1;
-            _mainTabControl_SettingsPage.Text = "Настройки";
+            _mainTabControl_SettingsPage.Text = "Настройки визуализации";
             // 
             // _toolTip
             // 
@@ -520,7 +520,6 @@ namespace AlgorithmDeveloper
             Controls.Add(_mainTabControl);
             DoubleBuffered = true;
             ForeColor = Color.FromArgb(224, 224, 224);
-            MaximumSize = new Size(795, 595);
             MinimumSize = new Size(795, 595);
             Name = "MainFormV2";
             StartPosition = FormStartPosition.CenterScreen;

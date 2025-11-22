@@ -16,6 +16,8 @@ namespace AlgorithmDeveloper.AlgorithmModel
     /// </summary>
     public class AlgoModel : IEquatable<AlgoModel>
     {
+        #region Поля
+
         private readonly List<IBDVertex> _vertices = new();
         private readonly Dictionary<string, IBDVertex> _byId = new(StringComparer.Ordinal);
         private readonly Dictionary<int, JumpPoint> _jumpPoints = new();
@@ -140,6 +142,8 @@ namespace AlgorithmDeveloper.AlgorithmModel
             var bId = b?.ID ?? string.Empty;
             return StringComparer.Ordinal.Compare(aId, bId);
         });
+
+        #endregion
 
 
 

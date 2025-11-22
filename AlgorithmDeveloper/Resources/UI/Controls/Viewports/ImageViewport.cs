@@ -914,6 +914,8 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
 
 
 
+
+
         #region Обновление позиций и размеров областей прокрутки
 
         private void UpdateScrollBars()

@@ -41,9 +41,5 @@
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <None Update="ЛСА.txt">
-      <SubType>Component</SubType>
-    </None>
-  </ItemGroup>
+  <ItemGroup />
 </Project>
