@@ -67,11 +67,11 @@ namespace AlgorithmDeveloper.AlgorithmModel.Model.Vertices.Vizualization
         /// <summary>
         /// Полуширина вершины (одинаковая для всех вершин).
         /// </summary>
-        static int HalfWidth { get; } = 50;
+        static int HalfWidth { get { return AlgorithmDeveloper.Resources.UI.Controls.Viewports.VisualizationSettings.FigureHalfWidthRounded; } }
         /// <summary>
         /// Полувысота вершины (одинаковая для всех вершин).
         /// </summary>
-        static int HalfHeight { get; } = 25;
+        static int HalfHeight { get { return AlgorithmDeveloper.Resources.UI.Controls.Viewports.VisualizationSettings.FigureHalfHeightRounded; } }
         /// <summary>
         /// Отступ для точек связи (одинаковый для всех вершин).
         /// </summary>

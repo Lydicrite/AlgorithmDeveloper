@@ -1,4 +1,4 @@
-﻿namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
+namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
 {
     partial class ImageViewport
     {

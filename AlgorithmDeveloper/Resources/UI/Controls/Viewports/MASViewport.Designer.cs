@@ -72,7 +72,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
             Controls.Add(_lbl);
             Controls.Add(_lv);
             ForeColor = Color.FromArgb(224, 224, 224);
-            Margin = new Padding(3, 3, 3, 10);
+            Margin = new Padding(3, 3, 10, 10);
             MinimumSize = new Size(150, 100);
             Name = "MASViewport";
             Size = new Size(166, 101);

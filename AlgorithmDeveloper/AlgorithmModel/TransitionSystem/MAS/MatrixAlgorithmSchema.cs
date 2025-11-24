@@ -468,7 +468,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.TransitionSystem.MAS
             var dt = new DataTable();
 
             // Добавляем столбец для заголовков строк
-            dt.Columns.Add("From/To", typeof(string));
+            dt.Columns.Add("Из ↓ / В → ", typeof(string));
 
             // Добавляем столбцы для вершин назначения
             foreach (var header in Headers.Skip(1)) // Пропускаем Yн в заголовках

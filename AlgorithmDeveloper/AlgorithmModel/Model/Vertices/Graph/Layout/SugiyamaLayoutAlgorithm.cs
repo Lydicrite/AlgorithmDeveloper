@@ -9,25 +9,43 @@ using AlgorithmDeveloper.AlgorithmModel.Model.Vertices.Vizualization;
 namespace AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout
 {
     /// <summary>
-    /// Стратегия компоновки.
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
     /// </summary>
     public enum LayeringStrategy { ShortestPath, LongestPath }
 
     /// <summary>
-    /// Алгоритм компоновки, реализующий компоновку Сугиямы с барицентрическим упорядочением.
-    /// <br></br> - Назначает слои по длине пути от начала, пропуская точки перехода.
-    /// <br></br> - Упорядочивает вершины на каждом слое, используя барицентрическую эвристику (проходы сверху вниз и снизу вверх).
-    /// <br></br> - Вычисляет координаты центра для визуализации.
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+    /// <br></br> - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+    /// <br></br> - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ).
+    /// <br></br> - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
     /// </summary>
     public class SugiyamaLayoutAlgorithm : ILayoutAlgorithm
     {
         private readonly LayeringStrategy _strategy;
         private readonly bool _normalizeComponents;
+        private readonly int _hSpacing;
+        private readonly int _vSpacing;
+        private readonly int _startX;
+        private readonly int _startY;
 
         public SugiyamaLayoutAlgorithm(LayeringStrategy strategy = LayeringStrategy.ShortestPath, bool normalizeComponents = false)
         {
             _strategy = strategy;
             _normalizeComponents = normalizeComponents;
+            _hSpacing = 150;
+            _vSpacing = 100;
+            _startX = 100;
+            _startY = 100;
+        }
+
+        public SugiyamaLayoutAlgorithm(LayeringStrategy strategy, bool normalizeComponents, int horizontalSpacing, int verticalSpacing, int startX, int startY)
+        {
+            _strategy = strategy;
+            _normalizeComponents = normalizeComponents;
+            _hSpacing = Math.Max(40, horizontalSpacing);
+            _vSpacing = Math.Max(40, verticalSpacing);
+            _startX = startX;
+            _startY = startY;
         }
 
         public void Arrange(AlgoModel model)
@@ -38,7 +56,7 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout
             if (allVertices.Count == 0)
                 return;
 
-            // Получает вершину, пропуская точки перехода.
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
             IBDVertex? SkipJump(IBDVertex? x)
             {
                 while (x is JumpPoint jp)
@@ -46,7 +64,7 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout
                 return x;
             }
 
-            // Получает дочерние вершины для данной, пропуская точки перехода.
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
             IEnumerable<IBDVertex> ChildrenNoJump(IBDVertex v)
             {
                 if (v is ConditionalVertex cv)
@@ -63,7 +81,7 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout
                 }
             }
 
-            // Получает родительские вершины для данной, пропуская точки перехода.
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
             IEnumerable<IBDVertex> ParentsNoJump(IBDVertex w)
             {
                 foreach (var u in allVertices)
@@ -81,7 +99,7 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout
 
 
 
-            // Компоновка по стратегии с нормализацией каждого компонента.
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
             var layer = new Dictionary<IBDVertex, int>();
             foreach (var v in allVertices)
             {
@@ -89,7 +107,7 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout
                     ge.Layer = 0; // default
             }
 
-            // Обнаружение циклов DAG (с пропуском точек перехода).
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ DAG (пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ).
             bool DirectedHasCycle()
             {
                 var color = new Dictionary<IBDVertex, int>(); // 0 = white, 1 = gray, 2 = black
@@ -183,7 +201,7 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout
                 }
             }
 
-            // Выбираем стратегию компоновки
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             if (_strategy == LayeringStrategy.LongestPath && DirectedHasCycle())
             {
                 if (model.Start != null) AssignShortestFromSeeds(new[] { model.Start });
@@ -200,10 +218,10 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout
                 }
             }
 
-            // Дополнительно: нормализация и заполнение для каждого "отключенного" компонента
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ" пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             if (_normalizeComponents)
             {
-                // Ненаправленная смежность для обнаружения компонентов
+                // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                 var und = new Dictionary<IBDVertex, List<IBDVertex>>();
                 foreach (var v in allVertices) und[v] = new List<IBDVertex>();
                 foreach (var v in allVertices)
@@ -233,7 +251,7 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout
                         }
                     }
 
-                    // Начальный локальный BFS для вершин, которые еще не разделены по слоям
+                    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ BFS пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
                     var notAssigned = comp.Where(x => !layer.ContainsKey(x)).ToList();
                     if (notAssigned.Count > 0)
                     {
@@ -242,7 +260,7 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout
                         AssignShortestFromSeeds(sources);
                     }
 
-                    // Сдвиг слоёв компонентов так, чтобы они начинались с 0
+                    // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ 0
                     int minL = comp.Select(x => layer.TryGetValue(x, out var lv) ? lv : 0).DefaultIfEmpty(0).Min();
                     int shift = -minL;
                     foreach (var u in comp)
@@ -331,10 +349,10 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout
                 }
             }
 
-            int horizontalSpacing = 150;
-            int verticalSpacing = 100;
-            int startX = 100;
-            int startY = 100;
+            int horizontalSpacing = _hSpacing;
+            int verticalSpacing = _vSpacing;
+            int startX = _startX;
+            int startY = _startY;
 
             for (int layerIndex = 0; layerIndex < layers.Count; layerIndex++)
             {
@@ -355,10 +373,10 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout
                 }
             }
 
-            // Дополнительная пост-обработка раскладки:
-            // 1) обеспечиваем ориентацию LBS строго слева и RBS строго справа на следующем слое;
-            // 2) устраняем горизонтальные коллизии и рецентрируем слои;
-            // 3) центрируем Yн и Yк на оси центра и выравниваем их по одной вертикали.
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:
+            // 1) пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ LBS пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ RBS пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ;
+            // 2) пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ;
+            // 3) пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ YпїЅ пїЅ YпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
             int layerCenterX = startX + 200;
 
             void ReindexLayer(List<IBDVertex> list)
@@ -388,7 +406,7 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout
                     }
                 }
 
-                // Рецентрируем слой вокруг глобального центра
+                // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                 float avgX = (float)list.Average(v => ((IFigure)v).Center.X);
                 int shiftAll = (int)Math.Round(layerCenterX - avgX);
                 foreach (var v in list)
@@ -399,7 +417,7 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout
                 ReindexLayer(list);
             }
 
-            // Ориентируем детей условных вершин на следующем слое
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
             for (int i = 0; i < layers.Count - 1; i++)
             {
                 var parents = layers[i];
@@ -415,7 +433,7 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout
                         var l = SkipJump(cv.LBS);
                         var r = SkipJump(cv.RBS);
 
-                        // Важно: если родитель на слое ПОСЛЕ дочерней — не трогаем ребёнка.
+                        // пїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
                         if (l is IGraphElement lge && lge.Layer > parentLayer && lge.Layer == parentLayer + 1)
                         {
                             var lf = (IFigure)l;
@@ -432,7 +450,7 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout
                 ResolveCollisionsOnLayer(next);
             }
 
-            // Центрируем Yн и Yк на одной вертикали
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ YпїЅ пїЅ YпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             if (model.Start != null)
             {
                 var fs = (IFigure)model.Start;

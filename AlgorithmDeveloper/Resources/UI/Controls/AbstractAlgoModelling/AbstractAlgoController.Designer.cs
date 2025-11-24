@@ -1,4 +1,4 @@
-﻿namespace AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling
+namespace AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling
 {
     partial class AbstractAlgoController
     {
@@ -30,7 +30,7 @@
         {
             _aapMainTLP = new TableLayoutPanel();
             _viewportGB = new GroupBox();
-            _viewport = new AlgorithmDeveloper.Resources.UI.Controls.Viewports.ImageViewport();
+            _viewport = new AlgorithmDeveloper.Resources.UI.Controls.Viewports.SvgViewport();
             _aapInteractionGB = new GroupBox();
             _aapMainTLP.SuspendLayout();
             _viewportGB.SuspendLayout();
@@ -67,7 +67,6 @@
             // 
             _viewport.BackColor = Color.FromArgb(48, 48, 48);
             _viewport.Dock = DockStyle.Fill;
-            _viewport.FigureFont = new Font("Arial", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             _viewport.ForeColor = Color.Silver;
             _viewport.Location = new Point(3, 19);
             _viewport.Name = "_viewport";
@@ -84,9 +83,9 @@
             _aapInteractionGB.TabIndex = 0;
             _aapInteractionGB.TabStop = false;
             _aapInteractionGB.Text = "Взаимодействие";
-            // 
+            //
             // AbstractAlgoController
-            // 
+            //
             AutoScaleMode = AutoScaleMode.None;
             BackColor = Color.FromArgb(31, 31, 31);
             Controls.Add(_aapMainTLP);
@@ -104,6 +103,6 @@
         private TableLayoutPanel _aapMainTLP;
         private GroupBox _viewportGB;
         private GroupBox _aapInteractionGB;
-        private Viewports.ImageViewport _viewport;
+        private Viewports.SvgViewport _viewport;
     }
 }

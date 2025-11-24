@@ -2,6 +2,7 @@ using AlgorithmDeveloper.AlgoDev.Model.Vertices;
 using AlgorithmDeveloper.AlgorithmModel;
 using AlgorithmDeveloper.AlgorithmModel.Model.Vertices.Vizualization;
 using AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl.Styles;
+using AlgorithmDeveloper.Resources.UI.Controls.Viewports;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -64,11 +65,9 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling
             // Размещаем вершины для визуализации
             ArrangeVertices();
 
-            // Передаем вершины в viewport как коллекцию IFigure, исключая JumpPoint
-            _viewport.Figures = _model.Vertices
-                .Where(v => v is not JumpPoint)
-                .OfType<IFigure>();
-            _viewport.FitToWindow();
+            // Передаем вершины и модель во векторный viewport
+            _viewport.Figures = _model.Vertices.Where(v => v is not JumpPoint).OfType<IFigure>();
+            _viewport.Model = _model;
         }
 
         /// <summary>
@@ -82,7 +81,14 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling
 
             _model.Update();
             // Включаем нормализацию слоёв по несвязанным компонентам; стратегия по умолчанию: shortest-path
-            ILayoutAlgorithm layout = new SugiyamaLayoutAlgorithm(LayeringStrategy.ShortestPath, normalizeComponents: true);
+            ILayoutAlgorithm layout = new SugiyamaLayoutAlgorithm(
+                LayeringStrategy.ShortestPath,
+                normalizeComponents: true,
+                VisualizationSettings.HorizontalSpacing,
+                VisualizationSettings.VerticalSpacing,
+                VisualizationSettings.StartX,
+                VisualizationSettings.StartY
+            );
             _model.ApplyLayout(layout);
         }
     }

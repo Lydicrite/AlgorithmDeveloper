@@ -37,14 +37,13 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices
         {
             var inputPoints = new List<Point>
             {
-                new Point(Center.X - IFigure.HalfWidth - IFigure.Indent, Center.Y), // [0]
-                new Point(Center.X, Center.Y - IFigure.HalfHeight - IFigure.Indent) // [1]
+                new Point(Center.X, Center.Y - IFigure.HalfHeight - IFigure.Indent) // [top]
             };
 
             var outputPoints = new List<Point>
             {
-                new Point(Center.X + IFigure.HalfWidth + IFigure.Indent, Center.Y), // [2]
-                new Point(Center.X, Center.Y + IFigure.HalfHeight + IFigure.Indent) // [3]
+                new Point(Center.X - IFigure.HalfWidth - IFigure.Indent, Center.Y), // [left]
+                new Point(Center.X + IFigure.HalfWidth + IFigure.Indent, Center.Y)  // [right]
             };
 
             _gridGeometry = new GridGeometry(

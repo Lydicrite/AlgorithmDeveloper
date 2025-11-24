@@ -37,6 +37,9 @@
     <Compile Update="Resources\UI\Controls\Viewports\MASViewport.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="Resources\UI\Controls\Viewports\SvgViewport.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Resources\UI\Forms\TerminalForm.cs">
       <SubType>Form</SubType>
     </Compile>
