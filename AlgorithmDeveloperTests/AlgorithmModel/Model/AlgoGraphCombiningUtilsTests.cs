@@ -1,14 +1,14 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using AlgorithmDeveloper.AlgorithmModel.Model;
 using AlgorithmDeveloper.AlgorithmModel;
 using System;
 using System.Linq;
 using System.Reflection;
+using AlgorithmDeveloper.AlgorithmModel.Model.Utils;
 
 namespace AlgorithmDeveloper.AlgorithmModel.Model.Tests
 {
     [TestClass()]
-    public class AlgoMcsUtilsTests
+    public class AlgoGraphCombiningUtilsTests
     {
         private static Type ParserType => typeof(AlgoModel).Assembly.GetType("AlgorithmDeveloper.AlgorithmModel.LAS.LASParser", throwOnError: true)!;
 
@@ -53,7 +53,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.Model.Tests
             if (!TryParseLAS(lasB, out var aa2, out var errB))
                 Assert.Inconclusive($"ЛСА B не проходит парсинг.\nЛСА B: {lasB}\nОшибки:\n{errB}");
 
-            var report = AlgoMcsUtils.BuildCommonSubgraphsReport(aa1!, aa2!, strictLabels: false, resultLimit: 5);
+            var report = AlgoGraphCombiningUtils.BuildCommonSubgraphsReport(aa1!, aa2!, strictLabels: false, resultLimit: 5);
             Console.WriteLine(report);
 
             Assert.IsFalse(string.IsNullOrWhiteSpace(report), "Пустой отчёт по общим подграфам");

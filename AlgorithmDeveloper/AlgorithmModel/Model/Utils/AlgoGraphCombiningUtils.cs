@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AlgorithmDeveloper.AlgorithmModel;
 using AlgorithmDeveloper.AlgoDev.Model.Vertices;
 using System.Text;
 
-namespace AlgorithmDeveloper.AlgorithmModel.Model
+namespace AlgorithmDeveloper.AlgorithmModel.Model.Utils
 {
     public sealed class CommonSubgraph
     {
@@ -21,7 +20,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.Model
         }
     }
 
-    public static class AlgoMcsUtils
+    public static class AlgoGraphCombiningUtils
     {
         public static string BuildCommonSubgraphsReport(AlgoModel aa1, AlgoModel aa2, bool strictLabels = false, int resultLimit = 5)
         {

@@ -65,7 +65,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling
             // 
             // _viewport
             // 
-            _viewport.BackColor = Color.FromArgb(230, 234, 239);
+            _viewport.BackColor = Color.FromArgb(48, 48, 48);
             _viewport.Dock = DockStyle.Fill;
             _viewport.FigureFont = new Font("Arial", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             _viewport.ForeColor = Color.Silver;
