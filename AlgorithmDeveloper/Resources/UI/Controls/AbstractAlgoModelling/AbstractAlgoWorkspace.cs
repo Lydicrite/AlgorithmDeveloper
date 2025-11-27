@@ -100,10 +100,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling
                 chkbox.Margin = new Padding(6, 6, 3, 3);
                 chkbox.Name = $"{Text}_ChkB";
                 chkbox.ForeColor = Color.DarkGray;
-                using (var font = new Font("Segoe UI", 9f))
-                {
-                    chkbox.Font = font;
-                }
+                chkbox.Font = new Font("Segoe UI", 9f);
 
                 chkbox.Size = new Size(60, 19);
 

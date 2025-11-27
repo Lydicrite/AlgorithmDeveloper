@@ -41,8 +41,8 @@ namespace AlgorithmDeveloper.AlgorithmModel.Model
                     var listA = FormatSignificantVerticesList(r.SubgraphFromA);
                     var listB = FormatSignificantVerticesList(r.SubgraphFromB);
                     sb.AppendLine($"    Подграф #{i + 1}:");
-                    sb.AppendLine($"        A: [{listA}]");
-                    sb.AppendLine($"        B: [{listB}]");
+                    sb.AppendLine($"        АА 1: [{listA}]");
+                    sb.AppendLine($"        АА 2: [{listB}]");
                 }
             }
             sb.AppendLine("}");
@@ -109,45 +109,39 @@ namespace AlgorithmDeveloper.AlgorithmModel.Model
             a.UpdateAllGraphFigures();
             b.UpdateAllGraphFigures();
 
-            var nodesA = a.Vertices.OfType<IGraphFigure>().Cast<IBDVertex>().Where(IsSignificant).ToList();
-            var nodesB = b.Vertices.OfType<IGraphFigure>().Cast<IBDVertex>().Where(IsSignificant).ToList();
+            var seqA = EnumerateNextChains(a);
+            var seqB = EnumerateNextChains(b);
 
-            var bestMappings = new List<Dictionary<IBDVertex, IBDVertex>>();
-            int bestSize = 0;
+            var commonKeys = seqA.Keys.Intersect(seqB.Keys, StringComparer.Ordinal).ToList();
+            var maximalKeys = FilterToMaximalKeys(commonKeys);
+            var sortedKeys = SortKeysByAppearance(maximalKeys, a, b);
 
-            var initialPairs = new List<(IBDVertex, IBDVertex)>();
-            foreach (var va in nodesA)
-                foreach (var vb in nodesB)
-                    if (LabelCompatible(va, vb, strictLabels))
-                        initialPairs.Add((va, vb));
-
-            initialPairs = initialPairs
-                .OrderByDescending(p => HeuristicScore(p.Item1, p.Item2))
-                .ToList();
-
-            foreach (var seed in initialPairs)
+            var candidates = new List<(string key, List<IBDVertex> listA, List<IBDVertex> listB)>();
+            foreach (var key in sortedKeys)
             {
-                var mapping = new Dictionary<IBDVertex, IBDVertex>();
-                var usedA = new HashSet<IBDVertex>();
-                var usedB = new HashSet<IBDVertex>();
-                ExtendMapping(seed.Item1, seed.Item2, a, b, strictLabels, mapping, usedA, usedB, ref bestMappings, ref bestSize);
+                var baseA = seqA[key];
+                var baseB = seqB[key];
+                var (extA, extB) = ExpandWithMatchingBranchHeads(a, b, baseA, baseB);
+                candidates.Add((key, extA, extB));
             }
 
-            var unique = new List<Dictionary<IBDVertex, IBDVertex>>();
-            var seen = new HashSet<string>(StringComparer.Ordinal);
-            foreach (var m in bestMappings)
-            {
-                var key = MappingKey(m);
-                if (seen.Add(key))
-                    unique.Add(m);
-            }
+            var filtered = FilterCandidatesBySetSuperset(candidates);
 
             var results = new List<CommonSubgraph>();
-            foreach (var m in unique.Take(Math.Max(1, resultLimit)))
+            foreach (var cand in filtered.Take(Math.Max(1, resultLimit)))
             {
-                var subA = BuildSubgraph(a, new HashSet<IBDVertex>(m.Keys));
-                var subB = BuildSubgraph(b, new HashSet<IBDVertex>(m.Values));
-                results.Add(new CommonSubgraph(m, subA, subB));
+                var mapping = new Dictionary<IBDVertex, IBDVertex>();
+                var byIdB = cand.listB.ToDictionary(v => v.ID ?? string.Empty, v => v, StringComparer.Ordinal);
+                foreach (var va in cand.listA)
+                {
+                    var id = va.ID ?? string.Empty;
+                    if (byIdB.TryGetValue(id, out var vb))
+                        mapping[va] = vb;
+                }
+
+                var subA = BuildSubgraph(a, new HashSet<IBDVertex>(cand.listA));
+                var subB = BuildSubgraph(b, new HashSet<IBDVertex>(cand.listB));
+                results.Add(new CommonSubgraph(mapping, subA, subB));
             }
 
             return results;
@@ -248,6 +242,216 @@ namespace AlgorithmDeveloper.AlgorithmModel.Model
             usedA.Remove(aNode);
             usedB.Remove(bNode);
             mapping.Remove(aNode);
+        }
+
+        private static Dictionary<string, List<IBDVertex>> EnumerateNextChains(AlgoModel model)
+        {
+            var significant = model.Vertices
+                .Where(v => v is IGraphFigure && v is not JumpPoint)
+                .Cast<IBDVertex>()
+                .ToList();
+
+            var dict = new Dictionary<string, List<IBDVertex>>(StringComparer.Ordinal);
+
+            foreach (var start in significant)
+            {
+                var chain = BuildMaxNextChain(start);
+                if (chain.Count == 0) continue;
+
+                for (int i = 0; i < chain.Count; i++)
+                {
+                    for (int j = i; j < chain.Count; j++)
+                    {
+                        var sub = chain.GetRange(i, j - i + 1);
+                        var key = string.Join("|", sub.Select(v => v.ID ?? string.Empty));
+                        if (!dict.ContainsKey(key))
+                            dict[key] = sub;
+                    }
+                }
+            }
+
+            return dict;
+        }
+
+        private static List<IBDVertex> BuildMaxNextChain(IBDVertex start)
+        {
+            var chain = new List<IBDVertex>();
+            var visited = new HashSet<IBDVertex>();
+            var cur = start;
+
+            while (cur != null && !(cur is JumpPoint))
+            {
+                if (!visited.Add(cur))
+                    break;
+
+                chain.Add(cur);
+
+                if (cur is ConditionalVertex)
+                    break;
+
+                cur = SkipJump(cur.Next);
+            }
+
+            return chain;
+        }
+
+        private static List<string> FilterToMaximalKeys(IEnumerable<string> keys)
+        {
+            var list = keys.Distinct(StringComparer.Ordinal).ToList();
+            var items = list
+                .Select(k => new { Key = k, Tokens = k.Split('|', StringSplitOptions.RemoveEmptyEntries) })
+                .OrderByDescending(x => x.Tokens.Length)
+                .ToList();
+
+            var selected = new List<(string Key, string[] Tokens)>();
+            foreach (var cand in items)
+            {
+                bool covered = selected.Any(big => IsSubarray(cand.Tokens, big.Tokens));
+                if (!covered)
+                    selected.Add((cand.Key, cand.Tokens));
+            }
+
+            return selected.Select(x => x.Key).ToList();
+        }
+
+        private static bool IsSubarray(string[] small, string[] big)
+        {
+            if (small.Length >= big.Length) return false;
+            for (int i = 0; i <= big.Length - small.Length; i++)
+            {
+                bool eq = true;
+                for (int j = 0; j < small.Length; j++)
+                {
+                    if (!string.Equals(small[j], big[i + j], StringComparison.Ordinal))
+                    {
+                        eq = false;
+                        break;
+                    }
+                }
+                if (eq) return true;
+            }
+            return false;
+        }
+
+        private static List<string> SortKeysByAppearance(IEnumerable<string> keys, AlgoModel a, AlgoModel b)
+        {
+            var orderA = GetSignificantIdsInTraversalOrder(a);
+            var orderB = GetSignificantIdsInTraversalOrder(b);
+
+            int FirstIndex(List<string> order, string[] seq)
+            {
+                for (int i = 0; i < order.Count; i++)
+                {
+                    if (string.Equals(order[i], seq[0], StringComparison.Ordinal))
+                        return i;
+                }
+                return int.MaxValue;
+            }
+
+            return keys
+                .Select(k => new { Key = k, Tokens = k.Split('|', StringSplitOptions.RemoveEmptyEntries) })
+                .OrderBy(x => FirstIndex(orderA, x.Tokens))
+                .ThenBy(x => FirstIndex(orderB, x.Tokens))
+                .ThenBy(x => x.Tokens.Length)
+                .Select(x => x.Key)
+                .ToList();
+        }
+
+        private static (List<IBDVertex> aList, List<IBDVertex> bList) ExpandWithMatchingBranchHeads(AlgoModel a, AlgoModel b, List<IBDVertex> baseA, List<IBDVertex> baseB)
+        {
+            var setA = new Dictionary<string, IBDVertex>(StringComparer.Ordinal);
+            var setB = new Dictionary<string, IBDVertex>(StringComparer.Ordinal);
+            foreach (var v in baseA)
+            {
+                var id = v.ID ?? string.Empty;
+                if (!setA.ContainsKey(id)) setA[id] = v;
+            }
+            foreach (var v in baseB)
+            {
+                var id = v.ID ?? string.Empty;
+                if (!setB.ContainsKey(id)) setB[id] = v;
+            }
+
+            int n = Math.Min(baseA.Count, baseB.Count);
+            for (int i = 0; i < n; i++)
+            {
+                if (baseA[i] is ConditionalVertex ca && baseB[i] is ConditionalVertex cb)
+                {
+                    if (!string.Equals(ca.Prefix, cb.Prefix, StringComparison.Ordinal))
+                        continue;
+                    if (!string.Equals(ca.ID ?? string.Empty, cb.ID ?? string.Empty, StringComparison.Ordinal))
+                        continue;
+
+                    var la = SkipJump(ca.LBS);
+                    var lb = SkipJump(cb.LBS);
+                    if (la != null && lb != null && IsSignificant(la) && IsSignificant(lb))
+                    {
+                        var lid = la.ID ?? string.Empty;
+                        var lidB = lb.ID ?? string.Empty;
+                        if (string.Equals(lid, lidB, StringComparison.Ordinal))
+                        {
+                            if (!setA.ContainsKey(lid)) setA[lid] = la;
+                            if (!setB.ContainsKey(lid)) setB[lid] = lb;
+                        }
+                    }
+
+                    var ra = SkipJump(ca.RBS);
+                    var rb = SkipJump(cb.RBS);
+                    if (ra != null && rb != null && IsSignificant(ra) && IsSignificant(rb))
+                    {
+                        var rid = ra.ID ?? string.Empty;
+                        var ridB = rb.ID ?? string.Empty;
+                        if (string.Equals(rid, ridB, StringComparison.Ordinal))
+                        {
+                            if (!setA.ContainsKey(rid)) setA[rid] = ra;
+                            if (!setB.ContainsKey(rid)) setB[rid] = rb;
+                        }
+                    }
+                }
+            }
+
+            var listA = baseA.ToList();
+            var listB = baseB.ToList();
+            foreach (var kv in setA)
+                if (!listA.Contains(kv.Value)) listA.Add(kv.Value);
+            foreach (var kv in setB)
+                if (!listB.Contains(kv.Value)) listB.Add(kv.Value);
+
+            return (listA, listB);
+        }
+
+        private static List<(string key, List<IBDVertex> listA, List<IBDVertex> listB)> FilterCandidatesBySetSuperset(List<(string key, List<IBDVertex> listA, List<IBDVertex> listB)> candidates)
+        {
+            var idA = candidates.Select(c => new HashSet<string>(c.listA.Select(v => v.ID ?? string.Empty), StringComparer.Ordinal)).ToList();
+            var idB = candidates.Select(c => new HashSet<string>(c.listB.Select(v => v.ID ?? string.Empty), StringComparer.Ordinal)).ToList();
+
+            bool IsSubset(HashSet<string> small, HashSet<string> big)
+            {
+                if (small.Count >= big.Count) return false;
+                foreach (var s in small) if (!big.Contains(s)) return false;
+                return true;
+            }
+
+            var keep = new bool[candidates.Count];
+            for (int i = 0; i < keep.Length; i++) keep[i] = true;
+
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                if (!keep[i]) continue;
+                for (int j = 0; j < candidates.Count; j++)
+                {
+                    if (i == j || !keep[j]) continue;
+                    if (IsSubset(idA[j], idA[i]) && IsSubset(idB[j], idB[i]))
+                    {
+                        keep[j] = false;
+                    }
+                }
+            }
+
+            var result = new List<(string key, List<IBDVertex> listA, List<IBDVertex> listB)>();
+            for (int i = 0; i < candidates.Count; i++)
+                if (keep[i]) result.Add(candidates[i]);
+            return result;
         }
 
         private static bool LabelCompatible(IBDVertex a, IBDVertex b, bool strict)

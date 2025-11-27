@@ -11,6 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DataStructures\**" />
+    <EmbeddedResource Remove="DataStructures\**" />
+    <None Remove="DataStructures\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="RtfPipe" Version="2.0.7677.4303" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.10" />
@@ -37,7 +43,6 @@
 
   <ItemGroup>
     <Folder Include="AlgorithmModel\LAS\RandomLASGenerator\" />
-    <Folder Include="DataStructures\Containers\" />
   </ItemGroup>
 
 </Project>

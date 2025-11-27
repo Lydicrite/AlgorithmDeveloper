@@ -30,7 +30,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling
         {
             _aapMainTLP = new TableLayoutPanel();
             _viewportGB = new GroupBox();
-            _viewport = new AlgorithmDeveloper.Resources.UI.Controls.Viewports.SvgViewport();
+            _viewport = new AlgorithmDeveloper.Resources.UI.Controls.Viewports.ImageViewport();
             _aapInteractionGB = new GroupBox();
             _aapMainTLP.SuspendLayout();
             _viewportGB.SuspendLayout();
@@ -65,6 +65,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling
             // 
             // _viewport
             // 
+            _viewport.FigureFont = new Font("Arial", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             _viewport.BackColor = Color.FromArgb(48, 48, 48);
             _viewport.Dock = DockStyle.Fill;
             _viewport.ForeColor = Color.Silver;
@@ -103,6 +104,6 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling
         private TableLayoutPanel _aapMainTLP;
         private GroupBox _viewportGB;
         private GroupBox _aapInteractionGB;
-        private Viewports.SvgViewport _viewport;
+        private Viewports.ImageViewport _viewport;
     }
 }

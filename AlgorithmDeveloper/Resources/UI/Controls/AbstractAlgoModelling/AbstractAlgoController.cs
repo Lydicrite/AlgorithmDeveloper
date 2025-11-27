@@ -65,9 +65,8 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling
             // Размещаем вершины для визуализации
             ArrangeVertices();
 
-            // Передаем вершины и модель во векторный viewport
             _viewport.Figures = _model.Vertices.Where(v => v is not JumpPoint).OfType<IFigure>();
-            _viewport.Model = _model;
+            _viewport.FitToWindow();
         }
 
         /// <summary>

@@ -1,3 +1,4 @@
+using AlgorithmDeveloper.AlgorithmModel.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,8 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
         }
     }
 
+
+
     /// <summary>
     /// Представляет класс исключения, возникающего при появлении ошибок при парсинге.
     /// </summary>
@@ -45,7 +48,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
         /// </summary>
         /// <param name="errors">Список ошибок парсинга.</param>
         public ParsingAggregateException(List<ParsingError> errors)
-            : base($"\tНайдено {errors.Count} ошибок при парсинге ЛСА: \n")
+            : base(RussianGrammar.BuildFoundHeader(errors?.Count ?? 0, "ошибка", "ошибки", "ошибок", " при парсинге ЛСА: \n"))
         {
             Errors = errors;
         }

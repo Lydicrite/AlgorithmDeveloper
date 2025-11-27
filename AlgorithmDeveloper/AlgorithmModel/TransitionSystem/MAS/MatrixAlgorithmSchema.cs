@@ -484,8 +484,8 @@ namespace AlgorithmDeveloper.AlgorithmModel.TransitionSystem.MAS
 
                 for (int i = 1; i < Headers.Count; i++)
                 {
-                    dataRow[i] = i - 1 < row.Transitions.Count
-                        ? row.Transitions[i - 1]
+                    dataRow[i] = i < row.Transitions.Count
+                        ? row.Transitions[i]
                         : string.Empty;
                 }
 
