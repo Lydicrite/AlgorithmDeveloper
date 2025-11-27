@@ -7,7 +7,6 @@ using System.Reflection;
 
 namespace AlgorithmDeveloper.AlgorithmModel.Model.Tests
 {
-    /*
     [TestClass()]
     public class AlgoMcsUtilsTests
     {
@@ -45,7 +44,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.Model.Tests
         [DataRow(
             "Yн Y0 X1 ↑1 w↑2 ↓1 Y1 w↑2 ↓2 X0 ↑3 w↑4 ↓3 Y2 w↑4 ↓4 Yк",
             "Yн X1 ↑1 w↑2 ↓1 Y3 w↑2 ↓2 X2 ↑3 w↑4 ↓3 Y4 w↑4 ↓4 Yк",
-            DisplayName = "MCS Report: similar structure with different tails"
+            DisplayName = "TestGroup 1"
         )]
         public void BuildCommonSubgraphsReport(string lasA, string lasB)
         {
@@ -62,5 +61,4 @@ namespace AlgorithmDeveloper.AlgorithmModel.Model.Tests
             Assert.IsTrue(report.Contains(aa2!.InitialLAS, StringComparison.Ordinal), "Отчёт не содержит ЛСА B");
         }
     }
-    */
 }

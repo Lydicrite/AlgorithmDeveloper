@@ -88,21 +88,18 @@ namespace AlgorithmDeveloper.Resources.UI.Controls
         {
             base.OnTextChanged(e);
             Invalidate();
-            this.Parent?.Invalidate(this.Bounds);
         }
 
         protected override void OnGotFocus(EventArgs e)
         {
             base.OnGotFocus(e);
             Invalidate();
-            this.Parent?.Invalidate(this.Bounds);
         }
 
         protected override void OnLostFocus(EventArgs e)
         {
             base.OnLostFocus(e);
             Invalidate();
-            this.Parent?.Invalidate(this.Bounds);
         }
 
         protected override void OnResize(EventArgs e)
@@ -110,7 +107,6 @@ namespace AlgorithmDeveloper.Resources.UI.Controls
             base.OnResize(e);
             UpdateClippedRegion();
             Invalidate();
-            this.Parent?.Invalidate(this.Bounds);
         }
 
         protected override void OnDragEnter(DragEventArgs e)
@@ -141,15 +137,15 @@ namespace AlgorithmDeveloper.Resources.UI.Controls
         {
             const int WM_PASTE = 0x0302;
             const int WM_PAINT = 0x000F;
-        
+
             if (m.Msg == WM_PASTE)
             {
                 HandleSafePaste();
                 return;
             }
-        
+
             base.WndProc(ref m);
-        
+
             if (m.Msg == WM_PAINT)
             {
                 DrawOverlay();
@@ -230,11 +226,15 @@ namespace AlgorithmDeveloper.Resources.UI.Controls
         {
             if (this.BorderStyle == BorderStyle.None && this.Width > 2 && this.Height > 2)
             {
+                var old = this.Region;
                 this.Region = new Region(new Rectangle(1, 1, this.Width - 2, this.Height - 2));
+                old?.Dispose();
             }
             else
             {
+                var old = this.Region;
                 this.Region = null;
+                old?.Dispose();
             }
         }
 

@@ -13,9 +13,20 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
     public partial class MASViewport : UserControl
     {
         private ImageList? _rowImageList;
+
+        // Cached GDI objects
+        private static readonly Color DarkHeaderColor = Color.FromArgb(46, 46, 46);
+        private static readonly Color GridColor = Color.FromArgb(240, 240, 240);
+        private static readonly SolidBrush DarkHeaderBrush = new SolidBrush(DarkHeaderColor);
+        private static readonly Pen GridPen = new Pen(GridColor);
+
         public MASViewport()
         {
             InitializeComponent();
+            
+            this.SetStyle(ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
+            this.UpdateStyles();
+
             _rowImageList = new ImageList
             {
                 ColorDepth = ColorDepth.Depth32Bit,
@@ -23,6 +34,13 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
             };
             _rowImageList.Images.Add(new Bitmap(1, 1));
             _lv.SmallImageList = _rowImageList;
+
+            try
+            {
+                var method = typeof(Control).GetMethod("SetStyle", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                method?.Invoke(_lv, new object[] { ControlStyles.DoubleBuffer | ControlStyles.OptimizedDoubleBuffer, true });
+            }
+            catch { }
         }
 
         public void FillData(string name, DataTable table)
@@ -185,12 +203,9 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
 
         private void _lv_DrawColumnHeader(object? sender, DrawListViewColumnHeaderEventArgs e)
         {
-            using var back = new SolidBrush(Color.FromArgb(46, 46, 46));
-            using var gridPen = new Pen(Color.FromArgb(240, 240, 240));
-            using var borderPen = new Pen(Color.FromArgb(240, 240, 240));
             var rect = e.Bounds;
-            e.Graphics.FillRectangle(back, rect);
-            e.Graphics.DrawRectangle(gridPen, rect);
+            e.Graphics.FillRectangle(DarkHeaderBrush, rect);
+            e.Graphics.DrawRectangle(GridPen, rect);
 
             var textFlags = TextFormatFlags.NoPrefix | TextFormatFlags.EndEllipsis | TextFormatFlags.LeftAndRightPadding;
             if (e.ColumnIndex == 0)
@@ -201,12 +216,12 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
             TextRenderer.DrawText(e.Graphics, e.Header.Text, _lv.Font, new Rectangle(rect.X, rect.Y + 2, rect.Width, rect.Height), Color.Gainsboro, textFlags);
             if (e.ColumnIndex == 0)
             {
-                e.Graphics.DrawLine(borderPen, 0, rect.Top, 0, rect.Bottom);
+                e.Graphics.DrawLine(GridPen, 0, rect.Top, 0, rect.Bottom);
             }
             if (e.ColumnIndex == _lv.Columns.Count - 1)
             {
                 int x = _lv.ClientSize.Width - 1;
-                e.Graphics.DrawLine(borderPen, x, rect.Top, x, rect.Bottom);
+                e.Graphics.DrawLine(GridPen, x, rect.Top, x, rect.Bottom);
             }
         }
 
@@ -219,9 +234,25 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
         {
             var rect = e.Bounds;
             var isSelected = e.Item.Selected;
-            var darkHeader = Color.FromArgb(46, 46, 46);
-            using var back = new SolidBrush(e.ColumnIndex == 0 ? darkHeader : (isSelected ? SystemColors.Highlight : _lv.BackColor));
-            e.Graphics.FillRectangle(back, rect);
+
+            if (e.ColumnIndex == 0)
+            {
+                e.Graphics.FillRectangle(DarkHeaderBrush, rect);
+            }
+            else
+            {
+                if (isSelected)
+                {
+                     e.Graphics.FillRectangle(SystemBrushes.Highlight, rect);
+                }
+                else
+                {
+                     using (var back = new SolidBrush(_lv.BackColor))
+                     {
+                         e.Graphics.FillRectangle(back, rect);
+                     }
+                }
+            }
 
             var flags = TextFormatFlags.WordBreak | TextFormatFlags.NoPrefix | TextFormatFlags.EndEllipsis | TextFormatFlags.LeftAndRightPadding;
             if (e.ColumnIndex == 0)
@@ -231,26 +262,24 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
             var textColor = e.ColumnIndex == 0 ? Color.Gainsboro : (isSelected ? SystemColors.HighlightText : _lv.ForeColor);
             TextRenderer.DrawText(e.Graphics, e.SubItem.Text ?? string.Empty, _lv.Font, new Rectangle(rect.X, rect.Y + 2, rect.Width, rect.Height), textColor, flags);
 
-            using var borderPen = new Pen(Color.FromArgb(240, 240, 240));
-
             if (e.ColumnIndex == 0)
             {
-                e.Graphics.DrawLine(borderPen, 0, rect.Top, 0, rect.Bottom);
+                e.Graphics.DrawLine(GridPen, 0, rect.Top, 0, rect.Bottom);
             }
             if (e.ColumnIndex > 0 && e.ColumnIndex < _lv.Columns.Count - 1)
             {
-                e.Graphics.DrawLine(borderPen, 0, rect.Top, 0, rect.Bottom);
+                e.Graphics.DrawLine(GridPen, 0, rect.Top, 0, rect.Bottom);
             }
             if (e.ColumnIndex == _lv.Columns.Count - 1)
             {
                 int x = _lv.ClientSize.Width - 1;
-                e.Graphics.DrawLine(borderPen, x, rect.Top, x, rect.Bottom);
+                e.Graphics.DrawLine(GridPen, x, rect.Top, x, rect.Bottom);
             }
 
             if (e.ItemIndex == 0)
-                e.Graphics.DrawRectangle(borderPen, rect);
+                e.Graphics.DrawRectangle(GridPen, rect);
             else
-                e.Graphics.DrawRectangle(borderPen, new Rectangle(rect.X, rect.Y - 1, rect.Width, rect.Height));
+                e.Graphics.DrawRectangle(GridPen, new Rectangle(rect.X, rect.Y - 1, rect.Width, rect.Height));
         }
 
         private void _lv_ColumnWidthChanging(object? sender, ColumnWidthChangingEventArgs e)

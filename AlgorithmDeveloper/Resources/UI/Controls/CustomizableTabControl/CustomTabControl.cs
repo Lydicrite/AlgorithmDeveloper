@@ -15,10 +15,10 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
     /// Настраиваемый контрол вкладок с расширенными возможностями кастомизации
     /// </summary>
     [ToolboxBitmap(typeof(TabControl))]
-        [ProvideProperty("ForbidHide", typeof(TabPage))]
-        [ProvideProperty("ForbidClose", typeof(TabPage))]
-        [ProvideProperty("ForbidEntry", typeof(TabPage))]
-        public class CustomTabControl : TabControl, IExtenderProvider
+    [ProvideProperty("ForbidHide", typeof(TabPage))]
+    [ProvideProperty("ForbidClose", typeof(TabPage))]
+    [ProvideProperty("ForbidEntry", typeof(TabPage))]
+    public class CustomTabControl : TabControl, IExtenderProvider
     {
         #region Конструкция
 
@@ -35,6 +35,19 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
             _TabBufferGraphics = Graphics.FromImage(_TabBuffer);
 
             DisplayStyle = TabStyle.Default;
+
+            _bufferResizeTimer = new System.Windows.Forms.Timer();
+            _bufferResizeTimer.Interval = 150;
+            _bufferResizeTimer.Tick += (s, e) =>
+            {
+                _bufferResizeTimer.Stop();
+                if (_bufferRecreatePending)
+                {
+                    _bufferRecreatePending = false;
+                    RecreateBuffers();
+                    Invalidate();
+                }
+            };
         }
 
         /// <summary>
@@ -77,6 +90,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
                 _BackBuffer?.Dispose();
                 _TabBufferGraphics?.Dispose();
                 _TabBuffer?.Dispose();
+                _bufferResizeTimer?.Dispose();
             }
         }
 
@@ -108,6 +122,8 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
         /// Графический контекст буфера вкладок
         /// </summary>
         private Graphics _TabBufferGraphics;
+        private System.Windows.Forms.Timer _bufferResizeTimer;
+        private bool _bufferRecreatePending;
         /// <summary>
         /// Предыдущее значение прокрутки
         /// </summary>
@@ -127,7 +143,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
         /// <summary>
         /// Вкладка, на которую был произведен клик
         /// </summary>
-        private TabPage? _ClickedTabPage; 
+        private TabPage? _ClickedTabPage;
         /// <summary>
         /// Последняя позиция мыши
         /// </summary>
@@ -953,26 +969,33 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
         /// <param name="e">Аргументы события</param>
         protected override void OnResize(EventArgs e)
         {
-            // Пересоздаем буфер для ручной двойной буферизации
             if (Width > 0 && Height > 0)
             {
-                _BackImage?.Dispose();
-                _BackImage = null;
-
-                _BackBufferGraphics?.Dispose();
-                _BackBuffer?.Dispose();
-
-                _BackBuffer = new Bitmap(Width, Height);
-                _BackBufferGraphics = Graphics.FromImage(_BackBuffer);
-
-                _TabBufferGraphics?.Dispose();
-                _TabBuffer?.Dispose();
-
-                _TabBuffer = new Bitmap(Width, Height);
-                _TabBufferGraphics = Graphics.FromImage(_TabBuffer);
+                _bufferRecreatePending = true;
+                _bufferResizeTimer.Stop();
+                _bufferResizeTimer.Start();
             }
 
             base.OnResize(e);
+        }
+
+        private void RecreateBuffers()
+        {
+            if (Width <= 0 || Height <= 0)
+                return;
+
+            _BackImage?.Dispose();
+            _BackImage = null;
+
+            _BackBufferGraphics?.Dispose();
+            _BackBuffer?.Dispose();
+            _BackBuffer = new Bitmap(Width, Height);
+            _BackBufferGraphics = Graphics.FromImage(_BackBuffer);
+
+            _TabBufferGraphics?.Dispose();
+            _TabBuffer?.Dispose();
+            _TabBuffer = new Bitmap(Width, Height);
+            _TabBufferGraphics = Graphics.FromImage(_TabBuffer);
         }
 
         /// <summary>
@@ -1136,7 +1159,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
             {
                 // Если мы кликаем по кнопке закрытия, то удаляем вкладку вместо вызова стандартного события клика мыши
                 // но сначала вызываем событие закрытия вкладки
-                CloseTab(ActiveTab);
+                CloseTab(ActiveTab!);
             }
             else
                 base.OnMouseClick(e); // Вызываем базовое событие
@@ -1248,7 +1271,9 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
                     // When Top or Bottom and scrollable we need to clip the sides from painting the tabs.
                     // Left and Right are always multiline.
                     if (Alignment <= TabAlignment.Bottom && !Multiline)
-                        _TabBufferGraphics.Clip = new Region(new RectangleF(ClientRectangle.X + 3, ClientRectangle.Y, ClientRectangle.Width - 6, ClientRectangle.Height));
+                    {
+                        _TabBufferGraphics.SetClip(ClientRectangle);
+                    }
 
                     // Draw each tabPage from Right to Left. We do it this way to handle
                     // the overlap correctly.
@@ -1284,7 +1309,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
                 // Create a new color matrix and set the alpha value to 0.5
                 var alphaMatrix = new ColorMatrix();
                 alphaMatrix.Matrix00 = alphaMatrix.Matrix11 = alphaMatrix.Matrix22 = alphaMatrix.Matrix44 = 1;
-                alphaMatrix.Matrix33 = _StyleProvider.Opacity;
+                alphaMatrix.Matrix33 = _StyleProvider!.Opacity;
 
                 // Create a new image attribute object and set the color matrix to
                 // the one just created.
@@ -1426,7 +1451,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
                 // Для неактивных вкладок границу страницы не рисуем — только сам таб
                 if (_Style != TabStyle.None)
                 {
-                    _StyleProvider.PaintTab(index, graphics);
+                    _StyleProvider!.PaintTab(index, graphics);
                     DrawTabImage(index, graphics);
                     DrawTabText(index, graphics);
                 }
@@ -1451,8 +1476,8 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
             Color borderColor;
 
             if (index == SelectedIndex)
-                borderColor = _StyleProvider.BorderColorSelected;
-            else if (_StyleProvider.HotTrack && index == ActiveIndex)
+                borderColor = _StyleProvider!.BorderColorSelected;
+            else if (_StyleProvider!.HotTrack && index == ActiveIndex)
                 borderColor = _StyleProvider.BorderColorHot;
             else
                 borderColor = _StyleProvider.BorderColor;
@@ -1473,31 +1498,50 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
 
             Rectangle tabBounds = GetTabTextRect(index);
 
-            if (SelectedIndex == index)
+            if (Alignment <= TabAlignment.Bottom)
             {
-                using (Brush textBrush = new SolidBrush(_StyleProvider!.TextColorSelected))
-                    graphics.DrawString(TabPages[index].Text, Font, textBrush, tabBounds, GetStringFormat());
-            }
-            else
-            {
-                if (TabPages[index].Enabled)
+                var flags = TextFormatFlags.NoPrefix | TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.NoPadding | TextFormatFlags.PreserveGraphicsClipping;
+                if (SelectedIndex == index)
                 {
-                    // Проверяем, наведена ли мышь на эту вкладку и включено ли отслеживание
-                    if (_StyleProvider.HotTrack && index == ActiveIndex)
-                    {
-                        using (Brush textBrush = new SolidBrush(_StyleProvider!.TextColorHot))
-                            graphics.DrawString(TabPages[index].Text, Font, textBrush, tabBounds, GetStringFormat());
-                    }
-                    else
-                    {
-                        using (Brush textBrush = new SolidBrush(_StyleProvider!.TextColor))
-                            graphics.DrawString(TabPages[index].Text, Font, textBrush, tabBounds, GetStringFormat());
-                    }
+                    TextRenderer.DrawText(graphics, TabPages[index].Text, Font, tabBounds, _StyleProvider!.TextColorSelected, flags);
+                }
+                else if (TabPages[index].Enabled)
+                {
+                    var color = (_StyleProvider!.HotTrack && index == ActiveIndex) ? _StyleProvider!.TextColorHot : _StyleProvider!.TextColor;
+                    TextRenderer.DrawText(graphics, TabPages[index].Text, Font, tabBounds, color, flags);
                 }
                 else
                 {
-                    using (Brush textBrush = new SolidBrush(_StyleProvider!.TextColorDisabled))
+                    TextRenderer.DrawText(graphics, TabPages[index].Text, Font, tabBounds, _StyleProvider!.TextColorDisabled, flags);
+                }
+            }
+            else
+            {
+                if (SelectedIndex == index)
+                {
+                    using (Brush textBrush = new SolidBrush(_StyleProvider!.TextColorSelected))
                         graphics.DrawString(TabPages[index].Text, Font, textBrush, tabBounds, GetStringFormat());
+                }
+                else
+                {
+                    if (TabPages[index].Enabled)
+                    {
+                        if (_StyleProvider!.HotTrack && index == ActiveIndex)
+                        {
+                            using (Brush textBrush = new SolidBrush(_StyleProvider!.TextColorHot))
+                                graphics.DrawString(TabPages[index].Text, Font, textBrush, tabBounds, GetStringFormat());
+                        }
+                        else
+                        {
+                            using (Brush textBrush = new SolidBrush(_StyleProvider!.TextColor))
+                                graphics.DrawString(TabPages[index].Text, Font, textBrush, tabBounds, GetStringFormat());
+                        }
+                    }
+                    else
+                    {
+                        using (Brush textBrush = new SolidBrush(_StyleProvider!.TextColorDisabled))
+                            graphics.DrawString(TabPages[index].Text, Font, textBrush, tabBounds, GetStringFormat());
+                    }
                 }
             }
         }

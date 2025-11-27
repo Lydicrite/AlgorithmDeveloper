@@ -468,9 +468,9 @@ namespace AlgorithmDeveloper
             _masGB.ForeColor = Color.FromArgb(224, 224, 224);
             _masGB.Location = new Point(3, 436);
             _masGB.Margin = new Padding(3, 14, 3, 3);
-            _masGB.MinimumSize = new Size(740, 350);
+            _masGB.MinimumSize = new Size(740, 179);
             _masGB.Name = "_masGB";
-            _masGB.Size = new Size(742, 350);
+            _masGB.Size = new Size(742, 333);
             _masGB.TabIndex = 14;
             _masGB.TabStop = false;
             _masGB.Text = "Матричные схемы алгоритмов";
@@ -482,7 +482,7 @@ namespace AlgorithmDeveloper
             _masFLP.FlowDirection = FlowDirection.TopDown;
             _masFLP.Location = new Point(3, 23);
             _masFLP.Name = "_masFLP";
-            _masFLP.Size = new Size(736, 324);
+            _masFLP.Size = new Size(736, 307);
             _masFLP.TabIndex = 0;
             _masFLP.WrapContents = false;
             // 
@@ -531,6 +531,7 @@ namespace AlgorithmDeveloper
             // 
             _algoController1.BackColor = Color.FromArgb(31, 31, 31);
             _algoController1.Dock = DockStyle.Fill;
+            _algoController1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
             _algoController1.ForeColor = Color.FromArgb(224, 224, 224);
             _algoController1.Location = new Point(0, 0);
             _algoController1.Name = "_algoController1";
@@ -551,6 +552,7 @@ namespace AlgorithmDeveloper
             // 
             _algoController2.BackColor = Color.FromArgb(31, 31, 31);
             _algoController2.Dock = DockStyle.Fill;
+            _algoController2.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
             _algoController2.ForeColor = Color.FromArgb(224, 224, 224);
             _algoController2.Location = new Point(0, 0);
             _algoController2.Name = "_algoController2";
@@ -561,9 +563,9 @@ namespace AlgorithmDeveloper
             // 
             _mainTabControl_GAS3.BackColor = Color.FromArgb(31, 31, 31);
             _mainTabControl_GAS3.Controls.Add(_algoController3);
-            _mainTabControl_GAS3.Location = new Point(4, 26);
+            _mainTabControl_GAS3.Location = new Point(4, 31);
             _mainTabControl_GAS3.Name = "_mainTabControl_GAS3";
-            _mainTabControl_GAS3.Size = new Size(192, 70);
+            _mainTabControl_GAS3.Size = new Size(771, 521);
             _mainTabControl_GAS3.TabIndex = 4;
             _mainTabControl_GAS3.Text = "ГСА 3";
             // 
@@ -571,10 +573,11 @@ namespace AlgorithmDeveloper
             // 
             _algoController3.BackColor = Color.FromArgb(31, 31, 31);
             _algoController3.Dock = DockStyle.Fill;
+            _algoController3.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
             _algoController3.ForeColor = Color.FromArgb(224, 224, 224);
             _algoController3.Location = new Point(0, 0);
             _algoController3.Name = "_algoController3";
-            _algoController3.Size = new Size(192, 70);
+            _algoController3.Size = new Size(771, 521);
             _algoController3.TabIndex = 1;
             // 
             // _mainTabControl_SettingsPage
@@ -1017,8 +1020,7 @@ namespace AlgorithmDeveloper
             // 
             // MainFormV2
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.None;
             BackColor = Color.FromArgb(31, 31, 31);
             ClientSize = new Size(779, 556);
             Controls.Add(_mainTabControl);
@@ -1076,9 +1078,6 @@ namespace AlgorithmDeveloper
         private TabPage _mainTabControl_GAS3;
         private Panel _mainScrollPanel;
         private ToolTip _toolTip;
-        public Resources.UI.Controls.AbstractAlgoModelling.AbstractAlgoController _algoController1;
-        public Resources.UI.Controls.AbstractAlgoModelling.AbstractAlgoController _algoController2;
-        public Resources.UI.Controls.AbstractAlgoModelling.AbstractAlgoController _algoController3;
         private TabPage _mainTabControl_MainPage;
         private TableLayoutPanel _mainTLP;
         private GroupBox _mainGB;
@@ -1128,5 +1127,8 @@ namespace AlgorithmDeveloper
         private Label label11;
         private PictureBox transitionLightPenCP;
         private NumericUpDown transitionLightPenNUD;
+        private Resources.UI.Controls.AbstractAlgoModelling.AbstractAlgoController _algoController1;
+        private Resources.UI.Controls.AbstractAlgoModelling.AbstractAlgoController _algoController2;
+        private Resources.UI.Controls.AbstractAlgoModelling.AbstractAlgoController _algoController3;
     }
 }

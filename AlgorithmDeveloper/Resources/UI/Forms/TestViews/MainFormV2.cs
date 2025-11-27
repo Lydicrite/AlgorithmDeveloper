@@ -15,38 +15,65 @@ namespace AlgorithmDeveloper
             InitializeComponent();
             // Подписка на событие загрузки формы, чтобы выполнить привязку клавиатур
             this.Load += MainFormV2_Load;
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer, true);
         }
 
         private void MainFormV2_Load(object sender, EventArgs e)
         {
-            using (var font = new Font("Consolas", 10f))
-            {
-                _mainInfoPort.Font = font;
-            }
+            _mainInfoPort.Font = new Font("Consolas", 10f);
             _mainInfoPort.WordWrap = false;
-
             lasGraphicKeyboard1.BindTargets(_lasInputRTB1, _lasInputRTB2);
-
-            // Явно укажем активные цели, чтобы ввод начинался даже без фокуса
             lasGraphicKeyboard1.ActiveTarget = _lasInputRTB1;
-
             InitVisualizationSettingsBindings();
 
-            _masFLP.SizeChanged += (s, e) => { UpdateMasFLPLayout(); };
+            DoubleBuffered = true;
+            var dbProp = typeof(Control).GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            dbProp?.SetValue(_masFLP, true);
+            dbProp?.SetValue(_mainScrollPanel, true);
+            dbProp?.SetValue(_mainTLP, true);
+
+            _resizeTimer = new System.Windows.Forms.Timer();
+            _resizeTimer.Interval = 100;
+            _resizeTimer.Tick += (s2, e2) =>
+            {
+                _resizeTimer.Stop();
+                if (_resizePending)
+                {
+                    _resizePending = false;
+                    AdjustMainLayoutRowHeights();
+                }
+                if (_masLayoutPending)
+                {
+                    _masLayoutPending = false;
+                    UpdateMasFLPLayout();
+                }
+            };
+
+            _masFLP.SizeChanged += (s, e) => { _masLayoutPending = true; ScheduleResizeAdjust(); };
             _masFLP.ControlAdded += (s, e) => { UpdateMasFLPLayout(); SortMasViewportChildren(); };
             _masFLP.ControlRemoved += (s, e) => { UpdateMasFLPLayout(); SortMasViewportChildren(); };
             UpdateMasFLPLayout();
 
-            _mainScrollPanel.SizeChanged += (s, e) => { AdjustMainLayoutRowHeights(); };
+            _mainScrollPanel.SizeChanged += (s, e) => { _resizePending = true; ScheduleResizeAdjust(); };
             AdjustMainLayoutRowHeights();
 
-            this.SizeChanged += (s, e) => { AdjustMainLayoutRowHeights(); };
+            this.SizeChanged += (s, e) => { _resizePending = true; ScheduleResizeAdjust(); };
         }
 
 
 
 
         #region Приватная часть
+
+        private System.Windows.Forms.Timer _resizeTimer;
+        private bool _resizePending;
+        private bool _masLayoutPending;
+
+        private void ScheduleResizeAdjust()
+        {
+            _resizeTimer.Stop();
+            _resizeTimer.Start();
+        }
 
         private void InitVisualizationSettingsBindings()
         {
@@ -99,6 +126,93 @@ namespace AlgorithmDeveloper
             catch { }
         }
 
+        private void AdjustMainLayoutRowHeights()
+        {
+            try
+            {
+                int contentPadding = _mainTLP.Padding.Vertical + _mainTLP.Margin.Vertical + _mainScrollPanel.Padding.Vertical;
+                int fixedRowsHeight = GetFullHeight(_mainGB) + GetFullHeight(_combinedAlgoGB) + GetFullHeight(_infoGB);
+                int available = Math.Max(0, _mainScrollPanel.ClientSize.Height - contentPadding);
+                int target = available - fixedRowsHeight;
+                if (target < _masGB.MinimumSize.Height) target = _masGB.MinimumSize.Height;
+                _mainTLP.SuspendLayout();
+                _mainTLP.RowStyles[2].SizeType = SizeType.Absolute;
+                _mainTLP.RowStyles[2].Height = target;
+                _mainTLP.ResumeLayout(true);
+            }
+            catch { }
+        }
+
+        private int GetFullHeight(Control c)
+        {
+            return c.Height + c.Margin.Top + c.Margin.Bottom;
+        }
+
+        private void UpdateMasFLPLayout()
+        {
+            try
+            {
+                if (_masFLP.Controls.Count == 0)
+                {
+                    _masFLP.SuspendLayout();
+                    _masFLP.FlowDirection = FlowDirection.TopDown;
+                    _masFLP.WrapContents = false;
+                    _masFLP.AutoScroll = true;
+                    _masFLP.ResumeLayout(true);
+                    return;
+                }
+
+                int availableWidth = _masFLP.ClientSize.Width - _masFLP.Padding.Horizontal;
+                int totalWidth = 0;
+                foreach (Control c in _masFLP.Controls)
+                {
+                    if (c is MASViewport)
+                    {
+                        totalWidth += c.Width + c.Margin.Horizontal;
+                    }
+                }
+
+                bool fitsOneRow = totalWidth <= Math.Max(0, availableWidth);
+                _masFLP.SuspendLayout();
+                if (fitsOneRow)
+                {
+                    _masFLP.FlowDirection = FlowDirection.LeftToRight;
+                    _masFLP.WrapContents = false;
+                    _masFLP.AutoScroll = false;
+                }
+                else
+                {
+                    _masFLP.FlowDirection = FlowDirection.TopDown;
+                    _masFLP.WrapContents = false;
+                    _masFLP.AutoScroll = true;
+                }
+                _masFLP.ResumeLayout(true);
+            }
+            catch { }
+        }
+
+        private void SortMasViewportChildren()
+        {
+            try
+            {
+                var ordered = _masFLP.Controls
+                    .OfType<MASViewport>()
+                    .Select(v => new { View = v, Ord = v.Tag is int i ? i : 999 })
+                    .OrderBy(x => x.Ord)
+                    .Select(x => x.View)
+                    .ToList();
+
+                for (int i = 0; i < ordered.Count; i++)
+                {
+                    _masFLP.Controls.SetChildIndex(ordered[i], i);
+                }
+            }
+            catch { }
+        }
+
+
+
+
         private void EnableCheckLASButton(object sender, EventArgs e)
         {
             if (sender == _lasInputRTB1)
@@ -117,7 +231,8 @@ namespace AlgorithmDeveloper
 
                 if (ex != null)
                 {
-                    _mainInfoPort.Text = ex.Message;
+                    LogError(ex.Message);
+                    if (_mainScrollPanel.VerticalScroll.Visible) _mainScrollPanel.ScrollControlIntoView(_infoGB);
                 }
                 else
                 {
@@ -127,8 +242,6 @@ namespace AlgorithmDeveloper
                     _lasInputRTB1.ReadOnly = true;
                     // _lasInputRTB1.Cursor = Cursors.Arrow;
                     _lasInputRTB1.BackColor = Color.FromArgb(76, 76, 76);
-
-                    _mainInfoPort.Text = string.Empty;
                 }
             }
 
@@ -138,7 +251,8 @@ namespace AlgorithmDeveloper
 
                 if (ex != null)
                 {
-                    _mainInfoPort.Text = ex.Message;
+                    LogError(ex.Message);
+                    if (_mainScrollPanel.VerticalScroll.Visible) _mainScrollPanel.ScrollControlIntoView(_infoGB);
                 }
                 else
                 {
@@ -148,8 +262,6 @@ namespace AlgorithmDeveloper
                     _lasInputRTB2.ReadOnly = true;
                     // _lasInputRTB2.Cursor = Cursors.Arrow;
                     _lasInputRTB2.BackColor = Color.FromArgb(76, 76, 76);
-
-                    _mainInfoPort.Text = string.Empty;
                 }
             }
         }
@@ -166,11 +278,10 @@ namespace AlgorithmDeveloper
                 _lasInputRTB1.ReadOnly = true;
                 // _lasInputRTB1.Cursor = Cursors.Arrow;
                 _lasInputRTB1.BackColor = Color.FromArgb(76, 76, 76);
-
-                _mainInfoPort.Text = "Модель первого алгоритма создана успешно!";
+                LogSuccess("Модель первого алгоритма создана успешно.");
 
                 var masVP = new MASViewport();
-                masVP.FillData("МСА 1 - матричная схема первого алгоритма", _algoController1.Model?.MAS?.DataTable!);
+                masVP.FillData("МСА 1", _algoController1.Model?.MAS?.DataTable!);
                 masVP.Tag = 1;
 
                 _masFLP.Invoke((Action)(() =>
@@ -200,11 +311,10 @@ namespace AlgorithmDeveloper
                 _lasInputRTB2.ReadOnly = true;
                 // _lasInputRTB2.Cursor = Cursors.Arrow;
                 _lasInputRTB2.BackColor = Color.FromArgb(76, 76, 76);
-
-                _mainInfoPort.Text = "Модель второго алгоритма создана успешно!";
+                LogSuccess("Модель второго алгоритма создана успешно.");
 
                 var masVP = new MASViewport();
-                masVP.FillData("МСА 2 - матричная схема второго алгоритма", _algoController2.Model?.MAS?.DataTable!);
+                masVP.FillData("МСА 2", _algoController2.Model?.MAS?.DataTable!);
                 masVP.Tag = 2;
 
                 _masFLP.Invoke((Action)(() =>
@@ -230,85 +340,48 @@ namespace AlgorithmDeveloper
             /// TODO: Реализовать создание комбинированной МСА из двух моделей - будет в будущем, алгоритм объединения пока не готов
         }
 
-        private void AdjustMainLayoutRowHeights()
+
+
+
+
+        private void AppendText(RichTextBox terminal, string text, Color color, int fontSize, bool bold)
         {
-            try
+            terminal.Invoke((Action)(() =>
             {
-                int contentPadding = _mainTLP.Padding.Vertical + _mainTLP.Margin.Vertical + _mainScrollPanel.Padding.Vertical;
-                int fixedRowsHeight = GetFullHeight(_mainGB) + GetFullHeight(_combinedAlgoGB) + GetFullHeight(_infoGB);
-                int available = Math.Max(0, _mainScrollPanel.ClientSize.Height - contentPadding);
-                int target = available - fixedRowsHeight;
-                if (target < _masGB.MinimumSize.Height) target = _masGB.MinimumSize.Height;
-                _mainTLP.RowStyles[2].SizeType = SizeType.Absolute;
-                _mainTLP.RowStyles[2].Height = target;
-                _mainTLP.PerformLayout();
-            }
-            catch { }
+                terminal.SelectionStart = terminal.TextLength;
+                terminal.SelectionLength = 0;
+                terminal.SelectionColor = color;
+                terminal.SelectionFont = new Font(terminal.Font.FontFamily, fontSize, bold ? FontStyle.Bold : FontStyle.Regular);
+                terminal.AppendText(text);
+                terminal.SelectionColor = terminal.ForeColor;
+                terminal.ScrollToCaret();
+            }));
         }
 
-        private int GetFullHeight(Control c)
+        private void LogMessage(string message, Color tsColor)
         {
-            return c.Height + c.Margin.Top + c.Margin.Bottom;
+            int fs = (int)Math.Round(_mainInfoPort.Font.Size);
+            AppendText(_mainInfoPort, "\n\n\n", _mainInfoPort.ForeColor, fs, false);
+            AppendText(_mainInfoPort, $"[{DateTime.Now:dd.MM.yyyy, HH:mm}] -> ", tsColor, fs, false);
+            AppendText(_mainInfoPort, message, _mainInfoPort.ForeColor, fs, false);
         }
 
-        private void UpdateMasFLPLayout()
+        private void LogSuccess(string message)
         {
-            try
-            {
-                if (_masFLP.Controls.Count == 0)
-                {
-                    _masFLP.FlowDirection = FlowDirection.TopDown;
-                    _masFLP.WrapContents = false;
-                    _masFLP.AutoScroll = true;
-                    return;
-                }
-
-                int availableWidth = _masFLP.ClientSize.Width - _masFLP.Padding.Horizontal;
-                int totalWidth = 0;
-                foreach (Control c in _masFLP.Controls)
-                {
-                    if (c is MASViewport)
-                    {
-                        totalWidth += c.Width + c.Margin.Horizontal;
-                    }
-                }
-
-                bool fitsOneRow = totalWidth <= Math.Max(0, availableWidth);
-                if (fitsOneRow)
-                {
-                    _masFLP.FlowDirection = FlowDirection.LeftToRight;
-                    _masFLP.WrapContents = false;
-                    _masFLP.AutoScroll = false;
-                }
-                else
-                {
-                    _masFLP.FlowDirection = FlowDirection.TopDown;
-                    _masFLP.WrapContents = false;
-                    _masFLP.AutoScroll = true;
-                }
-                _masFLP.PerformLayout();
-            }
-            catch { }
+            LogMessage(message, Color.DarkSeaGreen);
         }
 
-        private void SortMasViewportChildren()
+        private void LogError(string message)
         {
-            try
-            {
-                var ordered = _masFLP.Controls
-                    .OfType<MASViewport>()
-                    .Select(v => new { View = v, Ord = v.Tag is int i ? i : 999 })
-                    .OrderBy(x => x.Ord)
-                    .Select(x => x.View)
-                    .ToList();
-
-                for (int i = 0; i < ordered.Count; i++)
-                {
-                    _masFLP.Controls.SetChildIndex(ordered[i], i);
-                }
-            }
-            catch { }
+            LogMessage(message, Color.IndianRed);
         }
+
+        private void LogInfo(string message)
+        {
+            LogMessage(message, _mainInfoPort.ForeColor);
+        }
+
+
 
         #endregion
 

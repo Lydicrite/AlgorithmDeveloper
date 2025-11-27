@@ -318,6 +318,8 @@ namespace AlgorithmDeveloper.AlgorithmModel.TransitionSystem.MAS
 
         #endregion
 
+
+
         #endregion
 
 
@@ -468,7 +470,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.TransitionSystem.MAS
             var dt = new DataTable();
 
             // Добавляем столбец для заголовков строк
-            dt.Columns.Add("Из ↓ / В → ", typeof(string));
+            dt.Columns.Add(" ", typeof(string));
 
             // Добавляем столбцы для вершин назначения
             foreach (var header in Headers.Skip(1)) // Пропускаем Yн в заголовках
@@ -484,8 +486,8 @@ namespace AlgorithmDeveloper.AlgorithmModel.TransitionSystem.MAS
 
                 for (int i = 1; i < Headers.Count; i++)
                 {
-                    dataRow[i] = i - 1 < row.Transitions.Count
-                        ? row.Transitions[i - 1]
+                    dataRow[i] = i < row.Transitions.Count
+                        ? row.Transitions[i]
                         : string.Empty;
                 }
 

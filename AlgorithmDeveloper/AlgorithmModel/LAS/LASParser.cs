@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using AlgorithmDeveloper.AlgorithmModel.Utils;
 using AlgorithmDeveloper.AlgorithmModel;
 using AlgorithmDeveloper.AlgorithmModel.LAS;
 using AlgorithmDeveloper.AlgoDev.Model.Vertices;
@@ -44,11 +45,11 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
             try
             {
                 if (tokens.FirstOrDefault() != "Yн")
-                    AddError(errors, "ЛСА должна начинаться с Yн", 0);
+                    AddError(errors, "ЛСА должна начинаться с 'Yн'", 0);
 
                 if (!tokens.Contains("Yк"))
-                    AddError(errors, "ЛСА должна содержать Yк", 0);
- 
+                    AddError(errors, "ЛСА должна содержать и заканчиваться на 'Yк'", 0);
+
                 ValidateJumpOperatorsAndPointsExistence(tokens, ref errors);
                 ValidateNoConsecutiveJumpPoints(tokens, ref errors);
                 ValidateNoConsecutiveJumpOperators(tokens, ref errors);
@@ -91,7 +92,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
                 if (!ok)
                 {
                     var list = new List<ParsingError>();
-                    AddError(list, $"Недостижимые вершины: [{string.Join(", ", unreachableIds)}]", 0);
+                    AddError(list, RussianGrammar.FormatUnreachableVerticesMessage(unreachableIds), 0);
                     errors = list;
                     return false;
                 }
@@ -122,7 +123,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
                 if (!ok)
                 {
                     var list = new List<ParsingError>();
-                    AddError(list, $"Недостижимые вершины: [{string.Join(", ", unreachableIds)}]", 0);
+                    AddError(list, RussianGrammar.FormatUnreachableVerticesMessage(unreachableIds), 0);
                     exception = new ParsingAggregateException(list);
                     return false;
                 }
@@ -152,7 +153,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
                 if (!ok)
                 {
                     var list = new List<ParsingError>();
-                    AddError(list, $"Недостижимые вершины: [{string.Join(", ", unreachableIds)}]", 0);
+                    AddError(list, RussianGrammar.FormatUnreachableVerticesMessage(unreachableIds), 0);
                     exception = new ParsingAggregateException(list);
                     return false;
                 }
@@ -193,10 +194,10 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
                 tempModel = new AlgoModel();
 
                 if (tokens.FirstOrDefault() != "Yн")
-                    AddError(errors, "ЛСА должна начинаться с Yн", 0);
+                    AddError(errors, "ЛСА должна начинаться с 'Yн'", 0);
 
                 if (!tokens.Contains("Yк"))
-                    AddError(errors, "ЛСА должна содержать Yк", 0);
+                    AddError(errors, "ЛСА должна содержать и заканчиваться на 'Yк'", 0);
 
                 ValidateJumpOperatorsAndPointsExistence(tokens, ref errors);
                 ValidateNoConsecutiveJumpPoints(tokens, ref errors);
@@ -228,7 +229,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
             {
                 var ok = tempModel.AreAllVerticesReachable(out var unreachableIds);
                 if (!ok)
-                    AddError(errors, $"Недостижимые вершины: [{string.Join(", ", unreachableIds)}]", 0);
+                    AddError(errors, RussianGrammar.FormatUnreachableVerticesMessage(unreachableIds), 0);
             }
 
             return errors.Count == 0;
@@ -296,9 +297,9 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
         /// <param name="parsedPositions">Словарь, определяющий состояние элементов на позициях (пропарсены или нет).</param>
         /// <param name="previousElement">Ссылка на предыдущий элемент ЛСА (возможно значение <see langword="null"/>).</param>
         /// <param name="errors">Ссылка на список ошибок парсера.</param>
-        private static void ParseElements 
+        private static void ParseElements
         (
-            ParserContext ctx, AlgoModel model, List<string> tokens, ref int position, ref Dictionary<int, bool> parsedPositions, 
+            ParserContext ctx, AlgoModel model, List<string> tokens, ref int position, ref Dictionary<int, bool> parsedPositions,
             ref IBDVertex? previousElement, ref List<ParsingError> errors
         )
         {
@@ -393,7 +394,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
             switch (token)
             {
                 case "Yн":
-                    AddError(errors, "Yн может быть только в начале ЛСА", position);
+                    AddError(errors, "'Yн' может быть только в начале ЛСА", position);
                     return null;
 
                 case "Yк":
@@ -407,7 +408,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
                 case var y when y.StartsWith('Y'):
                     if (y == "Yн")
                     {
-                        AddError(errors, "Yн может быть только в начале", position - 1);
+                        AddError(errors, "'Yн' может быть только в начале ЛСА", position - 1);
                         return null;
                     }
 
@@ -421,7 +422,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
                     return null;
 
                 default:
-                    AddError(errors, $"Неизвестный токен: \"{token}\"", position);
+                    AddError(errors, $"Неизвестный токен: \'{token}\'", position);
                     return null;
             }
         }
@@ -453,24 +454,24 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
         {
             int index = ++ctx.ConditionalVertexCounter;
             var vertexId = $"{prefix}{originalNumber}";
-            
+
             // Проверка уникальности ID условной вершины
             if (ctx.ConditionalVertexIds.Contains(vertexId))
             {
-                AddError(errors, $"Условная вершина {vertexId} уже существует в алгоритме", position - 1);
+                AddError(errors, $"Условная вершина '{vertexId}' уже существует в алгоритме", position - 1);
             }
             else
             {
                 ctx.ConditionalVertexIds.Add(vertexId);
             }
-            
+
             var vertex = model.AddVertex(new ConditionalVertex(prefix, originalNumber));
 
             // Парсим LBS (условный оператор ↑j)
             var lbs = ParseJumpOperatorForCondition(model, tokens, ref position, ref parsedPositions, ref errors);
             if (lbs == null)
             {
-                AddError(errors, $"Ожидается условный оператор перехода ↑j для \"{prefix}{originalNumber}\"", position);
+                AddError(errors, $"Ожидается условный оператор перехода '↑j' для \"{prefix}{originalNumber}\"", position);
                 return vertex;
             }
 
@@ -479,7 +480,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
             var rbs = ParseSubAlgorithm(ctx, model, tokens, ref position, ref parsedPositions, ref errors);
 
             if (rbs == null)
-                AddError(errors, $"Ожидается субалгоритм для \"{prefix}{originalNumber}\"", initialPosition);
+                AddError(errors, $"Ожидается субалгоритм для \'{prefix}{originalNumber}\'", initialPosition);
 
             // Устанавливаем ветви
             model.SetConditionalBranches(vertex, lbs, rbs);
@@ -498,7 +499,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
         /// <returns>Оператор условного перехода, являющийся левым потомком Xi.</returns>
         private static IBDVertex? ParseJumpOperatorForCondition
         (
-            AlgoModel model, List<string> tokens, ref int position, ref Dictionary<int, bool> parsedPositions, 
+            AlgoModel model, List<string> tokens, ref int position, ref Dictionary<int, bool> parsedPositions,
             ref List<ParsingError> errors
         )
         {
@@ -600,7 +601,8 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
             if (firstElement is EndVertex)
                 return firstElement;
 
-            if (firstElement == null) {
+            if (firstElement == null)
+            {
                 AddError(errors, "Субалгоритм не может быть пустым", startPos);
                 return null;
             }
@@ -628,7 +630,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
         {
             if (model.End != null)
             {
-                AddError(errors, "Конечная вершина Yк может быть только одна", pos);
+                AddError(errors, "Конечная вершина 'Yк' может быть только одна", pos);
                 return null;
             }
 
@@ -649,17 +651,17 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
         private static OperatorVertex CreateOperatorVertex(ParserContext ctx, AlgoModel model, int pos, ref Dictionary<int, bool> parsedPositions, int index, ref List<ParsingError> errors)
         {
             var vertexId = $"Y{index}";
-            
+
             // Проверка уникальности ID операторной вершины
             if (ctx.OperatorVertexIds.Contains(vertexId))
             {
-                AddError(errors, $"Операторная вершина {vertexId} уже существует в алгоритме", pos);
+                AddError(errors, $"Операторная вершина '{vertexId}' уже существует в алгоритме", pos);
             }
             else
             {
                 ctx.OperatorVertexIds.Add(vertexId);
             }
-            
+
             var vertex = model.AddVertex(new OperatorVertex(index));
             parsedPositions[pos] = true;
             return vertex;
@@ -677,17 +679,17 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
         private static JumpPoint CreateJumpPoint(ParserContext ctx, AlgoModel model, int pos, ref Dictionary<int, bool> parsedPositions, int index, ref List<ParsingError> errors)
         {
             var jumpPointId = $"↓{index}";
-            
+
             // Проверка повторного объявления точки перехода в тексте ЛСА
             if (ctx.JumpPointIds.Contains(jumpPointId))
             {
-                AddError(errors, $"Точка перехода {jumpPointId} уже существует в алгоритме", pos);
+                AddError(errors, $"Точка перехода '{jumpPointId}' уже существует в алгоритме", pos);
             }
             else
             {
                 ctx.JumpPointIds.Add(jumpPointId);
             }
-            
+
             // В модели исключаем дубликаты через EnsureJumpPoint
             var jumpPoint = model.EnsureJumpPoint(index);
             parsedPositions[pos] = true;
@@ -727,13 +729,13 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
             var endVertices = model.Vertices.OfType<EndVertex>().Count();
 
             if (startVertices > 1)
-                AddError(errors, "Начальная вершина Yн может быть только одна", 0);
+                AddError(errors, "Начальная вершина 'Yн' может быть только одна", 0);
 
             if (endVertices > 1)
-                AddError(errors, "Конечная вершина Yк может быть только одна", 0);
+                AddError(errors, "Конечная вершина 'Yк' может быть только одна", 0);
 
             if (endVertices == 0)
-                AddError(errors, "ЛСА должна содержать конечную вершину Yк", 0);
+                AddError(errors, "ЛСА должна содержать конечную вершину 'Yк'", 0);
         }
 
         /// <summary>
@@ -748,10 +750,10 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
             foreach (var vertex in conditionalVertices)
             {
                 if (vertex.LBS == null)
-                    AddError(errors, $"Условная вершина {vertex.ID} должна иметь левую ветвь (LBS)", 0);
+                    AddError(errors, $"Условная вершина '{vertex.ID}' должна иметь левую ветвь (LBS)", 0);
 
                 if (vertex.RBS == null)
-                    AddError(errors, $"Условная вершина {vertex.ID} должна иметь правую ветвь (RBS)", 0);
+                    AddError(errors, $"Условная вершина '{vertex.ID}' должна иметь правую ветвь (RBS)", 0);
             }
         }
 
@@ -836,7 +838,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
                 int pos = kv.Value;
                 if (!pointFirstPositions.ContainsKey(idx))
                 {
-                    AddError(errors, $"Для оператора(ов) перехода с индексом {idx} отсутствует соответствующая точка ↓{idx}", pos);
+                    AddError(errors, $"Для оператора перехода с индексом {idx} отсутствует соответствующая точка '↓{idx}'", pos);
                 }
             }
 
@@ -847,7 +849,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
                 int pos = kv.Value;
                 if (!operatorFirstPositions.ContainsKey(idx))
                 {
-                    AddError(errors, $"Для точки перехода ↓{idx} отсутствует хоть один оператор перехода (↑{idx} или w↑{idx})", pos);
+                    AddError(errors, $"Для точки перехода '↓{idx}' отсутствует хоть один оператор перехода ('↑{idx}' или 'w↑{idx}')", pos);
                 }
             }
         }
