@@ -65,9 +65,9 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling
             // 
             // _viewport
             // 
-            _viewport.FigureFont = new Font("Arial", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            _viewport.BackColor = Color.FromArgb(48, 48, 48);
+            _viewport.BackColor = Color.FromArgb(230, 234, 239);
             _viewport.Dock = DockStyle.Fill;
+            _viewport.FigureFont = new Font("Arial", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             _viewport.ForeColor = Color.Silver;
             _viewport.Location = new Point(3, 19);
             _viewport.Name = "_viewport";
@@ -84,9 +84,9 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling
             _aapInteractionGB.TabIndex = 0;
             _aapInteractionGB.TabStop = false;
             _aapInteractionGB.Text = "Взаимодействие";
-            //
+            // 
             // AbstractAlgoController
-            //
+            // 
             AutoScaleMode = AutoScaleMode.None;
             BackColor = Color.FromArgb(31, 31, 31);
             Controls.Add(_aapMainTLP);
