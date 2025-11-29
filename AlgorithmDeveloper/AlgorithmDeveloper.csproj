@@ -41,8 +41,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="AlgorithmModel\LAS\RandomLASGenerator\" />
-  </ItemGroup>
-
 </Project>

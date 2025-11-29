@@ -16,7 +16,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
 {
     public partial class SvgViewport : UserControl
     {
-        private AlgoModel? _model;
+        private AbstractAutomaton? _model;
         private IEnumerable<IFigure>? _figures;
         private string? _pendingHtml;
 
@@ -28,7 +28,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public AlgoModel? Model
+        public AbstractAutomaton? Model
         {
             get => _model;
             set

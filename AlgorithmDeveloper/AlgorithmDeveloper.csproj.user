@@ -7,10 +7,10 @@
     <Compile Update="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Resources\UI\Controls\AbstractAlgoModelling\AbstractAlgoWorkspace.cs">
+    <Compile Update="Resources\UI\Controls\AbstractAlgoModelling\AAWorkspace.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="Resources\UI\Controls\AbstractAlgoModelling\AbstractAlgoController.cs">
+    <Compile Update="Resources\UI\Controls\AbstractAlgoModelling\AAController.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="Resources\UI\Controls\CustomizableTabControl\CustomTabControl.cs">

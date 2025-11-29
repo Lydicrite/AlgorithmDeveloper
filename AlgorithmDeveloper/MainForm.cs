@@ -38,7 +38,7 @@ namespace AlgorithmDeveloper
             };
 
             if (workspaceType == "AbstAlgo")
-                newPage.Controls.Add(new AbstractAlgoWorkspace()
+                newPage.Controls.Add(new AAWorkspace()
                 {
                     Location = new Point(3, 5),
                 });

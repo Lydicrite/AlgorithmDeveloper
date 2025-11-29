@@ -55,11 +55,11 @@ namespace AlgorithmDeveloper
             _infoGB = new GroupBox();
             _mainInfoPort = new RichTextBox();
             _mainTabControl_GAS1 = new TabPage();
-            _algoController1 = new AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling.AbstractAlgoController();
+            _algoController1 = new AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling.AAController();
             _mainTabControl_GAS2 = new TabPage();
-            _algoController2 = new AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling.AbstractAlgoController();
+            _algoController2 = new AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling.AAController();
             _mainTabControl_GAS3 = new TabPage();
-            _algoController3 = new AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling.AbstractAlgoController();
+            _algoController3 = new AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling.AAController();
             _mainTabControl_SettingsPage = new TabPage();
             groupBox8 = new GroupBox();
             label15 = new Label();
@@ -1127,8 +1127,8 @@ namespace AlgorithmDeveloper
         private Label label11;
         private PictureBox transitionLightPenCP;
         private NumericUpDown transitionLightPenNUD;
-        private Resources.UI.Controls.AbstractAlgoModelling.AbstractAlgoController _algoController1;
-        private Resources.UI.Controls.AbstractAlgoModelling.AbstractAlgoController _algoController2;
-        private Resources.UI.Controls.AbstractAlgoModelling.AbstractAlgoController _algoController3;
+        private Resources.UI.Controls.AbstractAlgoModelling.AAController _algoController1;
+        private Resources.UI.Controls.AbstractAlgoModelling.AAController _algoController2;
+        private Resources.UI.Controls.AbstractAlgoModelling.AAController _algoController3;
     }
 }
