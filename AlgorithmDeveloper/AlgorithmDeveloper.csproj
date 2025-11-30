@@ -45,4 +45,10 @@
     <Folder Include="Theory\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="LogicalExpressions">
+      <HintPath>..\..\LogicalExpressions\LogicalExpressions\bin\Release\net9.0\LogicalExpressions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

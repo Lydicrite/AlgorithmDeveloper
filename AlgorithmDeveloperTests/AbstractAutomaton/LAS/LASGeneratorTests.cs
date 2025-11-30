@@ -159,6 +159,8 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.Tests
             DisplayName = "ComplexAlgo 3 Variant 1")]
         [DataRow("Yн Y0 X0 ↑0 X1 ↑1 w↑0 ↓1 X2 ↑2 w↑1 ↓2 Y2 X3 ↑2 Y3 X4 ↑3 w↑1 ↓3 Y4 X5 ↑2 X6 ↑4 Y6 X8 ↑5 w↑3 ↓5 Y7 X9 ↑6 w↑1 ↓4 Y5 X7 ↑5 w↑0 ↓0 Y1 w↑6 ↓6 Yк",
             DisplayName = "ComplexAlgo 3 Variant 2")]
+        [DataRow("Yн P1 ↑1 Y1 w↑1 ↓1 P2 ↑2 Y2 P2 ↑3 Y3 w↑3 ↓3 P3 ↑4 w↑1 ↓4 Y4 Y5 w↑2 ↓2 P4 ↑5 X5 ↑6 Y6 w↑6 ↓6 Y7 w↑5 ↓5 Y8 X1 ↑7 w↑1 ↓7 Yк",
+            DisplayName = "ComplexAlgo 4")]
         public void ComplexModels(string las)
         {
             AssertEquivalentLAS(las);

@@ -48,7 +48,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator
         public int? MaxConditionalVertexCount { get; set; }
 
         /// <summary>
-        /// Seed для генератора случайных чисел
+        /// Сид для генератора случайных чисел (опционально)
         /// </summary>
         public int? Seed { get; set; }
 

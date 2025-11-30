@@ -362,9 +362,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
                                 if (cv.LBS is JumpPoint lbsMain2)
                                 {
                                     var startCont = (_model.Start?.Next is JumpPoint sjp) ? sjp.Next : _model.Start?.Next;
-                                    var startId = startCont is null ? null : GetID(startCont);
-                                    var lbsNextId = lbsMain2.Next is null ? null : GetID(lbsMain2.Next);
-                                    if (startId != null && startId == lbsNextId)
+                                    if (startCont != null && lbsMain2.Next != null && startCont.Equals(lbsMain2.Next))
                                     {
                                         currentMain = null;
                                         break;

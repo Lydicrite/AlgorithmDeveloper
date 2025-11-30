@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator;
 using AlgorithmDeveloper.AlgorithmModel.LAS;
 using AlgorithmDeveloper.AlgorithmModel;
+using AlgorithmDeveloper.AlgoDev.Model.Vertices;
 using System;
 using System.Linq;
 using System.Text;
@@ -265,6 +266,45 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator.Tests
         }
 
         [TestMethod]
+        public void DebugDuplicateGen()
+        {
+            // Yн X1 ↑1 Y1 Y2 w↑1 ↓1 X1 ↑2 Y3 w↑2 ↓2 Yк
+            string input = "Yн X1 ↑1 Y1 Y2 w↑1 ↓1 X1 ↑2 Y3 w↑2 ↓2 Yк";
+
+            // 1. Parse
+            var val = new AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator.LASValidator();
+            bool ok = val.TryValidate(input, out var model, out var err);
+            Assert.IsTrue(ok, err);
+
+            // 2. Verify model structure
+            var start = model.Start;
+            var x1_a = start.Next as ConditionalVertex;
+            Assert.IsNotNull(x1_a, "X1(a) should be next to Start");
+            Assert.AreEqual("X1", x1_a.ID);
+
+            var jp1 = x1_a.LBS as JumpPoint;
+            Assert.IsNotNull(jp1, "X1(a).LBS should be JumpPoint 1");
+            Assert.AreEqual(1, jp1.JumpIndex);
+
+            var x1_b = jp1.Next as ConditionalVertex;
+            Assert.IsNotNull(x1_b, "JumpPoint 1 Next should be X1(b)");
+            Assert.AreEqual("X1", x1_b.ID);
+
+            Assert.AreNotSame(x1_a, x1_b, "X1(a) and X1(b) should be different objects");
+            Assert.AreNotEqual(x1_a.Uid, x1_b.Uid, "X1(a) and X1(b) should have different Uids");
+            Assert.IsFalse(x1_a.Equals(x1_b), "X1(a).Equals(X1(b)) should be false");
+
+            // 3. Generate
+            string output = LASGenerator.Generate(model, out string log, true);
+
+            Console.WriteLine("Input:  " + input);
+            Console.WriteLine("Output: " + output);
+            Console.WriteLine("Log:\n" + log);
+
+            Assert.AreEqual(input, output);
+        }
+
+        [TestMethod]
         [DataRow(100, 5,  1000000,  true)]
         [DataRow(100, 8,  1000000, true)]
         [DataRow(100, 10, 1000000, true)]
@@ -285,6 +325,10 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator.Tests
             int modelsWithCycles = 0;
             int cyclesTotal = 0;
             var cyclicModels = new Dictionary<int, (string, string)>();
+            
+            int modelsWithDuplicates = 0;
+            var duplicateModels = new Dictionary<int, (string, string)>();
+
             double sumLogTokens = 0.0;
 
             for (int i = 0; i < lasCount; i++)
@@ -315,6 +359,18 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator.Tests
                     cyclicModels.Add(i + 1, (las, model!.Information));
                 }
 
+                // Check for duplicates
+                var hasDuplicates = model.Vertices
+                    .OfType<ConditionalVertex>()
+                    .GroupBy(v => v.ID)
+                    .Any(g => g.Count() > 1);
+
+                if (hasDuplicates)
+                {
+                    modelsWithDuplicates++;
+                    duplicateModels.Add(i + 1, (las, model.Information));
+                }
+
                 total++;
             }
 
@@ -338,6 +394,10 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator.Tests
             string cyclesSummary = total > 0
                 ? $"{modelsWithCycles} из {total} ({(100.0 * modelsWithCycles / total):F4}%)"
                 : "0 из 0 (0%)";
+            
+            string duplicatesSummary = total > 0
+                ? $"{modelsWithDuplicates} из {total} ({(100.0 * modelsWithDuplicates / total):F4}%)"
+                : "0 из 0 (0%)";
 
             string avgCyclesPerModel = total > 0 ? (cyclesTotal / (double)total).ToString("F4") : "0.0000";
             string avgCyclesPerCyclicModel = modelsWithCycles > 0 ? (cyclesTotal / (double)modelsWithCycles).ToString("F4") : "0.0000";
@@ -351,6 +411,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator.Tests
             sb.AppendLine("Метрика                                   | Значение");
             sb.AppendLine("------------------------------------------------------------------");
             sb.AppendLine($"Моделей с циклами                         | {cyclesSummary}");
+            sb.AppendLine($"Моделей с дубликатами условий             | {duplicatesSummary}");
             sb.AppendLine($"Среднее циклов на модель                  | {avgCyclesPerModel}");
             sb.AppendLine($"Среднее циклов на цикличную модель        | {avgCyclesPerCyclicModel}");
             sb.AppendLine($"Операторные вершины: частота              | {ovFreq}");
@@ -369,15 +430,30 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator.Tests
             sb.AppendLine("- Геометрическое среднее устойчивее и лучше отражает 'типичный' размер.");
             sb.AppendLine("- Для оценки плотности вершин полезны обе метрики вместе.");
 
-            if (logs && cyclicModels.Count > 0)
+            if (logs)
             {
-                sb.AppendLine($"Индексы моделей с циклами: [{string.Join(", ", cyclicModels.Keys)}]\nМодели с циклами: \n");
-                foreach (var (index, (las, info)) in cyclicModels)
+                if (cyclicModels.Count > 0)
                 {
-                    sb.AppendLine($"\n\n\n\n\n--- Модель #{index} ---");
-                    sb.AppendLine(DescribeLAS(las));
-                    sb.AppendLine($"\n{info}");
-                    sb.AppendLine();
+                    sb.AppendLine($"\nИндексы моделей с циклами: [{string.Join(", ", cyclicModels.Keys)}]\nМодели с циклами: \n");
+                    foreach (var (index, (las, info)) in cyclicModels)
+                    {
+                        sb.AppendLine($"\n\n\n\n\n--- Модель #{index} ---");
+                        sb.AppendLine(DescribeLAS(las));
+                        sb.AppendLine($"\n{info}");
+                        sb.AppendLine();
+                    }
+                }
+                
+                if (duplicateModels.Count > 0)
+                {
+                    sb.AppendLine($"\nИндексы моделей с дубликатами: [{string.Join(", ", duplicateModels.Keys)}]\nМодели с дубликатами: \n");
+                    foreach (var (index, (las, info)) in duplicateModels)
+                    {
+                        sb.AppendLine($"\n\n\n\n\n--- Модель #{index} (Дубликаты) ---");
+                        sb.AppendLine(DescribeLAS(las));
+                        sb.AppendLine($"\n{info}");
+                        sb.AppendLine();
+                    }
                 }
             }
 

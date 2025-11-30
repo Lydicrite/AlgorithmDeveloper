@@ -459,30 +459,34 @@ namespace AlgorithmDeveloper.AlgorithmModel
 
         /// <summary>
         /// Устанавливает значения условных вершин на основе бинарной строки.
+        /// Для дубликатов (вершин с одинаковым ID) устанавливается одно и то же значение.
         /// </summary>
-        /// <param name="binaryValues">Строка, состоящая из n символов '0' и '1', где n равно количеству условных вершин в алгоритме.</param>
+        /// <param name="binaryValues">Строка, состоящая из n символов '0' и '1', где n равно количеству уникальных ID условных вершин.</param>
         public void SetConditionsFromBinary(string binaryValues)
         {
-            var conditionalVertices = Vertices
+            // Группируем по ID, чтобы обрабатывать дубликаты как одну логическую переменную
+            var conditionalGroups = Vertices
                 .OfType<ConditionalVertex>()
-                .OrderBy(v => v, ConditionalsBindingComparer)
+                .GroupBy(v => v.ID)
+                .OrderBy(g => g.First(), ConditionalsBindingComparer)
                 .ToList();
         
-            if (binaryValues == "[любой исход]" || (conditionalVertices.Count == 0))
+            if (binaryValues == "[любой исход]" || (conditionalGroups.Count == 0))
                 return;
         
             if (!Regex.IsMatch(binaryValues, @"^[01]+$"))
                 throw new ArgumentException("Строка должна содержать только 0 и 1");
         
-            if (binaryValues.Length != conditionalVertices.Count)
-                throw new ArgumentException($"Ожидается {conditionalVertices.Count} символов, получено {binaryValues.Length}");
+            if (binaryValues.Length != conditionalGroups.Count)
+                throw new ArgumentException($"Ожидается {conditionalGroups.Count} символов (по числу уникальных условий), получено {binaryValues.Length}");
         
-            for (int i = 0; i < conditionalVertices.Count; i++)
+            for (int i = 0; i < conditionalGroups.Count; i++)
             {
-                SetConditionalValue(
-                    conditionalVertices[i],
-                    binaryValues[i] == '1'
-                );
+                bool val = binaryValues[i] == '1';
+                foreach (var v in conditionalGroups[i])
+                {
+                    v.Value = val;
+                }
             }
         }
 

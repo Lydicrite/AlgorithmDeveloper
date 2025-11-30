@@ -49,12 +49,13 @@ namespace AlgorithmDeveloper.AlgorithmModel.TransitionSystem
             foreach (var s in starts)
                 formulasByStart[s] = new TransitionFormula(s);
 
-            // Все условные вершины, отсортированные по индексам
-            var conditionals = model.Vertices.OfType<ConditionalVertex>()
-                .OrderBy(c => c, model.ConditionalsBindingComparer)
+            // Все условные вершины, сгруппированные по ID
+            var conditionalGroups = model.Vertices.OfType<ConditionalVertex>()
+                .GroupBy(c => c.ID)
+                .OrderBy(g => g.Key, StringComparer.Ordinal)
                 .ToList();
 
-            int n = conditionals.Count;
+            int n = conditionalGroups.Count;
             int total = n == 0 ? 1 : (1 << n);
 
             // Перебор всех комбинаций значений условных вершин
@@ -62,7 +63,13 @@ namespace AlgorithmDeveloper.AlgorithmModel.TransitionSystem
             {
                 // Установка значений .Value для условных вершин по текущей комбинации
                 for (int i = 0; i < n; i++)
-                    model.SetConditionalValue(conditionals[i], ((mask >> i) & 1) == 1);
+                {
+                    bool val = ((mask >> i) & 1) == 1;
+                    foreach (var cv in conditionalGroups[i])
+                    {
+                        model.SetConditionalValue(cv, val);
+                    }
+                }
 
                 // В режиме NoParadox собираем множество стартов, достижимых из Yн при текущей комбинации
                 HashSet<IBDVertex>? reachableStarts = null;
@@ -189,8 +196,9 @@ namespace AlgorithmDeveloper.AlgorithmModel.TransitionSystem
         {
             if (xvals == null || xvals.Count == 0) return string.Empty;
             var parts = xvals
-                .OrderBy(kv => kv.Key.ID, StringComparer.Ordinal)
-                .Select(kv => $"{kv.Key.ID}:{(kv.Value ? 1 : 0)}");
+                .GroupBy(kv => kv.Key.ID)
+                .OrderBy(g => g.Key, StringComparer.Ordinal)
+                .Select(g => $"{g.Key}:{(g.First().Value ? 1 : 0)}");
             return string.Join(";", parts);
         }
 
@@ -198,8 +206,9 @@ namespace AlgorithmDeveloper.AlgorithmModel.TransitionSystem
         {
             if (xvals == null || xvals.Count == 0) return string.Empty;
             var parts = xvals
-                .OrderBy(kv => kv.Key.ID, StringComparer.Ordinal)
-                .Select(kv => $"{kv.Key.ID}:{(kv.Value ? 1 : 0)}");
+                .GroupBy(kv => kv.Key.ID)
+                .OrderBy(g => g.Key, StringComparer.Ordinal)
+                .Select(g => $"{g.Key}:{(g.First().Value ? 1 : 0)}");
             return string.Join(";", parts);
         }
     }
