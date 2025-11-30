@@ -389,7 +389,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator
                 case "operator":
                     return GenerateOperatorVertex(context);
                 case "conditional":
-                    return GenerateConditionalVertex(random, context);
+                    return GenerateConditionalVertex(options, random, context);
                 case "jump":
                     return GenerateJump(context);
                 case "back_jump":
@@ -414,9 +414,20 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator
             return true;
         }
 
-        private static bool GenerateConditionalVertex(Random random, LASGenerationContext context)
+        private static bool GenerateConditionalVertex(LASGenerationOptions options, Random random, LASGenerationContext context)
         {
-            var id = context.ConditionalVertexIdCounter++;
+            int id;
+            // С вероятностью 0.07 пытаемся использовать дубликат ID, если есть доступные
+            if (context.UsedConditionalIds.Count > 0 && random.NextDouble() < options.CVDuplicationProbability)
+            {
+                id = context.UsedConditionalIds[random.Next(context.UsedConditionalIds.Count)];
+            }
+            else
+            {
+                id = context.ConditionalVertexIdCounter++;
+                context.UsedConditionalIds.Add(id);
+            }
+
             var vertexType = random.Next(2) == 0 ? "X" : "P";
             // Запоминаем состояние окружения для корректного возврата после правой ветви
             var prevState = context.CurrentState;
@@ -571,7 +582,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator
                     }
                 case "conditional":
                     {
-                        var ok = GenerateConditionalVertex(random, context);
+                        var ok = GenerateConditionalVertex(options, random, context);
                         if (ok) MarkCurrentBranchHasContent(context);
                         return ok;
                     }

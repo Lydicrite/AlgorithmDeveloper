@@ -456,14 +456,8 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
             var vertexId = $"{prefix}{originalNumber}";
 
             // Проверка уникальности ID условной вершины
-            if (ctx.ConditionalVertexIds.Contains(vertexId))
-            {
-                AddError(errors, $"Условная вершина '{vertexId}' уже существует в алгоритме", position - 1);
-            }
-            else
-            {
-                ctx.ConditionalVertexIds.Add(vertexId);
-            }
+            // Разрешаем дубликаты: if (ctx.ConditionalVertexIds.Contains(vertexId)) ...
+            ctx.ConditionalVertexIds.Add(vertexId);
 
             var vertex = model.AddVertex(new ConditionalVertex(prefix, originalNumber));
 

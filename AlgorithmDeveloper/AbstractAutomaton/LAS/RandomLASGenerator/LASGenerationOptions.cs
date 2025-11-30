@@ -103,6 +103,11 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator
         public double FinishProbability { get; set; } = 0.1;
 
         /// <summary>
+        /// Вероятность того, что очередная генерируемая условная вершина станет дубликатом одной из уже имеющихся
+        /// </summary>
+        public double CVDuplicationProbability { get; set; } = 0.07;
+
+        /// <summary>
         /// Создает опции по умолчанию
         /// </summary>
         public static LASGenerationOptions Default => new LASGenerationOptions();

@@ -37,7 +37,7 @@ namespace AlgorithmDeveloper
             _mainScrollPanel = new Panel();
             _mainTLP = new TableLayoutPanel();
             _mainGB = new GroupBox();
-            groupBox3 = new GroupBox();
+            _lasKeyboardGB = new GroupBox();
             lasGraphicKeyboard1 = new AlgorithmDeveloper.Resources.UI.Controls.LASInputControls.LASGraphicKeyboard();
             _createGAS2_GB = new GroupBox();
             _tryParseLAS2_B = new Button();
@@ -61,42 +61,46 @@ namespace AlgorithmDeveloper
             _mainTabControl_GAS3 = new TabPage();
             _algoController3 = new AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling.AAController();
             _mainTabControl_SettingsPage = new TabPage();
-            groupBox8 = new GroupBox();
+            settingsTLP = new TableLayoutPanel();
+            settingsLeftFLP = new FlowLayoutPanel();
+            _workFieldParamsGB = new GroupBox();
             label15 = new Label();
             drawStepDelayNUD = new NumericUpDown();
-            containerCP = new PictureBox();
+            _viewportCP = new PictureBox();
             label14 = new Label();
-            groupBox5 = new GroupBox();
-            innerStateCP = new PictureBox();
-            highlightedBorderCP = new PictureBox();
+            _verticesVisualParamsGB = new GroupBox();
+            _vertexActInnerCP = new PictureBox();
+            label1 = new Label();
+            _vertexInactInnerCP = new PictureBox();
             label8 = new Label();
-            label9 = new Label();
-            inactiveBorderCP = new PictureBox();
-            activeBorderCP = new PictureBox();
             label6 = new Label();
             label7 = new Label();
             label5 = new Label();
+            _inactiveBorderCP = new PictureBox();
+            _activeBorderCP = new PictureBox();
             label4 = new Label();
-            borderNUD = new NumericUpDown();
-            cirlceDiameterNUD = new NumericUpDown();
-            groupBox6 = new GroupBox();
-            groupBox7 = new GroupBox();
+            _borderNUD = new NumericUpDown();
+            _vertexSizeNUD = new NumericUpDown();
+            _transitionsVisualParamsGB = new GroupBox();
+            _inactTransitionsGB = new GroupBox();
             label12 = new Label();
             label13 = new Label();
-            transitionBlackPenCP = new PictureBox();
-            transitionBlackPenNUD = new NumericUpDown();
-            groupBox9 = new GroupBox();
+            _transitionDarkPenCP = new PictureBox();
+            _transitionDarkPenNUD = new NumericUpDown();
+            _actTransitionsGB = new GroupBox();
             label10 = new Label();
             label11 = new Label();
-            transitionLightPenCP = new PictureBox();
-            transitionLightPenNUD = new NumericUpDown();
+            _transitionLightPenCP = new PictureBox();
+            _transitionLightPenNUD = new NumericUpDown();
+            settingsRightFLP = new FlowLayoutPanel();
             _toolTip = new ToolTip(components);
+            _colorPicker = new ColorDialog();
             _mainTabControl.SuspendLayout();
             _mainTabControl_MainPage.SuspendLayout();
             _mainScrollPanel.SuspendLayout();
             _mainTLP.SuspendLayout();
             _mainGB.SuspendLayout();
-            groupBox3.SuspendLayout();
+            _lasKeyboardGB.SuspendLayout();
             _createGAS2_GB.SuspendLayout();
             _createGAS1_GB.SuspendLayout();
             _combinedAlgoGB.SuspendLayout();
@@ -106,23 +110,25 @@ namespace AlgorithmDeveloper
             _mainTabControl_GAS2.SuspendLayout();
             _mainTabControl_GAS3.SuspendLayout();
             _mainTabControl_SettingsPage.SuspendLayout();
-            groupBox8.SuspendLayout();
+            settingsTLP.SuspendLayout();
+            settingsLeftFLP.SuspendLayout();
+            _workFieldParamsGB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)drawStepDelayNUD).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)containerCP).BeginInit();
-            groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)innerStateCP).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)highlightedBorderCP).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)inactiveBorderCP).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)activeBorderCP).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)borderNUD).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)cirlceDiameterNUD).BeginInit();
-            groupBox6.SuspendLayout();
-            groupBox7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)transitionBlackPenCP).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)transitionBlackPenNUD).BeginInit();
-            groupBox9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)transitionLightPenCP).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)transitionLightPenNUD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)_viewportCP).BeginInit();
+            _verticesVisualParamsGB.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)_vertexActInnerCP).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)_vertexInactInnerCP).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)_inactiveBorderCP).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)_activeBorderCP).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)_borderNUD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)_vertexSizeNUD).BeginInit();
+            _transitionsVisualParamsGB.SuspendLayout();
+            _inactTransitionsGB.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)_transitionDarkPenCP).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)_transitionDarkPenNUD).BeginInit();
+            _actTransitionsGB.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)_transitionLightPenCP).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)_transitionLightPenNUD).BeginInit();
             SuspendLayout();
             // 
             // _mainTabControl
@@ -132,6 +138,7 @@ namespace AlgorithmDeveloper
             _mainTabControl.Controls.Add(_mainTabControl_GAS2);
             _mainTabControl.Controls.Add(_mainTabControl_GAS3);
             _mainTabControl.Controls.Add(_mainTabControl_SettingsPage);
+            _mainTabControl.Cursor = Cursors.Hand;
             _mainTabControl.DisplayStyle = TabStyle.Dark;
             _mainTabControl.DisplayStyleProvider.BackgroundColor = Color.FromArgb(48, 48, 48);
             _mainTabControl.DisplayStyleProvider.BackgroundColorDisabled = Color.DimGray;
@@ -232,7 +239,7 @@ namespace AlgorithmDeveloper
             // _mainGB
             // 
             _mainGB.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            _mainGB.Controls.Add(groupBox3);
+            _mainGB.Controls.Add(_lasKeyboardGB);
             _mainGB.Controls.Add(_createGAS2_GB);
             _mainGB.Controls.Add(_createGAS1_GB);
             _mainGB.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
@@ -245,17 +252,17 @@ namespace AlgorithmDeveloper
             _mainGB.TabStop = false;
             _mainGB.Text = "Объединяемые алгоритмы";
             // 
-            // groupBox3
+            // _lasKeyboardGB
             // 
-            groupBox3.Controls.Add(lasGraphicKeyboard1);
-            groupBox3.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            groupBox3.ForeColor = Color.FromArgb(224, 224, 224);
-            groupBox3.Location = new Point(6, 26);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(163, 240);
-            groupBox3.TabIndex = 14;
-            groupBox3.TabStop = false;
-            groupBox3.Text = "Клавиатура ввода ЛСА";
+            _lasKeyboardGB.Controls.Add(lasGraphicKeyboard1);
+            _lasKeyboardGB.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            _lasKeyboardGB.ForeColor = Color.FromArgb(224, 224, 224);
+            _lasKeyboardGB.Location = new Point(6, 26);
+            _lasKeyboardGB.Name = "_lasKeyboardGB";
+            _lasKeyboardGB.Size = new Size(163, 240);
+            _lasKeyboardGB.TabIndex = 14;
+            _lasKeyboardGB.TabStop = false;
+            _lasKeyboardGB.Text = "Клавиатура ввода ЛСА";
             // 
             // lasGraphicKeyboard1
             // 
@@ -563,9 +570,9 @@ namespace AlgorithmDeveloper
             // 
             _mainTabControl_GAS3.BackColor = Color.FromArgb(31, 31, 31);
             _mainTabControl_GAS3.Controls.Add(_algoController3);
-            _mainTabControl_GAS3.Location = new Point(4, 31);
+            _mainTabControl_GAS3.Location = new Point(4, 26);
             _mainTabControl_GAS3.Name = "_mainTabControl_GAS3";
-            _mainTabControl_GAS3.Size = new Size(771, 521);
+            _mainTabControl_GAS3.Size = new Size(192, 70);
             _mainTabControl_GAS3.TabIndex = 4;
             _mainTabControl_GAS3.Text = "ГСА 3";
             // 
@@ -577,49 +584,77 @@ namespace AlgorithmDeveloper
             _algoController3.ForeColor = Color.FromArgb(224, 224, 224);
             _algoController3.Location = new Point(0, 0);
             _algoController3.Name = "_algoController3";
-            _algoController3.Size = new Size(771, 521);
+            _algoController3.Size = new Size(192, 70);
             _algoController3.TabIndex = 1;
             // 
             // _mainTabControl_SettingsPage
             // 
             _mainTabControl_SettingsPage.BackColor = Color.FromArgb(31, 31, 31);
-            _mainTabControl_SettingsPage.Controls.Add(groupBox8);
-            _mainTabControl_SettingsPage.Controls.Add(groupBox5);
-            _mainTabControl_SettingsPage.Controls.Add(groupBox6);
+            _mainTabControl_SettingsPage.Controls.Add(settingsTLP);
             _mainTabControl.SetForbidClose(_mainTabControl_SettingsPage, true);
             _mainTabControl_SettingsPage.ForeColor = Color.FromArgb(214, 214, 214);
-            _mainTabControl_SettingsPage.Location = new Point(4, 26);
+            _mainTabControl_SettingsPage.Location = new Point(4, 31);
             _mainTabControl_SettingsPage.Name = "_mainTabControl_SettingsPage";
             _mainTabControl_SettingsPage.Padding = new Padding(3);
-            _mainTabControl_SettingsPage.Size = new Size(192, 70);
+            _mainTabControl_SettingsPage.Size = new Size(771, 521);
             _mainTabControl_SettingsPage.TabIndex = 1;
-            _mainTabControl_SettingsPage.Text = "Настройки визуализации";
+            _mainTabControl_SettingsPage.Text = "Настройки";
             // 
-            // groupBox8
+            // settingsTLP
             // 
-            groupBox8.Controls.Add(label15);
-            groupBox8.Controls.Add(drawStepDelayNUD);
-            groupBox8.Controls.Add(containerCP);
-            groupBox8.Controls.Add(label14);
-            groupBox8.FlatStyle = FlatStyle.Popup;
-            groupBox8.Font = new Font("Microsoft YaHei UI", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            groupBox8.ForeColor = Color.LightGray;
-            groupBox8.Location = new Point(8, 6);
-            groupBox8.Name = "groupBox8";
-            groupBox8.Size = new Size(230, 76);
-            groupBox8.TabIndex = 27;
-            groupBox8.TabStop = false;
-            groupBox8.Text = "Параметры рабочей области";
+            settingsTLP.ColumnCount = 2;
+            settingsTLP.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            settingsTLP.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            settingsTLP.Controls.Add(settingsLeftFLP, 0, 0);
+            settingsTLP.Controls.Add(settingsRightFLP, 1, 0);
+            settingsTLP.Dock = DockStyle.Fill;
+            settingsTLP.Location = new Point(3, 3);
+            settingsTLP.Name = "settingsTLP";
+            settingsTLP.RowCount = 1;
+            settingsTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            settingsTLP.Size = new Size(765, 515);
+            settingsTLP.TabIndex = 0;
+            // 
+            // settingsLeftFLP
+            // 
+            settingsLeftFLP.AutoScroll = true;
+            settingsLeftFLP.Controls.Add(_workFieldParamsGB);
+            settingsLeftFLP.Controls.Add(_verticesVisualParamsGB);
+            settingsLeftFLP.Controls.Add(_transitionsVisualParamsGB);
+            settingsLeftFLP.Dock = DockStyle.Fill;
+            settingsLeftFLP.FlowDirection = FlowDirection.TopDown;
+            settingsLeftFLP.Location = new Point(3, 3);
+            settingsLeftFLP.Name = "settingsLeftFLP";
+            settingsLeftFLP.Size = new Size(376, 509);
+            settingsLeftFLP.TabIndex = 0;
+            settingsLeftFLP.WrapContents = false;
+            // 
+            // _workFieldParamsGB
+            // 
+            _workFieldParamsGB.Controls.Add(label15);
+            _workFieldParamsGB.Controls.Add(drawStepDelayNUD);
+            _workFieldParamsGB.Controls.Add(_viewportCP);
+            _workFieldParamsGB.Controls.Add(label14);
+            _workFieldParamsGB.FlatStyle = FlatStyle.Popup;
+            _workFieldParamsGB.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            _workFieldParamsGB.ForeColor = Color.LightGray;
+            _workFieldParamsGB.Location = new Point(3, 3);
+            _workFieldParamsGB.Margin = new Padding(3, 3, 10, 3);
+            _workFieldParamsGB.Name = "_workFieldParamsGB";
+            _workFieldParamsGB.Size = new Size(346, 97);
+            _workFieldParamsGB.TabIndex = 36;
+            _workFieldParamsGB.TabStop = false;
+            _workFieldParamsGB.Text = "Параметры рабочей области";
             // 
             // label15
             // 
             label15.AutoSize = true;
-            label15.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label15.Font = new Font("Segoe UI", 9.75F);
             label15.ForeColor = Color.Gainsboro;
-            label15.Location = new Point(3, 48);
+            label15.Location = new Point(9, 59);
             label15.Margin = new Padding(1, 0, 1, 0);
             label15.Name = "label15";
-            label15.Size = new Size(141, 13);
+            label15.Size = new Size(169, 17);
             label15.TabIndex = 32;
             label15.Text = "Шаг отрисовки работы (c):";
             // 
@@ -629,387 +664,400 @@ namespace AlgorithmDeveloper
             drawStepDelayNUD.BackColor = Color.FromArgb(48, 48, 48);
             drawStepDelayNUD.DecimalPlaces = 2;
             drawStepDelayNUD.Enabled = false;
-            drawStepDelayNUD.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            drawStepDelayNUD.Font = new Font("Segoe UI", 9.75F);
             drawStepDelayNUD.ForeColor = Color.Gainsboro;
             drawStepDelayNUD.Increment = new decimal(new int[] { 1, 0, 0, 131072 });
-            drawStepDelayNUD.Location = new Point(147, 46);
+            drawStepDelayNUD.Location = new Point(263, 53);
             drawStepDelayNUD.Maximum = new decimal(new int[] { 100, 0, 0, 65536 });
             drawStepDelayNUD.MaximumSize = new Size(77, 0);
             drawStepDelayNUD.Minimum = new decimal(new int[] { 10, 0, 0, 131072 });
             drawStepDelayNUD.MinimumSize = new Size(77, 0);
             drawStepDelayNUD.Name = "drawStepDelayNUD";
-            drawStepDelayNUD.Size = new Size(77, 20);
+            drawStepDelayNUD.Size = new Size(77, 25);
             drawStepDelayNUD.TabIndex = 31;
             drawStepDelayNUD.Value = new decimal(new int[] { 75, 0, 0, 131072 });
             // 
-            // containerCP
+            // _viewportCP
             // 
-            containerCP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            containerCP.BackColor = Color.FromArgb(96, 96, 96);
-            containerCP.BorderStyle = BorderStyle.Fixed3D;
-            containerCP.Enabled = false;
-            containerCP.Location = new Point(147, 20);
-            containerCP.MaximumSize = new Size(77, 20);
-            containerCP.MinimumSize = new Size(77, 20);
-            containerCP.Name = "containerCP";
-            containerCP.Size = new Size(77, 20);
-            containerCP.TabIndex = 30;
-            containerCP.TabStop = false;
+            _viewportCP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            _viewportCP.BackColor = Color.FromArgb(96, 96, 96);
+            _viewportCP.BorderStyle = BorderStyle.Fixed3D;
+            _viewportCP.Enabled = false;
+            _viewportCP.Location = new Point(263, 22);
+            _viewportCP.MaximumSize = new Size(77, 25);
+            _viewportCP.MinimumSize = new Size(77, 25);
+            _viewportCP.Name = "_viewportCP";
+            _viewportCP.Size = new Size(77, 25);
+            _viewportCP.TabIndex = 30;
+            _viewportCP.TabStop = false;
             // 
             // label14
             // 
             label14.AutoSize = true;
-            label14.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label14.Font = new Font("Segoe UI", 9.75F);
             label14.ForeColor = Color.Gainsboro;
-            label14.Location = new Point(3, 22);
+            label14.Location = new Point(9, 30);
             label14.Margin = new Padding(1, 0, 1, 0);
             label14.Name = "label14";
-            label14.Size = new Size(123, 13);
+            label14.Size = new Size(148, 17);
             label14.TabIndex = 28;
             label14.Text = "Цвет рабочей области:";
             // 
-            // groupBox5
+            // _verticesVisualParamsGB
             // 
-            groupBox5.Controls.Add(innerStateCP);
-            groupBox5.Controls.Add(highlightedBorderCP);
-            groupBox5.Controls.Add(label8);
-            groupBox5.Controls.Add(label9);
-            groupBox5.Controls.Add(inactiveBorderCP);
-            groupBox5.Controls.Add(activeBorderCP);
-            groupBox5.Controls.Add(label6);
-            groupBox5.Controls.Add(label7);
-            groupBox5.Controls.Add(label5);
-            groupBox5.Controls.Add(label4);
-            groupBox5.Controls.Add(borderNUD);
-            groupBox5.Controls.Add(cirlceDiameterNUD);
-            groupBox5.FlatStyle = FlatStyle.Popup;
-            groupBox5.Font = new Font("Microsoft YaHei UI", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            groupBox5.ForeColor = Color.LightGray;
-            groupBox5.Location = new Point(8, 88);
-            groupBox5.Name = "groupBox5";
-            groupBox5.Size = new Size(230, 173);
-            groupBox5.TabIndex = 25;
-            groupBox5.TabStop = false;
-            groupBox5.Text = "Параметры отрисовки вершин";
+            _verticesVisualParamsGB.Controls.Add(_vertexActInnerCP);
+            _verticesVisualParamsGB.Controls.Add(label1);
+            _verticesVisualParamsGB.Controls.Add(_vertexInactInnerCP);
+            _verticesVisualParamsGB.Controls.Add(label8);
+            _verticesVisualParamsGB.Controls.Add(label6);
+            _verticesVisualParamsGB.Controls.Add(label7);
+            _verticesVisualParamsGB.Controls.Add(label5);
+            _verticesVisualParamsGB.Controls.Add(_inactiveBorderCP);
+            _verticesVisualParamsGB.Controls.Add(_activeBorderCP);
+            _verticesVisualParamsGB.Controls.Add(label4);
+            _verticesVisualParamsGB.Controls.Add(_borderNUD);
+            _verticesVisualParamsGB.Controls.Add(_vertexSizeNUD);
+            _verticesVisualParamsGB.FlatStyle = FlatStyle.Popup;
+            _verticesVisualParamsGB.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            _verticesVisualParamsGB.ForeColor = Color.LightGray;
+            _verticesVisualParamsGB.Location = new Point(3, 106);
+            _verticesVisualParamsGB.Margin = new Padding(3, 3, 10, 3);
+            _verticesVisualParamsGB.Name = "_verticesVisualParamsGB";
+            _verticesVisualParamsGB.Size = new Size(346, 224);
+            _verticesVisualParamsGB.TabIndex = 34;
+            _verticesVisualParamsGB.TabStop = false;
+            _verticesVisualParamsGB.Text = "Параметры отрисовки вершин";
             // 
-            // innerStateCP
+            // _vertexActInnerCP
             // 
-            innerStateCP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            innerStateCP.BackColor = Color.LightGray;
-            innerStateCP.BorderStyle = BorderStyle.Fixed3D;
-            innerStateCP.Enabled = false;
-            innerStateCP.Location = new Point(149, 147);
-            innerStateCP.MaximumSize = new Size(77, 20);
-            innerStateCP.MinimumSize = new Size(77, 20);
-            innerStateCP.Name = "innerStateCP";
-            innerStateCP.Size = new Size(77, 20);
-            innerStateCP.TabIndex = 30;
-            innerStateCP.TabStop = false;
+            _vertexActInnerCP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            _vertexActInnerCP.BackColor = Color.LightGray;
+            _vertexActInnerCP.BorderStyle = BorderStyle.Fixed3D;
+            _vertexActInnerCP.Enabled = false;
+            _vertexActInnerCP.Location = new Point(263, 181);
+            _vertexActInnerCP.MaximumSize = new Size(77, 25);
+            _vertexActInnerCP.MinimumSize = new Size(77, 25);
+            _vertexActInnerCP.Name = "_vertexActInnerCP";
+            _vertexActInnerCP.Size = new Size(77, 25);
+            _vertexActInnerCP.TabIndex = 32;
+            _vertexActInnerCP.TabStop = false;
             // 
-            // highlightedBorderCP
+            // label1
             // 
-            highlightedBorderCP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            highlightedBorderCP.BackColor = Color.DarkGray;
-            highlightedBorderCP.BorderStyle = BorderStyle.Fixed3D;
-            highlightedBorderCP.Enabled = false;
-            highlightedBorderCP.Location = new Point(149, 121);
-            highlightedBorderCP.MaximumSize = new Size(77, 20);
-            highlightedBorderCP.MinimumSize = new Size(77, 20);
-            highlightedBorderCP.Name = "highlightedBorderCP";
-            highlightedBorderCP.Size = new Size(77, 20);
-            highlightedBorderCP.TabIndex = 29;
-            highlightedBorderCP.TabStop = false;
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 9.75F);
+            label1.ForeColor = Color.Gainsboro;
+            label1.Location = new Point(9, 189);
+            label1.Margin = new Padding(1, 0, 1, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(223, 17);
+            label1.TabIndex = 31;
+            label1.Text = "Цвет заливки неактивной вершины:";
+            // 
+            // _vertexInactInnerCP
+            // 
+            _vertexInactInnerCP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            _vertexInactInnerCP.BackColor = Color.LightGray;
+            _vertexInactInnerCP.BorderStyle = BorderStyle.Fixed3D;
+            _vertexInactInnerCP.Enabled = false;
+            _vertexInactInnerCP.Location = new Point(263, 150);
+            _vertexInactInnerCP.MaximumSize = new Size(77, 25);
+            _vertexInactInnerCP.MinimumSize = new Size(77, 25);
+            _vertexInactInnerCP.Name = "_vertexInactInnerCP";
+            _vertexInactInnerCP.Size = new Size(77, 25);
+            _vertexInactInnerCP.TabIndex = 30;
+            _vertexInactInnerCP.TabStop = false;
             // 
             // label8
             // 
             label8.AutoSize = true;
-            label8.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label8.Font = new Font("Segoe UI", 9.75F);
             label8.ForeColor = Color.Gainsboro;
-            label8.Location = new Point(3, 149);
+            label8.Location = new Point(9, 158);
             label8.Margin = new Padding(1, 0, 1, 0);
             label8.Name = "label8";
-            label8.Size = new Size(136, 13);
+            label8.Size = new Size(209, 17);
             label8.TabIndex = 28;
-            label8.Text = "Цвет заливки состояния:";
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            label9.ForeColor = Color.Gainsboro;
-            label9.Location = new Point(3, 123);
-            label9.Margin = new Padding(1, 0, 1, 0);
-            label9.Name = "label9";
-            label9.Size = new Size(137, 13);
-            label9.TabIndex = 27;
-            label9.Text = "Цвет подсветки границы:";
-            // 
-            // inactiveBorderCP
-            // 
-            inactiveBorderCP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            inactiveBorderCP.BackColor = Color.Black;
-            inactiveBorderCP.BorderStyle = BorderStyle.Fixed3D;
-            inactiveBorderCP.Enabled = false;
-            inactiveBorderCP.Location = new Point(149, 95);
-            inactiveBorderCP.MaximumSize = new Size(77, 20);
-            inactiveBorderCP.MinimumSize = new Size(77, 20);
-            inactiveBorderCP.Name = "inactiveBorderCP";
-            inactiveBorderCP.Size = new Size(77, 20);
-            inactiveBorderCP.TabIndex = 26;
-            inactiveBorderCP.TabStop = false;
-            // 
-            // activeBorderCP
-            // 
-            activeBorderCP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            activeBorderCP.BackColor = Color.LimeGreen;
-            activeBorderCP.BorderStyle = BorderStyle.Fixed3D;
-            activeBorderCP.Enabled = false;
-            activeBorderCP.Location = new Point(149, 69);
-            activeBorderCP.MaximumSize = new Size(77, 20);
-            activeBorderCP.MinimumSize = new Size(77, 20);
-            activeBorderCP.Name = "activeBorderCP";
-            activeBorderCP.Size = new Size(77, 20);
-            activeBorderCP.TabIndex = 25;
-            activeBorderCP.TabStop = false;
+            label8.Text = "Цвет заливки активной вершины:";
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label6.Font = new Font("Segoe UI", 9.75F);
             label6.ForeColor = Color.Gainsboro;
-            label6.Location = new Point(3, 97);
+            label6.Location = new Point(9, 127);
             label6.Margin = new Padding(1, 0, 1, 0);
             label6.Name = "label6";
-            label6.Size = new Size(146, 13);
+            label6.Size = new Size(170, 17);
             label6.TabIndex = 24;
             label6.Text = "Цвет неактивной границы: ";
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label7.Font = new Font("Segoe UI", 9.75F);
             label7.ForeColor = Color.Gainsboro;
-            label7.Location = new Point(3, 71);
+            label7.Location = new Point(9, 96);
             label7.Margin = new Padding(1, 0, 1, 0);
             label7.Name = "label7";
-            label7.Size = new Size(131, 13);
+            label7.Size = new Size(152, 17);
             label7.TabIndex = 23;
             label7.Text = "Цвет активной границы:";
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label5.Font = new Font("Segoe UI", 9.75F);
             label5.ForeColor = Color.Gainsboro;
-            label5.Location = new Point(3, 45);
+            label5.Location = new Point(9, 59);
             label5.Margin = new Padding(1, 0, 1, 0);
             label5.Name = "label5";
-            label5.Size = new Size(95, 13);
+            label5.Size = new Size(114, 17);
             label5.TabIndex = 17;
             label5.Text = "Ширина границы:";
+            // 
+            // _inactiveBorderCP
+            // 
+            _inactiveBorderCP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            _inactiveBorderCP.BackColor = Color.Black;
+            _inactiveBorderCP.BorderStyle = BorderStyle.Fixed3D;
+            _inactiveBorderCP.Enabled = false;
+            _inactiveBorderCP.Location = new Point(263, 119);
+            _inactiveBorderCP.MaximumSize = new Size(77, 25);
+            _inactiveBorderCP.MinimumSize = new Size(77, 25);
+            _inactiveBorderCP.Name = "_inactiveBorderCP";
+            _inactiveBorderCP.Size = new Size(77, 25);
+            _inactiveBorderCP.TabIndex = 26;
+            _inactiveBorderCP.TabStop = false;
+            // 
+            // _activeBorderCP
+            // 
+            _activeBorderCP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            _activeBorderCP.BackColor = Color.LimeGreen;
+            _activeBorderCP.BorderStyle = BorderStyle.Fixed3D;
+            _activeBorderCP.Enabled = false;
+            _activeBorderCP.Location = new Point(263, 88);
+            _activeBorderCP.MaximumSize = new Size(77, 25);
+            _activeBorderCP.MinimumSize = new Size(77, 25);
+            _activeBorderCP.Name = "_activeBorderCP";
+            _activeBorderCP.Size = new Size(77, 25);
+            _activeBorderCP.TabIndex = 25;
+            _activeBorderCP.TabStop = false;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label4.Font = new Font("Segoe UI", 9.75F);
             label4.ForeColor = Color.Gainsboro;
-            label4.Location = new Point(3, 19);
+            label4.Location = new Point(9, 28);
             label4.Margin = new Padding(1, 0, 1, 0);
             label4.Name = "label4";
-            label4.Size = new Size(98, 13);
+            label4.Size = new Size(115, 17);
             label4.TabIndex = 16;
             label4.Text = "Размер вершины:";
             // 
-            // borderNUD
+            // _borderNUD
             // 
-            borderNUD.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            borderNUD.BackColor = Color.FromArgb(48, 48, 48);
-            borderNUD.Enabled = false;
-            borderNUD.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            borderNUD.ForeColor = Color.Gainsboro;
-            borderNUD.Location = new Point(149, 43);
-            borderNUD.Maximum = new decimal(new int[] { 5, 0, 0, 0 });
-            borderNUD.MaximumSize = new Size(77, 0);
-            borderNUD.Minimum = new decimal(new int[] { 2, 0, 0, 0 });
-            borderNUD.MinimumSize = new Size(77, 0);
-            borderNUD.Name = "borderNUD";
-            borderNUD.Size = new Size(77, 20);
-            borderNUD.TabIndex = 15;
-            borderNUD.Value = new decimal(new int[] { 5, 0, 0, 0 });
+            _borderNUD.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            _borderNUD.BackColor = Color.FromArgb(48, 48, 48);
+            _borderNUD.Enabled = false;
+            _borderNUD.Font = new Font("Segoe UI", 9.75F);
+            _borderNUD.ForeColor = Color.Gainsboro;
+            _borderNUD.Location = new Point(263, 57);
+            _borderNUD.Maximum = new decimal(new int[] { 5, 0, 0, 0 });
+            _borderNUD.MaximumSize = new Size(77, 0);
+            _borderNUD.Minimum = new decimal(new int[] { 2, 0, 0, 0 });
+            _borderNUD.MinimumSize = new Size(77, 0);
+            _borderNUD.Name = "_borderNUD";
+            _borderNUD.Size = new Size(77, 25);
+            _borderNUD.TabIndex = 15;
+            _borderNUD.Value = new decimal(new int[] { 5, 0, 0, 0 });
             // 
-            // cirlceDiameterNUD
+            // _vertexSizeNUD
             // 
-            cirlceDiameterNUD.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            cirlceDiameterNUD.BackColor = Color.FromArgb(48, 48, 48);
-            cirlceDiameterNUD.Enabled = false;
-            cirlceDiameterNUD.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            cirlceDiameterNUD.ForeColor = Color.Gainsboro;
-            cirlceDiameterNUD.Location = new Point(149, 17);
-            cirlceDiameterNUD.Maximum = new decimal(new int[] { 60, 0, 0, 0 });
-            cirlceDiameterNUD.MaximumSize = new Size(77, 0);
-            cirlceDiameterNUD.Minimum = new decimal(new int[] { 30, 0, 0, 0 });
-            cirlceDiameterNUD.MinimumSize = new Size(77, 0);
-            cirlceDiameterNUD.Name = "cirlceDiameterNUD";
-            cirlceDiameterNUD.Size = new Size(77, 20);
-            cirlceDiameterNUD.TabIndex = 14;
-            cirlceDiameterNUD.Value = new decimal(new int[] { 50, 0, 0, 0 });
+            _vertexSizeNUD.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            _vertexSizeNUD.BackColor = Color.FromArgb(48, 48, 48);
+            _vertexSizeNUD.Enabled = false;
+            _vertexSizeNUD.Font = new Font("Segoe UI", 9.75F);
+            _vertexSizeNUD.ForeColor = Color.Gainsboro;
+            _vertexSizeNUD.Location = new Point(263, 26);
+            _vertexSizeNUD.Maximum = new decimal(new int[] { 60, 0, 0, 0 });
+            _vertexSizeNUD.MaximumSize = new Size(77, 0);
+            _vertexSizeNUD.Minimum = new decimal(new int[] { 30, 0, 0, 0 });
+            _vertexSizeNUD.MinimumSize = new Size(77, 0);
+            _vertexSizeNUD.Name = "_vertexSizeNUD";
+            _vertexSizeNUD.Size = new Size(77, 25);
+            _vertexSizeNUD.TabIndex = 14;
+            _vertexSizeNUD.Value = new decimal(new int[] { 50, 0, 0, 0 });
             // 
-            // groupBox6
+            // _transitionsVisualParamsGB
             // 
-            groupBox6.Controls.Add(groupBox7);
-            groupBox6.Controls.Add(groupBox9);
-            groupBox6.Font = new Font("Microsoft YaHei UI", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            groupBox6.ForeColor = Color.LightGray;
-            groupBox6.Location = new Point(8, 267);
-            groupBox6.Name = "groupBox6";
-            groupBox6.Size = new Size(230, 167);
-            groupBox6.TabIndex = 26;
-            groupBox6.TabStop = false;
-            groupBox6.Text = "Отрисовка переходов";
+            _transitionsVisualParamsGB.Controls.Add(_inactTransitionsGB);
+            _transitionsVisualParamsGB.Controls.Add(_actTransitionsGB);
+            _transitionsVisualParamsGB.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            _transitionsVisualParamsGB.ForeColor = Color.LightGray;
+            _transitionsVisualParamsGB.Location = new Point(3, 336);
+            _transitionsVisualParamsGB.Margin = new Padding(3, 3, 10, 3);
+            _transitionsVisualParamsGB.Name = "_transitionsVisualParamsGB";
+            _transitionsVisualParamsGB.Size = new Size(346, 210);
+            _transitionsVisualParamsGB.TabIndex = 35;
+            _transitionsVisualParamsGB.TabStop = false;
+            _transitionsVisualParamsGB.Text = "Параметры отрисовки переходов";
             // 
-            // groupBox7
+            // _inactTransitionsGB
             // 
-            groupBox7.Controls.Add(label12);
-            groupBox7.Controls.Add(label13);
-            groupBox7.Controls.Add(transitionBlackPenCP);
-            groupBox7.Controls.Add(transitionBlackPenNUD);
-            groupBox7.Font = new Font("Times New Roman", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            groupBox7.ForeColor = Color.LightGray;
-            groupBox7.Location = new Point(6, 93);
-            groupBox7.Name = "groupBox7";
-            groupBox7.Size = new Size(218, 70);
-            groupBox7.TabIndex = 25;
-            groupBox7.TabStop = false;
-            groupBox7.Text = "Неактивные переходы";
+            _inactTransitionsGB.Controls.Add(label12);
+            _inactTransitionsGB.Controls.Add(label13);
+            _inactTransitionsGB.Controls.Add(_transitionDarkPenCP);
+            _inactTransitionsGB.Controls.Add(_transitionDarkPenNUD);
+            _inactTransitionsGB.Font = new Font("Segoe UI", 9.75F);
+            _inactTransitionsGB.ForeColor = Color.LightGray;
+            _inactTransitionsGB.Location = new Point(6, 114);
+            _inactTransitionsGB.Name = "_inactTransitionsGB";
+            _inactTransitionsGB.Size = new Size(334, 82);
+            _inactTransitionsGB.TabIndex = 25;
+            _inactTransitionsGB.TabStop = false;
+            _inactTransitionsGB.Text = "Неактивные переходы";
             // 
             // label12
             // 
             label12.AutoSize = true;
-            label12.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label12.Font = new Font("Segoe UI", 9.75F);
             label12.ForeColor = Color.Gainsboro;
-            label12.Location = new Point(3, 45);
+            label12.Location = new Point(4, 59);
             label12.Margin = new Padding(1, 0, 1, 0);
             label12.Name = "label12";
-            label12.Size = new Size(68, 13);
+            label12.Size = new Size(79, 17);
             label12.TabIndex = 34;
             label12.Text = "Цвет линии:";
             // 
             // label13
             // 
             label13.AutoSize = true;
-            label13.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label13.Font = new Font("Segoe UI", 9.75F);
             label13.ForeColor = Color.Gainsboro;
-            label13.Location = new Point(3, 19);
+            label13.Location = new Point(4, 33);
             label13.Margin = new Padding(1, 0, 1, 0);
             label13.Name = "label13";
-            label13.Size = new Size(89, 13);
+            label13.Size = new Size(104, 17);
             label13.TabIndex = 33;
             label13.Text = "Толщина линии:";
             // 
-            // transitionBlackPenCP
+            // _transitionDarkPenCP
             // 
-            transitionBlackPenCP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            transitionBlackPenCP.BackColor = Color.Black;
-            transitionBlackPenCP.BorderStyle = BorderStyle.Fixed3D;
-            transitionBlackPenCP.Enabled = false;
-            transitionBlackPenCP.Location = new Point(135, 43);
-            transitionBlackPenCP.MaximumSize = new Size(77, 20);
-            transitionBlackPenCP.MinimumSize = new Size(77, 20);
-            transitionBlackPenCP.Name = "transitionBlackPenCP";
-            transitionBlackPenCP.Size = new Size(77, 20);
-            transitionBlackPenCP.TabIndex = 32;
-            transitionBlackPenCP.TabStop = false;
+            _transitionDarkPenCP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            _transitionDarkPenCP.BackColor = Color.Black;
+            _transitionDarkPenCP.BorderStyle = BorderStyle.Fixed3D;
+            _transitionDarkPenCP.Enabled = false;
+            _transitionDarkPenCP.Location = new Point(251, 56);
+            _transitionDarkPenCP.MaximumSize = new Size(77, 20);
+            _transitionDarkPenCP.MinimumSize = new Size(77, 20);
+            _transitionDarkPenCP.Name = "_transitionDarkPenCP";
+            _transitionDarkPenCP.Size = new Size(77, 20);
+            _transitionDarkPenCP.TabIndex = 32;
+            _transitionDarkPenCP.TabStop = false;
             // 
-            // transitionBlackPenNUD
+            // _transitionDarkPenNUD
             // 
-            transitionBlackPenNUD.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            transitionBlackPenNUD.BackColor = Color.FromArgb(48, 48, 48);
-            transitionBlackPenNUD.DecimalPlaces = 1;
-            transitionBlackPenNUD.Enabled = false;
-            transitionBlackPenNUD.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            transitionBlackPenNUD.ForeColor = Color.Gainsboro;
-            transitionBlackPenNUD.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
-            transitionBlackPenNUD.Location = new Point(135, 17);
-            transitionBlackPenNUD.Maximum = new decimal(new int[] { 100, 0, 0, 65536 });
-            transitionBlackPenNUD.MaximumSize = new Size(77, 0);
-            transitionBlackPenNUD.Minimum = new decimal(new int[] { 10, 0, 0, 65536 });
-            transitionBlackPenNUD.MinimumSize = new Size(77, 0);
-            transitionBlackPenNUD.Name = "transitionBlackPenNUD";
-            transitionBlackPenNUD.Size = new Size(77, 20);
-            transitionBlackPenNUD.TabIndex = 31;
-            transitionBlackPenNUD.Value = new decimal(new int[] { 30, 0, 0, 65536 });
+            _transitionDarkPenNUD.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            _transitionDarkPenNUD.BackColor = Color.FromArgb(48, 48, 48);
+            _transitionDarkPenNUD.DecimalPlaces = 1;
+            _transitionDarkPenNUD.Enabled = false;
+            _transitionDarkPenNUD.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            _transitionDarkPenNUD.ForeColor = Color.Gainsboro;
+            _transitionDarkPenNUD.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
+            _transitionDarkPenNUD.Location = new Point(251, 30);
+            _transitionDarkPenNUD.Maximum = new decimal(new int[] { 100, 0, 0, 65536 });
+            _transitionDarkPenNUD.MaximumSize = new Size(77, 0);
+            _transitionDarkPenNUD.Minimum = new decimal(new int[] { 10, 0, 0, 65536 });
+            _transitionDarkPenNUD.MinimumSize = new Size(77, 0);
+            _transitionDarkPenNUD.Name = "_transitionDarkPenNUD";
+            _transitionDarkPenNUD.Size = new Size(77, 20);
+            _transitionDarkPenNUD.TabIndex = 31;
+            _transitionDarkPenNUD.Value = new decimal(new int[] { 30, 0, 0, 65536 });
             // 
-            // groupBox9
+            // _actTransitionsGB
             // 
-            groupBox9.Controls.Add(label10);
-            groupBox9.Controls.Add(label11);
-            groupBox9.Controls.Add(transitionLightPenCP);
-            groupBox9.Controls.Add(transitionLightPenNUD);
-            groupBox9.Font = new Font("Times New Roman", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            groupBox9.ForeColor = Color.LightGray;
-            groupBox9.Location = new Point(6, 17);
-            groupBox9.Name = "groupBox9";
-            groupBox9.Size = new Size(218, 70);
-            groupBox9.TabIndex = 24;
-            groupBox9.TabStop = false;
-            groupBox9.Text = "Активные переходы";
+            _actTransitionsGB.Controls.Add(label10);
+            _actTransitionsGB.Controls.Add(label11);
+            _actTransitionsGB.Controls.Add(_transitionLightPenCP);
+            _actTransitionsGB.Controls.Add(_transitionLightPenNUD);
+            _actTransitionsGB.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            _actTransitionsGB.ForeColor = Color.LightGray;
+            _actTransitionsGB.Location = new Point(6, 26);
+            _actTransitionsGB.Name = "_actTransitionsGB";
+            _actTransitionsGB.Size = new Size(334, 82);
+            _actTransitionsGB.TabIndex = 24;
+            _actTransitionsGB.TabStop = false;
+            _actTransitionsGB.Text = "Активные переходы";
             // 
             // label10
             // 
             label10.AutoSize = true;
-            label10.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label10.Font = new Font("Segoe UI", 9.75F);
             label10.ForeColor = Color.Gainsboro;
-            label10.Location = new Point(3, 45);
+            label10.Location = new Point(4, 59);
             label10.Margin = new Padding(1, 0, 1, 0);
             label10.Name = "label10";
-            label10.Size = new Size(68, 13);
+            label10.Size = new Size(79, 17);
             label10.TabIndex = 30;
             label10.Text = "Цвет линии:";
             // 
             // label11
             // 
             label11.AutoSize = true;
-            label11.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label11.Font = new Font("Segoe UI", 9.75F);
             label11.ForeColor = Color.Gainsboro;
-            label11.Location = new Point(3, 19);
+            label11.Location = new Point(4, 33);
             label11.Margin = new Padding(1, 0, 1, 0);
             label11.Name = "label11";
-            label11.Size = new Size(89, 13);
+            label11.Size = new Size(104, 17);
             label11.TabIndex = 29;
             label11.Text = "Толщина линии:";
             // 
-            // transitionLightPenCP
+            // _transitionLightPenCP
             // 
-            transitionLightPenCP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            transitionLightPenCP.BackColor = Color.LimeGreen;
-            transitionLightPenCP.BorderStyle = BorderStyle.Fixed3D;
-            transitionLightPenCP.Enabled = false;
-            transitionLightPenCP.Location = new Point(135, 43);
-            transitionLightPenCP.MaximumSize = new Size(77, 20);
-            transitionLightPenCP.MinimumSize = new Size(77, 20);
-            transitionLightPenCP.Name = "transitionLightPenCP";
-            transitionLightPenCP.Size = new Size(77, 20);
-            transitionLightPenCP.TabIndex = 27;
-            transitionLightPenCP.TabStop = false;
+            _transitionLightPenCP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            _transitionLightPenCP.BackColor = Color.LimeGreen;
+            _transitionLightPenCP.BorderStyle = BorderStyle.Fixed3D;
+            _transitionLightPenCP.Enabled = false;
+            _transitionLightPenCP.Location = new Point(251, 56);
+            _transitionLightPenCP.MaximumSize = new Size(77, 20);
+            _transitionLightPenCP.MinimumSize = new Size(77, 20);
+            _transitionLightPenCP.Name = "_transitionLightPenCP";
+            _transitionLightPenCP.Size = new Size(77, 20);
+            _transitionLightPenCP.TabIndex = 27;
+            _transitionLightPenCP.TabStop = false;
             // 
-            // transitionLightPenNUD
+            // _transitionLightPenNUD
             // 
-            transitionLightPenNUD.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            transitionLightPenNUD.BackColor = Color.FromArgb(48, 48, 48);
-            transitionLightPenNUD.DecimalPlaces = 1;
-            transitionLightPenNUD.Enabled = false;
-            transitionLightPenNUD.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            transitionLightPenNUD.ForeColor = Color.Gainsboro;
-            transitionLightPenNUD.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
-            transitionLightPenNUD.Location = new Point(135, 17);
-            transitionLightPenNUD.Maximum = new decimal(new int[] { 100, 0, 0, 65536 });
-            transitionLightPenNUD.MaximumSize = new Size(77, 0);
-            transitionLightPenNUD.Minimum = new decimal(new int[] { 10, 0, 0, 65536 });
-            transitionLightPenNUD.MinimumSize = new Size(77, 0);
-            transitionLightPenNUD.Name = "transitionLightPenNUD";
-            transitionLightPenNUD.Size = new Size(77, 20);
-            transitionLightPenNUD.TabIndex = 26;
-            transitionLightPenNUD.Value = new decimal(new int[] { 30, 0, 0, 65536 });
+            _transitionLightPenNUD.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            _transitionLightPenNUD.BackColor = Color.FromArgb(48, 48, 48);
+            _transitionLightPenNUD.DecimalPlaces = 1;
+            _transitionLightPenNUD.Enabled = false;
+            _transitionLightPenNUD.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            _transitionLightPenNUD.ForeColor = Color.Gainsboro;
+            _transitionLightPenNUD.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
+            _transitionLightPenNUD.Location = new Point(251, 30);
+            _transitionLightPenNUD.Maximum = new decimal(new int[] { 100, 0, 0, 65536 });
+            _transitionLightPenNUD.MaximumSize = new Size(77, 0);
+            _transitionLightPenNUD.Minimum = new decimal(new int[] { 10, 0, 0, 65536 });
+            _transitionLightPenNUD.MinimumSize = new Size(77, 0);
+            _transitionLightPenNUD.Name = "_transitionLightPenNUD";
+            _transitionLightPenNUD.Size = new Size(77, 20);
+            _transitionLightPenNUD.TabIndex = 26;
+            _transitionLightPenNUD.Value = new decimal(new int[] { 30, 0, 0, 65536 });
+            // 
+            // settingsRightFLP
+            // 
+            settingsRightFLP.AutoScroll = true;
+            settingsRightFLP.Dock = DockStyle.Fill;
+            settingsRightFLP.FlowDirection = FlowDirection.TopDown;
+            settingsRightFLP.Location = new Point(385, 3);
+            settingsRightFLP.Name = "settingsRightFLP";
+            settingsRightFLP.Size = new Size(377, 509);
+            settingsRightFLP.TabIndex = 1;
+            settingsRightFLP.WrapContents = false;
             // 
             // _toolTip
             // 
@@ -1017,6 +1065,13 @@ namespace AlgorithmDeveloper
             _toolTip.InitialDelay = 500;
             _toolTip.ReshowDelay = 100;
             _toolTip.ToolTipTitle = "Информация";
+            // 
+            // _colorPicker
+            // 
+            _colorPicker.AnyColor = true;
+            _colorPicker.Color = Color.Lime;
+            _colorPicker.FullOpen = true;
+            _colorPicker.ShowHelp = true;
             // 
             // MainFormV2
             // 
@@ -1036,7 +1091,7 @@ namespace AlgorithmDeveloper
             _mainScrollPanel.PerformLayout();
             _mainTLP.ResumeLayout(false);
             _mainGB.ResumeLayout(false);
-            groupBox3.ResumeLayout(false);
+            _lasKeyboardGB.ResumeLayout(false);
             _createGAS2_GB.ResumeLayout(false);
             _createGAS1_GB.ResumeLayout(false);
             _combinedAlgoGB.ResumeLayout(false);
@@ -1046,33 +1101,38 @@ namespace AlgorithmDeveloper
             _mainTabControl_GAS2.ResumeLayout(false);
             _mainTabControl_GAS3.ResumeLayout(false);
             _mainTabControl_SettingsPage.ResumeLayout(false);
-            groupBox8.ResumeLayout(false);
-            groupBox8.PerformLayout();
+            settingsTLP.ResumeLayout(false);
+            settingsLeftFLP.ResumeLayout(false);
+            _workFieldParamsGB.ResumeLayout(false);
+            _workFieldParamsGB.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)drawStepDelayNUD).EndInit();
-            ((System.ComponentModel.ISupportInitialize)containerCP).EndInit();
-            groupBox5.ResumeLayout(false);
-            groupBox5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)innerStateCP).EndInit();
-            ((System.ComponentModel.ISupportInitialize)highlightedBorderCP).EndInit();
-            ((System.ComponentModel.ISupportInitialize)inactiveBorderCP).EndInit();
-            ((System.ComponentModel.ISupportInitialize)activeBorderCP).EndInit();
-            ((System.ComponentModel.ISupportInitialize)borderNUD).EndInit();
-            ((System.ComponentModel.ISupportInitialize)cirlceDiameterNUD).EndInit();
-            groupBox6.ResumeLayout(false);
-            groupBox7.ResumeLayout(false);
-            groupBox7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)transitionBlackPenCP).EndInit();
-            ((System.ComponentModel.ISupportInitialize)transitionBlackPenNUD).EndInit();
-            groupBox9.ResumeLayout(false);
-            groupBox9.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)transitionLightPenCP).EndInit();
-            ((System.ComponentModel.ISupportInitialize)transitionLightPenNUD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)_viewportCP).EndInit();
+            _verticesVisualParamsGB.ResumeLayout(false);
+            _verticesVisualParamsGB.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)_vertexActInnerCP).EndInit();
+            ((System.ComponentModel.ISupportInitialize)_vertexInactInnerCP).EndInit();
+            ((System.ComponentModel.ISupportInitialize)_inactiveBorderCP).EndInit();
+            ((System.ComponentModel.ISupportInitialize)_activeBorderCP).EndInit();
+            ((System.ComponentModel.ISupportInitialize)_borderNUD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)_vertexSizeNUD).EndInit();
+            _transitionsVisualParamsGB.ResumeLayout(false);
+            _inactTransitionsGB.ResumeLayout(false);
+            _inactTransitionsGB.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)_transitionDarkPenCP).EndInit();
+            ((System.ComponentModel.ISupportInitialize)_transitionDarkPenNUD).EndInit();
+            _actTransitionsGB.ResumeLayout(false);
+            _actTransitionsGB.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)_transitionLightPenCP).EndInit();
+            ((System.ComponentModel.ISupportInitialize)_transitionLightPenNUD).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
         private Resources.UI.Controls.CustomizableTabControl.CustomTabControl _mainTabControl;
         private TabPage _mainTabControl_SettingsPage;
+        private TableLayoutPanel settingsTLP;
+        private FlowLayoutPanel settingsLeftFLP;
+        private FlowLayoutPanel settingsRightFLP;
         private TabPage _mainTabControl_GAS1;
         private TabPage _mainTabControl_GAS2;
         private TabPage _mainTabControl_GAS3;
@@ -1089,7 +1149,7 @@ namespace AlgorithmDeveloper
         private Button _tryParseLAS1_B;
         private Resources.UI.Controls.LASInputRichTextBox _lasInputRTB1;
         private Button _createGAS1_B;
-        private GroupBox groupBox3;
+        private GroupBox _lasKeyboardGB;
         private GroupBox _combinedAlgoGB;
         private Button _createGAS3_B;
         private Resources.UI.Controls.LASInputRichTextBox _lasInputRTB3;
@@ -1098,37 +1158,38 @@ namespace AlgorithmDeveloper
         private GroupBox _infoGB;
         public RichTextBox _mainInfoPort;
         private Resources.UI.Controls.LASInputControls.LASGraphicKeyboard lasGraphicKeyboard1;
-        private GroupBox groupBox8;
-        private Label label15;
-        private NumericUpDown drawStepDelayNUD;
-        private PictureBox containerCP;
-        private Label label14;
-        private GroupBox groupBox5;
-        private PictureBox innerStateCP;
-        private PictureBox highlightedBorderCP;
-        private Label label8;
-        private Label label9;
-        private PictureBox inactiveBorderCP;
-        private PictureBox activeBorderCP;
-        private Label label6;
-        private Label label7;
-        private Label label5;
-        private Label label4;
-        private NumericUpDown borderNUD;
-        private NumericUpDown cirlceDiameterNUD;
-        private GroupBox groupBox6;
-        private GroupBox groupBox7;
-        private Label label12;
-        private Label label13;
-        private PictureBox transitionBlackPenCP;
-        private NumericUpDown transitionBlackPenNUD;
-        private GroupBox groupBox9;
-        private Label label10;
-        private Label label11;
-        private PictureBox transitionLightPenCP;
-        private NumericUpDown transitionLightPenNUD;
         private Resources.UI.Controls.AbstractAlgoModelling.AAController _algoController1;
         private Resources.UI.Controls.AbstractAlgoModelling.AAController _algoController2;
         private Resources.UI.Controls.AbstractAlgoModelling.AAController _algoController3;
+        private GroupBox _workFieldParamsGB;
+        private Label label15;
+        private NumericUpDown drawStepDelayNUD;
+        private PictureBox _viewportCP;
+        private Label label14;
+        private GroupBox _transitionsVisualParamsGB;
+        private GroupBox _inactTransitionsGB;
+        private Label label12;
+        private Label label13;
+        private PictureBox _transitionDarkPenCP;
+        private NumericUpDown _transitionDarkPenNUD;
+        private GroupBox _actTransitionsGB;
+        private Label label10;
+        private Label label11;
+        private PictureBox _transitionLightPenCP;
+        private NumericUpDown _transitionLightPenNUD;
+        private GroupBox _verticesVisualParamsGB;
+        private PictureBox _vertexInactInnerCP;
+        private Label label8;
+        private Label label6;
+        private Label label7;
+        private Label label5;
+        private PictureBox _inactiveBorderCP;
+        private PictureBox _activeBorderCP;
+        private Label label4;
+        private NumericUpDown _borderNUD;
+        private NumericUpDown _vertexSizeNUD;
+        private ColorDialog _colorPicker;
+        private PictureBox _vertexActInnerCP;
+        private Label label1;
     }
 }

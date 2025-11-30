@@ -13,7 +13,9 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
         public static int FontSize { get; set; } = 18;
 
         public static Color FigureStrokeColor { get; set; } = Color.Black;
+        public static Color FigureStrokeActiveColor { get; set; } = Color.Orange;
         public static Color FigureFillColor { get; set; } = Color.White;
+        public static Color FigureFillActiveColor { get; set; } = Color.LightGray;
         public static Color FigureTextColor { get; set; } = Color.Black;
         public static float FigureStrokeWidth { get; set; } = 2f;
 
@@ -30,7 +32,9 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
         public static int StartY { get; set; } = 100;
 
         public static string FigureStrokeColorHex => ToHex(FigureStrokeColor);
+        public static string FigureStrokeActiveColorHex => ToHex(FigureStrokeActiveColor);
         public static string FigureFillColorHex  => ToHex(FigureFillColor);
+        public static string FigureFillActiveColorHex => ToHex(FigureFillActiveColor);
         public static string FigureTextColorHex  => ToHex(FigureTextColor);
         public static string EdgeActiveColorHex  => ToHex(EdgeActiveColor);
         public static string EdgeInactiveColorHex => ToHex(EdgeInactiveColor);

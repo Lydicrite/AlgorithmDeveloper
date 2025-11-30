@@ -8,12 +8,9 @@ namespace AlgorithmDeveloper
 {
     public partial class MainFormV2 : Form
     {
-        // Статический парсер используется напрямую
-
         public MainFormV2()
         {
             InitializeComponent();
-            // Подписка на событие загрузки формы, чтобы выполнить привязку клавиатур
             this.Load += MainFormV2_Load;
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer, true);
         }
@@ -79,49 +76,78 @@ namespace AlgorithmDeveloper
         {
             try
             {
-                containerCP.Enabled = true;
-                borderNUD.Enabled = true;
-                cirlceDiameterNUD.Enabled = true;
-                transitionLightPenNUD.Enabled = true;
-                transitionBlackPenNUD.Enabled = true;
-                transitionLightPenCP.Enabled = true;
-                transitionBlackPenCP.Enabled = true;
-                innerStateCP.Enabled = true;
-                inactiveBorderCP.Enabled = true;
-                activeBorderCP.Enabled = true;
+                _viewportCP.Enabled = true;
+                _borderNUD.Enabled = true;
+                _vertexSizeNUD.Enabled = true;
+                _transitionLightPenNUD.Enabled = true;
+                _transitionDarkPenNUD.Enabled = true;
+                _transitionLightPenCP.Enabled = true;
+                _transitionDarkPenCP.Enabled = true;
+                _vertexInactInnerCP.Enabled = true;
+                _vertexActInnerCP.Enabled = true;
+                _inactiveBorderCP.Enabled = true;
+                _activeBorderCP.Enabled = true;
 
-                VisualizationSettings.ContainerColor = containerCP.BackColor;
-                VisualizationSettings.FigureStrokeWidth = (float)borderNUD.Value;
-                VisualizationSettings.FigureHalfWidth = (float)cirlceDiameterNUD.Value;
+                VisualizationSettings.ContainerColor = _viewportCP.BackColor;
+                VisualizationSettings.FigureStrokeWidth = (float)_borderNUD.Value;
+                VisualizationSettings.FigureHalfWidth = (float)_vertexSizeNUD.Value;
                 VisualizationSettings.FigureHalfHeight = Math.Max(20f, VisualizationSettings.FigureHalfWidth * 0.5f);
-                VisualizationSettings.EdgeActiveColor = transitionLightPenCP.BackColor;
-                VisualizationSettings.EdgeActiveWidth = (float)transitionLightPenNUD.Value;
-                VisualizationSettings.EdgeInactiveColor = transitionBlackPenCP.BackColor;
-                VisualizationSettings.EdgeInactiveWidth = (float)transitionBlackPenNUD.Value;
+                VisualizationSettings.EdgeActiveColor = _transitionLightPenCP.BackColor;
+                VisualizationSettings.EdgeActiveWidth = (float)_transitionLightPenNUD.Value;
+                VisualizationSettings.EdgeInactiveColor = _transitionDarkPenCP.BackColor;
+                VisualizationSettings.EdgeInactiveWidth = (float)_transitionDarkPenNUD.Value;
+                
+                VisualizationSettings.FigureStrokeColor = _inactiveBorderCP.BackColor;
+                VisualizationSettings.FigureStrokeActiveColor = _activeBorderCP.BackColor;
+                VisualizationSettings.FigureFillColor = _vertexInactInnerCP.BackColor;
+                VisualizationSettings.FigureFillActiveColor = _vertexActInnerCP.BackColor;
 
-                borderNUD.ValueChanged += (s, e) => { VisualizationSettings.FigureStrokeWidth = (float)borderNUD.Value; RefreshViews(); };
-                cirlceDiameterNUD.ValueChanged += (s, e) => { VisualizationSettings.FigureHalfWidth = (float)cirlceDiameterNUD.Value; VisualizationSettings.FigureHalfHeight = Math.Max(20f, VisualizationSettings.FigureHalfWidth * 0.5f); RefreshViews(); };
-                transitionLightPenNUD.ValueChanged += (s, e) => { VisualizationSettings.EdgeActiveWidth = (float)transitionLightPenNUD.Value; RefreshViews(); };
-                transitionBlackPenNUD.ValueChanged += (s, e) => { VisualizationSettings.EdgeInactiveWidth = (float)transitionBlackPenNUD.Value; RefreshViews(); };
+                _borderNUD.ValueChanged += (s, e) => { VisualizationSettings.FigureStrokeWidth = (float)_borderNUD.Value; RefreshViews(); };
+                _vertexSizeNUD.ValueChanged += (s, e) => { VisualizationSettings.FigureHalfWidth = (float)_vertexSizeNUD.Value; VisualizationSettings.FigureHalfHeight = Math.Max(20f, VisualizationSettings.FigureHalfWidth * 0.5f); RefreshViews(); };
+                _transitionLightPenNUD.ValueChanged += (s, e) => { VisualizationSettings.EdgeActiveWidth = (float)_transitionLightPenNUD.Value; RefreshViews(); };
+                _transitionDarkPenNUD.ValueChanged += (s, e) => { VisualizationSettings.EdgeInactiveWidth = (float)_transitionDarkPenNUD.Value; RefreshViews(); };
 
-                containerCP.BackColorChanged += (s, e) => { VisualizationSettings.ContainerColor = containerCP.BackColor; RefreshViews(); };
-                activeBorderCP.BackColorChanged += (s, e) => { VisualizationSettings.FigureStrokeColor = activeBorderCP.BackColor; RefreshViews(); };
-                inactiveBorderCP.BackColorChanged += (s, e) => { VisualizationSettings.FigureStrokeColor = inactiveBorderCP.BackColor; RefreshViews(); };
-                highlightedBorderCP.BackColorChanged += (s, e) => { VisualizationSettings.FigureFillColor = highlightedBorderCP.BackColor; RefreshViews(); };
-                innerStateCP.BackColorChanged += (s, e) => { VisualizationSettings.FigureTextColor = innerStateCP.BackColor; RefreshViews(); };
-                transitionLightPenCP.BackColorChanged += (s, e) => { VisualizationSettings.EdgeActiveColor = transitionLightPenCP.BackColor; RefreshViews(); };
-                transitionBlackPenCP.BackColorChanged += (s, e) => { VisualizationSettings.EdgeInactiveColor = transitionBlackPenCP.BackColor; RefreshViews(); };
+                _viewportCP.Click += ColorPicker_Click;
+                _activeBorderCP.Click += ColorPicker_Click;
+                _inactiveBorderCP.Click += ColorPicker_Click;
+                _vertexInactInnerCP.Click += ColorPicker_Click;
+                _vertexActInnerCP.Click += ColorPicker_Click;
+                _transitionLightPenCP.Click += ColorPicker_Click;
+                _transitionDarkPenCP.Click += ColorPicker_Click;
             }
             catch { }
+        }
+
+        private void ColorPicker_Click(object? sender, EventArgs e)
+        {
+            if (sender is not PictureBox pb) return;
+
+            using var cd = new ColorDialog();
+            cd.Color = pb.BackColor;
+            if (cd.ShowDialog() == DialogResult.OK)
+            {
+                pb.BackColor = cd.Color;
+
+                // Обновляем настройки
+                if (sender == _viewportCP) VisualizationSettings.ContainerColor = pb.BackColor;
+                else if (sender == _activeBorderCP) VisualizationSettings.FigureStrokeActiveColor = pb.BackColor;
+                else if (sender == _inactiveBorderCP) VisualizationSettings.FigureStrokeColor = pb.BackColor;
+                else if (sender == _vertexInactInnerCP) VisualizationSettings.FigureFillActiveColor = pb.BackColor;
+                else if (sender == _vertexActInnerCP) VisualizationSettings.FigureFillColor = pb.BackColor;
+                else if (sender == _transitionLightPenCP) VisualizationSettings.EdgeActiveColor = pb.BackColor;
+                else if (sender == _transitionDarkPenCP) VisualizationSettings.EdgeInactiveColor = pb.BackColor;
+
+                RefreshViews();
+            }
         }
 
         private void RefreshViews()
         {
             try
             {
-                if (_algoController1?.Model != null) _algoController1.Model = _algoController1.Model;
-                if (_algoController2?.Model != null) _algoController2.Model = _algoController2.Model;
-                if (_algoController3?.Model != null) _algoController3.Model = _algoController3.Model;
+                _algoController1?.UpdateVisualizationSettings();
+                _algoController2?.UpdateVisualizationSettings();
+                _algoController3?.UpdateVisualizationSettings();
             }
             catch { }
         }

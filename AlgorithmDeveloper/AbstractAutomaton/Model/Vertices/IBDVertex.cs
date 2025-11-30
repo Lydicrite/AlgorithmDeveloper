@@ -9,6 +9,11 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices
     public interface IBDVertex
     {
         /// <summary>
+        /// Уникальный идентификатор экземпляра вершины.
+        /// </summary>
+        Guid Uid { get; }
+
+        /// <summary>
         /// Строковый идентификатор элемента.
         /// </summary>
         string? ID { get; }
@@ -36,6 +41,8 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices
     /// </summary>
     public abstract class BDVertex : IBDVertex, IGraphFigure
     {
+        public Guid Uid { get; } = Guid.NewGuid();
+
         public string? ID { get; protected set; }
         public abstract string Description { get; }
         public IBDVertex? Next { get; set; }
@@ -47,103 +54,18 @@ namespace AlgorithmDeveloper.AlgoDev.Model.Vertices
 
         #region Собственные методы
 
-        /*
         public override bool Equals(object? obj)
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj is not IBDVertex other) return false;
-
-            return Equivalent(this, other, new HashSet<(IBDVertex, IBDVertex)>());
-        }
-
-        private static bool Equivalent(IBDVertex? a, IBDVertex? b, HashSet<(IBDVertex, IBDVertex)> visited)
-        {
-            if (a is null || b is null) return a is null && b is null;
-            if (ReferenceEquals(a, b)) return true;
-
-            var pair = (a, b);
-            if (visited.Contains(pair)) return true; // уже сравнивали эту пару в рамках рекурсивной проверки
-            visited.Add(pair);
-
-            // Сравнение по типам согласно правилам эквивалентности
-            switch (a)
-            {
-                case StartVertex when b is StartVertex:
-                    return true;
-
-                case EndVertex when b is EndVertex:
-                    return true;
-
-                case OperatorVertex ovA when b is OperatorVertex ovB:
-                    return string.Equals(ovA.ID, ovB.ID, StringComparison.Ordinal);
-
-                case ConditionalVertex cvA when b is ConditionalVertex cvB:
-                    if (!string.Equals(cvA.ID, cvB.ID, StringComparison.Ordinal))
-                        return false;
-                    return Equivalent(cvA.LBS, cvB.LBS, visited) && Equivalent(cvA.RBS, cvB.RBS, visited);
-
-                case JumpPoint jpA when b is JumpPoint jpB:
-                    // Next() эквивалентны
-                    if (!Equivalent(jpA.GetNext(null), jpB.GetNext(null), visited))
-                        return false;
-                    // Родители: одинаковое количество и попарная эквивалентность (как мультимножество)
-                    var pa = (jpA as BDVertex).Parents;
-                    var pb = (jpB as BDVertex).Parents;
-                    if (pa.Count != pb.Count) return false;
-                    var used = new bool[pb.Count];
-                    foreach (var p in pa)
-                    {
-                        bool matched = false;
-                        for (int j = 0; j < pb.Count; j++)
-                        {
-                            if (used[j]) continue;
-                            if (Equivalent(p, pb[j], visited))
-                            {
-                                used[j] = true;
-                                matched = true;
-                                break;
-                            }
-                        }
-                        if (!matched) return false;
-                    }
-                    return true;
-
-                default:
-                    // Типы различаются — не эквивалентны
-                    return false;
-            }
+            return Uid.Equals(other.Uid);
         }
 
         public override int GetHashCode()
         {
-            // Хеш-код согласован с правилами Equals, но избегает глубокой рекурсии.
-            // Коллизии допустимы, главное — равные объекты имеют равные хеши.
-            int FragmentFor(IBDVertex? v)
-            {
-                if (v is null) return 0;
-                return v switch
-                {
-                    StartVertex => 101,
-                    EndVertex => 102,
-                    OperatorVertex ov => HashCode.Combine(201, ov.ID ?? string.Empty),
-                    ConditionalVertex cv => HashCode.Combine(202, cv.ID ?? string.Empty),
-                    JumpPoint jp => HashCode.Combine(203, (jp as BDVertex).Parents.Count, jp.GetNext(null)?.GetType().Name ?? ""),
-                    _ => 999
-                };
-            }
-
-            return this switch
-            {
-                StartVertex => 1,
-                EndVertex => 2,
-                OperatorVertex ov => HashCode.Combine(3, ov.ID ?? string.Empty),
-                ConditionalVertex cv => HashCode.Combine(4, cv.ID ?? string.Empty, FragmentFor(cv.LBS), FragmentFor(cv.RBS)),
-                JumpPoint jp => HashCode.Combine(5, (jp as BDVertex).Parents.Count, jp.GetNext(null)?.GetType().Name ?? ""),
-                _ => ID?.GetHashCode() ?? 0
-            };
+            return Uid.GetHashCode();
         }
-        */
 
         #endregion
 

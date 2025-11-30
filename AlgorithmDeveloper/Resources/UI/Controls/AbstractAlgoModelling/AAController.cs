@@ -51,11 +51,22 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling
 
 
 
+        public void UpdateVisualizationSettings()
+        {
+            _viewport.FigureStrokeColor = VisualizationSettings.FigureStrokeColor;
+            _viewport.FigureFillColor = VisualizationSettings.FigureFillColor;
+            _viewport.FigureTextColor = VisualizationSettings.FigureTextColor;
+            _viewport.FigureStrokeWidth = VisualizationSettings.FigureStrokeWidth;
+            _viewport.BackColor = VisualizationSettings.ContainerColor;
+            _viewport.Invalidate();
+        }
+
         /// <summary>
         /// Обновляет визуализацию модели во Viewports.
         /// </summary>
         private void UpdateVisualization()
         {
+            UpdateVisualizationSettings();
             if (_model == null || _model.Vertices.Count == 0)
             {
                 _viewport.Figures = null;

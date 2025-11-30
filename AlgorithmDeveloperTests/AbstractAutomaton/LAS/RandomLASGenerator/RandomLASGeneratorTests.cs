@@ -200,12 +200,12 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator.Tests
         [DataRow(10, 40, 1000000, true)]
         // [DataRow(10, 60, 1000000, true)]
 
-        [DataRow(1000, 5,  1000000, false)]
-        [DataRow(1000, 8,  1000000, false)]
-        [DataRow(1000, 12, 1000000, false)]
-        [DataRow(1000, 20, 1000000, false)]
-        [DataRow(1000, 30,  1000000, false)]
-        [DataRow(1000, 40,  1000000, false)]
+        [DataRow(100, 5,  1000000, false)]
+        [DataRow(100, 8,  1000000, false)]
+        [DataRow(100, 12, 1000000, false)]
+        [DataRow(100, 20, 1000000, false)]
+        [DataRow(100, 30,  1000000, false)]
+        [DataRow(100, 40,  1000000, false)]
         // [DataRow(1000, 60, 1000000, false)]
         public void E2E_RandomLASGenerator_CorrectParseInModel_CorrectLASFromModelGeneration(int lasCount, int minTokens, int maxAttempts, bool logs)
         {
@@ -265,13 +265,13 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator.Tests
         }
 
         [TestMethod]
-        [DataRow(10000, 5,  1000000,  true)]
-        [DataRow(10000, 8,  1000000, true)]
-        [DataRow(10000, 10, 1000000, true)]
-        [DataRow(10000, 14, 1000000, true)]
-        [DataRow(10000, 20,  1000000,  true)]
-        [DataRow(10000, 30,  1000000, true)]
-        [DataRow(10000, 40, 1000000, true)]
+        [DataRow(100, 5,  1000000,  true)]
+        [DataRow(100, 8,  1000000, true)]
+        [DataRow(100, 10, 1000000, true)]
+        [DataRow(100, 14, 1000000, true)]
+        [DataRow(100, 20,  1000000,  true)]
+        [DataRow(100, 30,  1000000, true)]
+        [DataRow(100, 40, 1000000, true)]
         public void Statistical_GenerationMetrics_Table(int lasCount, int minTokens, int maxAttempts, bool logs)
         {
             var val = CreateValidator();

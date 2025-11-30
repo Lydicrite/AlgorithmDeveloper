@@ -30,6 +30,11 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator
         public int ConditionalVertexIdCounter { get; set; } = 1;
 
         /// <summary>
+        /// Список уже использованных ID условных вершин для возможности повторного использования (дубликатов).
+        /// </summary>
+        public List<int> UsedConditionalIds { get; } = new List<int>();
+
+        /// <summary>
         /// Счетчик для генерации уникальных ID переходов
         /// </summary>
         public int JumpIdCounter { get; set; } = 1;
@@ -132,6 +137,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator
             GeneratedTokens.Clear();
             OperatorVertexIdCounter = 1;
             ConditionalVertexIdCounter = 1;
+            UsedConditionalIds.Clear();
             JumpIdCounter = 1;
             OpenJumps.Clear();
             ClosedJumpPoints.Clear();

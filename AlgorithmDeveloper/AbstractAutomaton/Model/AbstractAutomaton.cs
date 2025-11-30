@@ -19,7 +19,7 @@ namespace AlgorithmDeveloper.AlgorithmModel
         #region Поля
 
         private readonly List<IBDVertex> _vertices = new();
-        private readonly Dictionary<string, IBDVertex> _byId = new(StringComparer.Ordinal);
+        private readonly Dictionary<string, List<IBDVertex>> _byId = new(StringComparer.Ordinal);
         private readonly Dictionary<int, JumpPoint> _jumpPoints = new();
         private readonly Dictionary<int, List<IGraphFigure>> _byLayer = new();
         private List<TransitionFormula> _transitionFormulas = new();
@@ -163,7 +163,14 @@ namespace AlgorithmDeveloper.AlgorithmModel
 
             _vertices.Add(vertex);
             if (!string.IsNullOrEmpty(vertex.ID))
-                _byId[vertex.ID!] = vertex;
+            {
+                if (!_byId.TryGetValue(vertex.ID!, out var list))
+                {
+                    list = new List<IBDVertex>();
+                    _byId[vertex.ID!] = list;
+                }
+                list.Add(vertex);
+            }
 
             switch (vertex)
             {
@@ -203,7 +210,13 @@ namespace AlgorithmDeveloper.AlgorithmModel
                 vertex = null;
                 return false;
             }
-            return _byId.TryGetValue(id, out vertex);
+            if (_byId.TryGetValue(id, out var list) && list.Count > 0)
+            {
+                vertex = list[0];
+                return true;
+            }
+            vertex = null;
+            return false;
         }
 
         /// <summary>
@@ -425,8 +438,8 @@ namespace AlgorithmDeveloper.AlgorithmModel
         /// <param name="value">Значение, которое примет <see cref="ConditionalVertex.Value"/></param>
         public void SetConditionalValue(string xID, bool? value)
         {
-            var cond = Vertices.OfType<ConditionalVertex>().FirstOrDefault(x => x.ID == xID);
-            if (cond != null)
+            var conds = Vertices.OfType<ConditionalVertex>().Where(x => x.ID == xID);
+            foreach (var cond in conds)
                 cond.Value = value;
         }
 
@@ -438,7 +451,10 @@ namespace AlgorithmDeveloper.AlgorithmModel
         public void SetConditionalValue(ConditionalVertex vRef, bool? value)
         {
             if (vRef != null && Vertices.Contains(vRef))
-                vRef.Value = value;
+            {
+                // Обновляем все копии этой вершины
+                SetConditionalValue(vRef.ID ?? string.Empty, value);
+            }
         }
 
         /// <summary>
@@ -542,6 +558,7 @@ namespace AlgorithmDeveloper.AlgorithmModel
         {
             return Vertices
                 .OfType<ConditionalVertex>()
+                .DistinctBy(v => v.ID)
                 .OrderBy(v => v, ConditionalsBindingComparer)
                 .ToList();
         }
