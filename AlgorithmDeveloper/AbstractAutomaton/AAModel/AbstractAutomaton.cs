@@ -1,14 +1,14 @@
 using AlgorithmDeveloper.AlgoDev.Model.Vertices;
 using AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout;
-using AlgorithmDeveloper.AlgorithmModel.LAS;
-using AlgorithmDeveloper.AlgorithmModel.TransitionSystem;
+using AlgorithmDeveloper.AAModel.LAS;
+using AlgorithmDeveloper.AAModel.TransitionSystem;
 using System.Text;
 using System.Text.RegularExpressions;
 using System;
 using System.Runtime.CompilerServices;
-using AlgorithmDeveloper.AlgorithmModel.TransitionSystem.MAS;
+using AlgorithmDeveloper.AAModel.TransitionSystem.MAS;
 
-namespace AlgorithmDeveloper.AlgorithmModel
+namespace AlgorithmDeveloper.AAModel
 {
     /// <summary>
     /// Внутренняя модель алгоритма (блок-схемы).

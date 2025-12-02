@@ -1,4 +1,4 @@
-namespace AlgorithmDeveloper.AlgorithmModel.Model.Vertices.Vizualization
+namespace AlgorithmDeveloper.AAModel.Model.Vertices.Vizualization
 {
     /// <summary>
     /// Перечисление форм для геометрии вершин.

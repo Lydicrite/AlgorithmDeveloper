@@ -1,6 +1,6 @@
 using AlgorithmDeveloper.AlgoDev.Model.Vertices;
-using AlgorithmDeveloper.AlgorithmModel;
-using AlgorithmDeveloper.AlgorithmModel.Model.Vertices.Vizualization;
+using AlgorithmDeveloper.AAModel;
+using AlgorithmDeveloper.AAModel.Model.Vertices.Vizualization;
 using AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl.Styles;
 using AlgorithmDeveloper.Resources.UI.Controls.Viewports;
 using System;

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using AlgorithmDeveloper.AlgorithmModel.Model.Vertices.Vizualization;
+using AlgorithmDeveloper.AAModel.Model.Vertices.Vizualization;
 
 namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
 {
@@ -345,6 +345,8 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
         }
 
         #endregion
+
+
 
 
 

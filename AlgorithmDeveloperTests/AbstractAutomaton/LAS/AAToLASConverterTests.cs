@@ -1,16 +1,16 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using AlgorithmDeveloper.AlgorithmModel;
+using AlgorithmDeveloper.AAModel;
 using System;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 
-namespace AlgorithmDeveloper.AlgorithmModel.LAS.Tests
+namespace AlgorithmDeveloper.AAModel.LAS.Tests
 {
     [TestClass]
-    public class LASGeneratorTests
+    public class AAToLASConverterTests
     {
-        private static Type ParserType => typeof(AbstractAutomaton).Assembly.GetType("AlgorithmDeveloper.AlgorithmModel.LAS.LASParser", throwOnError: true)!;
+        private static Type ParserType => typeof(AbstractAutomaton).Assembly.GetType("AlgorithmDeveloper.AAModel.LAS.LASParser", throwOnError: true)!;
 
         #region Тесты
 
@@ -187,7 +187,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.Tests
             var methods = ParserType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
                 .Where(m => m.Name == "TryParse");
 
-            var exType = typeof(AbstractAutomaton).Assembly.GetType("AlgorithmDeveloper.AlgorithmModel.LAS.ParsingAggregateException", throwOnError: true)!;
+            var exType = typeof(AbstractAutomaton).Assembly.GetType("AlgorithmDeveloper.AAModel.LAS.ParsingAggregateException", throwOnError: true)!;
             var target = methods.First(m =>
             {
                 var p = m.GetParameters();
@@ -220,7 +220,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.Tests
                  );
 
             // Генерируем ЛСА 2 из модели 1
-            var las2 = LASGenerator.Generate(model1!, out var lasLog, enableLogging: true);
+            var las2 = AAToLASConverter.Convert(model1!, out var lasLog, enableLogging: true);
 
             // Если ЛСА совпадают, то модели точно эквивалентны
             if (string.Equals(las1, las2, StringComparison.Ordinal))

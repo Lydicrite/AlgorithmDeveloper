@@ -1,4 +1,4 @@
-namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator
+namespace AlgorithmDeveloper.AAModel.LAS.RandomLASGenerator
 {
     /// <summary>
     /// Состояния конечного автомата для генерации ЛСА

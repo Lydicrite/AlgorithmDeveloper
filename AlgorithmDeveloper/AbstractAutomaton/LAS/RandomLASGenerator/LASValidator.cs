@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using AlgorithmDeveloper.AlgorithmModel;
+using AlgorithmDeveloper.AAModel;
 
-namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator
+namespace AlgorithmDeveloper.AAModel.LAS.RandomLASGenerator
 {
     /// <summary>
     /// Валидатор для проверки корректности сгенерированных ЛСА

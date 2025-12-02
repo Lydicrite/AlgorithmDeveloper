@@ -4,7 +4,7 @@ using System.Linq;
 using AlgorithmDeveloper.AlgoDev.Model.Vertices;
 using System.Text;
 
-namespace AlgorithmDeveloper.AlgorithmModel.Model.Utils
+namespace AlgorithmDeveloper.AAModel.Model.Utils
 {
     public sealed class CommonSubgraph
     {

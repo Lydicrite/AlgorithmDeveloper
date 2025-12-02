@@ -1,4 +1,4 @@
-using AlgorithmDeveloper.AlgorithmModel.LAS;
+using AlgorithmDeveloper.AAModel.LAS;
 using AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling;
 using AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl;
 using AlgorithmDeveloper.Resources.UI.Controls.Viewports;

@@ -1,5 +1,5 @@
-using AlgorithmDeveloper.AlgorithmModel;
-using AlgorithmDeveloper.AlgorithmModel.Model.Vertices.Vizualization;
+using AlgorithmDeveloper.AAModel;
+using AlgorithmDeveloper.AAModel.Model.Vertices.Vizualization;
 
 namespace AlgorithmDeveloper.AlgoDev.Model.Vertices
 {

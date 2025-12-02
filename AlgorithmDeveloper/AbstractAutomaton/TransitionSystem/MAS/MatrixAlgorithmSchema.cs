@@ -1,12 +1,12 @@
 using AlgorithmDeveloper.AlgoDev.Model.Vertices;
-using AlgorithmDeveloper.AlgorithmModel.TransitionSystem;
+using AlgorithmDeveloper.AAModel.TransitionSystem;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 
-namespace AlgorithmDeveloper.AlgorithmModel.TransitionSystem.MAS
+namespace AlgorithmDeveloper.AAModel.TransitionSystem.MAS
 {
     /// <summary>
     /// Матричная схема алгоритма (МСА) — табличное представление формул переходов.

@@ -1,9 +1,9 @@
-using AlgorithmDeveloper.AlgorithmModel.Utils;
+using AlgorithmDeveloper.AAModel.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AlgorithmDeveloper.AlgorithmModel.LAS
+namespace AlgorithmDeveloper.AAModel.LAS
 {
     /// <summary>
     /// Представляет контейнер для данных об ошибке, происходящей при парсинге.

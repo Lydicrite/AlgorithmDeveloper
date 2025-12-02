@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using AlgorithmDeveloper.AlgorithmModel;
+using AlgorithmDeveloper.AAModel;
 using AlgorithmDeveloper.AlgoDev.Model.Vertices;
-using AlgorithmDeveloper.AlgorithmModel.Model.Vertices.Vizualization;
+using AlgorithmDeveloper.AAModel.Model.Vertices.Vizualization;
 
 namespace AlgorithmDeveloper.AlgoDev.Model.Vertices.Graph.Layout
 {

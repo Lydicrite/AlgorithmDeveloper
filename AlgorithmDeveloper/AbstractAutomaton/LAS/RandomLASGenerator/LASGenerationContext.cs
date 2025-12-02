@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator
+namespace AlgorithmDeveloper.AAModel.LAS.RandomLASGenerator
 {
     /// <summary>
     /// Контекст генерации ЛСА для отслеживания состояния и ограничений

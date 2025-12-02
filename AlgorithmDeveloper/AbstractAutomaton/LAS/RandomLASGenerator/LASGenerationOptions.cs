@@ -1,6 +1,6 @@
 using System;
 
-namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator
+namespace AlgorithmDeveloper.AAModel.LAS.RandomLASGenerator
 {
     /// <summary>
     /// Параметры генерации случайных ЛСА

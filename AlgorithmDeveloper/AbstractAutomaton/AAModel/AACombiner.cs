@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static AlgorithmDeveloper.AlgorithmModel.TransitionSystem.MAS.MatrixAlgorithmSchema;
+using static AlgorithmDeveloper.AAModel.TransitionSystem.MAS.MatrixAlgorithmSchema;
 
-namespace AlgorithmDeveloper.AlgorithmModel.Model
+namespace AlgorithmDeveloper.AAModel.Model
 {
     public class AACombiner
     {

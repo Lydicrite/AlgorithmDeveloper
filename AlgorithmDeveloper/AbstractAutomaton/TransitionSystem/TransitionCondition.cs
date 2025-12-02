@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AlgorithmDeveloper.AlgorithmModel;
+using AlgorithmDeveloper.AAModel;
 using AlgorithmDeveloper.AlgoDev.Model.Vertices;
 
-namespace AlgorithmDeveloper.AlgorithmModel.TransitionSystem
+namespace AlgorithmDeveloper.AAModel.TransitionSystem
 {
     /// <summary>
     /// Логическое условие A[i][j] для перехода из вершины YFrom в вершину YTo.

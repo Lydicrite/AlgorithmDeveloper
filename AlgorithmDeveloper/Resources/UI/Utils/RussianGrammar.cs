@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AlgorithmDeveloper.AlgorithmModel.Utils
+namespace AlgorithmDeveloper.AAModel.Utils
 {
     internal static class RussianGrammar
     {

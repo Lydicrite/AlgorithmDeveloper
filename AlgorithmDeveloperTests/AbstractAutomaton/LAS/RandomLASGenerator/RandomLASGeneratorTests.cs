@@ -1,14 +1,14 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator;
-using AlgorithmDeveloper.AlgorithmModel.LAS;
-using AlgorithmDeveloper.AlgorithmModel;
+using AlgorithmDeveloper.AAModel.LAS.RandomLASGenerator;
+using AlgorithmDeveloper.AAModel.LAS;
+using AlgorithmDeveloper.AAModel;
 using AlgorithmDeveloper.AlgoDev.Model.Vertices;
 using System;
 using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 
-namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator.Tests
+namespace AlgorithmDeveloper.AAModel.LAS.RandomLASGenerator.Tests
 {
     [TestClass]
     [assembly: Parallelize(Scope = ExecutionScope.MethodLevel, Workers = 8)]
@@ -221,7 +221,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator.Tests
                 Assert.IsTrue(val.TryValidate(las, out var m1, out var errors1), $"ЛСА не парсится.\n{DescribeLAS(las)}\nОшибки парсера: {errors1}");
                 Assert.IsNotNull(m1, "Парсер вернул пустую модель для ЛСА 1.");
 
-                var las2 = LASGenerator.Generate(m1!, out var log, enableLogging: true);
+                var las2 = AAToLASConverter.Convert(m1!, out var log, enableLogging: true);
 
                 if (!string.Equals(las, las2, StringComparison.Ordinal))
                 {
@@ -272,7 +272,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator.Tests
             string input = "Yн X1 ↑1 Y1 Y2 w↑1 ↓1 X1 ↑2 Y3 w↑2 ↓2 Yк";
 
             // 1. Parse
-            var val = new AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator.LASValidator();
+            var val = new AlgorithmDeveloper.AAModel.LAS.RandomLASGenerator.LASValidator();
             bool ok = val.TryValidate(input, out var model, out var err);
             Assert.IsTrue(ok, err);
 
@@ -294,8 +294,8 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS.RandomLASGenerator.Tests
             Assert.AreNotEqual(x1_a.Uid, x1_b.Uid, "X1(a) and X1(b) should have different Uids");
             Assert.IsFalse(x1_a.Equals(x1_b), "X1(a).Equals(X1(b)) should be false");
 
-            // 3. Generate
-            string output = LASGenerator.Generate(model, out string log, true);
+            // 3. Convert
+            string output = AAToLASConverter.Convert(model, out string log, true);
 
             Console.WriteLine("Input:  " + input);
             Console.WriteLine("Output: " + output);

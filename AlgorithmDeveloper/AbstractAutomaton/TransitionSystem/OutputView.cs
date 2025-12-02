@@ -1,6 +1,6 @@
 using System;
 
-namespace AlgorithmDeveloper.AlgorithmModel.TransitionSystem
+namespace AlgorithmDeveloper.AAModel.TransitionSystem
 {
     /// <summary>
     /// Вид, в котором будет выводиться в строку логическое условие и формула перехода.

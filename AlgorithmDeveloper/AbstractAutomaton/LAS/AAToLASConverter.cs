@@ -3,30 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AlgorithmDeveloper.AlgoDev.Model.Vertices;
-using AlgorithmDeveloper.AlgorithmModel;
+using AlgorithmDeveloper.AAModel;
 
-namespace AlgorithmDeveloper.AlgorithmModel.LAS
+namespace AlgorithmDeveloper.AAModel.LAS
 {
     /// <summary>
     /// Генератор логических схем алгоритма (ЛСА) из модели AlgoModel.
     /// Формирует валидную ЛСА-строку по графу вершин.
     /// </summary>
-    public static class LASGenerator
+    public static class AAToLASConverter
     {
         /// <summary>
         /// Генерирует ЛСА из модели. Не использует исходный текст, только структуру графа.
         /// Внутренне ведёт подробный лог выполнения, который можно отключить.
         /// </summary>
-        public static string Generate(AbstractAutomaton model, out string verboseLog, bool enableLogging = false)
+        public static string Convert(AbstractAutomaton model, out string verboseLog, bool enableLogging = false)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
-            var ctx = new GenCtx(model, enableLogging);
+            var ctx = new ConverterContext(model, enableLogging);
             var result = ctx.GenerateCore();
             verboseLog = ctx.GetVerboseLog();
             return result;
         }
 
-        private sealed class GenCtx
+        private sealed class ConverterContext
         {
             private readonly AbstractAutomaton _model;
             private readonly bool _enableLogging;
@@ -39,7 +39,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
             private bool _printedEnd = false;
             private readonly StringBuilder? _logSb;
 
-            public GenCtx(AbstractAutomaton model, bool enableLogging)
+            public ConverterContext(AbstractAutomaton model, bool enableLogging)
             {
                 _model = model;
                 _enableLogging = enableLogging;
@@ -272,7 +272,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.LAS
             public string GenerateCore()
             {
                 AppendToken("Yн");
-                if (_enableLogging) LogSnapshot("Вход в функцию <Generate>");
+                if (_enableLogging) LogSnapshot("Вход в функцию <Convert>");
 
                 if (_model.Start?.Next is JumpPoint startJump)
                 {

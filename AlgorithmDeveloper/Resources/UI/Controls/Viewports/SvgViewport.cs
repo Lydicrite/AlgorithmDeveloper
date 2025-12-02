@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
-using AlgorithmDeveloper.AlgorithmModel;
+using AlgorithmDeveloper.AAModel;
 using AlgorithmDeveloper.AlgoDev.Model.Vertices;
-using AlgorithmDeveloper.AlgorithmModel.Model.Vertices.Vizualization;
+using AlgorithmDeveloper.AAModel.Model.Vertices.Vizualization;
 
 namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
 {

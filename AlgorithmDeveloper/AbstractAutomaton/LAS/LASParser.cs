@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using AlgorithmDeveloper.AlgorithmModel.Utils;
-using AlgorithmDeveloper.AlgorithmModel;
-using AlgorithmDeveloper.AlgorithmModel.LAS;
+using AlgorithmDeveloper.AAModel.Utils;
+using AlgorithmDeveloper.AAModel;
+using AlgorithmDeveloper.AAModel.LAS;
 using AlgorithmDeveloper.AlgoDev.Model.Vertices;
 
-namespace AlgorithmDeveloper.AlgorithmModel.LAS
+namespace AlgorithmDeveloper.AAModel.LAS
 {
     /// <summary>
     /// Парсер логических схем алгоритмов (ЛСА) в объекты <see cref="AbstractAutomaton"/>.

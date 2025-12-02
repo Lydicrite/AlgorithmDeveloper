@@ -1,16 +1,16 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using AlgorithmDeveloper.AlgorithmModel;
+using AlgorithmDeveloper.AAModel;
 using System;
 using System.Linq;
 using System.Reflection;
-using AlgorithmDeveloper.AlgorithmModel.Model.Utils;
+using AlgorithmDeveloper.AAModel.Model.Utils;
 
-namespace AlgorithmDeveloper.AlgorithmModel.Model.Tests
+namespace AlgorithmDeveloper.AAModel.Model.Tests
 {
     [TestClass()]
     public class AAGraphCombiningUtilsTests
     {
-        private static Type ParserType => typeof(AbstractAutomaton).Assembly.GetType("AlgorithmDeveloper.AlgorithmModel.LAS.LASParser", throwOnError: true)!;
+        private static Type ParserType => typeof(AbstractAutomaton).Assembly.GetType("AlgorithmDeveloper.AAModel.LAS.LASParser", throwOnError: true)!;
 
         private static bool TryParseLAS(string las, out AbstractAutomaton? model, out string errorsText)
         {
@@ -19,7 +19,7 @@ namespace AlgorithmDeveloper.AlgorithmModel.Model.Tests
             var methods = ParserType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
                 .Where(m => m.Name == "TryParse");
 
-            var exType = typeof(AbstractAutomaton).Assembly.GetType("AlgorithmDeveloper.AlgorithmModel.LAS.ParsingAggregateException", throwOnError: true)!;
+            var exType = typeof(AbstractAutomaton).Assembly.GetType("AlgorithmDeveloper.AAModel.LAS.ParsingAggregateException", throwOnError: true)!;
             var target = methods.First(m =>
             {
                 var p = m.GetParameters();

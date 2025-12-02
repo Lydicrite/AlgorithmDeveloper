@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AlgorithmDeveloper.AlgoDev.Model.Vertices;
 
-namespace AlgorithmDeveloper.AlgorithmModel.TransitionSystem
+namespace AlgorithmDeveloper.AAModel.TransitionSystem
 {
     /// <summary>
     /// Формула перехода для вершины Y[i]: Y[i] → (A[i][1] Y[1] ˅ ... ˅ A[i][m] Y[m]).

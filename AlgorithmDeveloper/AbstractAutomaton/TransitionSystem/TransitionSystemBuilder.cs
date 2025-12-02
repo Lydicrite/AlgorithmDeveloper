@@ -1,11 +1,11 @@
 using AlgorithmDeveloper.AlgoDev.Model.Vertices;
-using AlgorithmDeveloper.AlgorithmModel;
+using AlgorithmDeveloper.AAModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AlgorithmDeveloper.AlgorithmModel.TransitionSystem
+namespace AlgorithmDeveloper.AAModel.TransitionSystem
 {
     /// <summary>
     /// Режим построения формул перехода.

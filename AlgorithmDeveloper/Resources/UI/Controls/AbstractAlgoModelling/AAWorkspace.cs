@@ -1,5 +1,5 @@
-using AlgorithmDeveloper.AlgorithmModel;
-using AlgorithmDeveloper.AlgorithmModel.LAS;
+using AlgorithmDeveloper.AAModel;
+using AlgorithmDeveloper.AAModel.LAS;
 using AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl;
 using System;
 using System.Collections.Generic;
