@@ -11,7 +11,6 @@ using System.Collections.Generic;
 namespace AlgorithmDeveloper.AAModel.LAS.RandomLASGenerator.Tests
 {
     [TestClass]
-    [assembly: Parallelize(Scope = ExecutionScope.MethodLevel, Workers = 8)]
     public class RandomLASGeneratorTests
     {
         private LASValidator CreateValidator() => new LASValidator();
@@ -275,9 +274,11 @@ namespace AlgorithmDeveloper.AAModel.LAS.RandomLASGenerator.Tests
             var val = new AlgorithmDeveloper.AAModel.LAS.RandomLASGenerator.LASValidator();
             bool ok = val.TryValidate(input, out var model, out var err);
             Assert.IsTrue(ok, err);
+            Assert.IsNotNull(model, "Model should not be null");
 
             // 2. Verify model structure
             var start = model.Start;
+            Assert.IsNotNull(start, "Start vertex should not be null");
             var x1_a = start.Next as ConditionalVertex;
             Assert.IsNotNull(x1_a, "X1(a) should be next to Start");
             Assert.AreEqual("X1", x1_a.ID);

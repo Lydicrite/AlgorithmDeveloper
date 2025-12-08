@@ -15,7 +15,7 @@ namespace AlgorithmDeveloper
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer, true);
         }
 
-        private void MainFormV2_Load(object sender, EventArgs e)
+        private void MainFormV2_Load(object? sender, EventArgs e)
         {
             _mainInfoPort.Font = new Font("Consolas", 10f);
             _mainInfoPort.WordWrap = false;
@@ -62,7 +62,7 @@ namespace AlgorithmDeveloper
 
         #region Приватная часть
 
-        private System.Windows.Forms.Timer _resizeTimer;
+        private System.Windows.Forms.Timer _resizeTimer = null!;
         private bool _resizePending;
         private bool _masLayoutPending;
 

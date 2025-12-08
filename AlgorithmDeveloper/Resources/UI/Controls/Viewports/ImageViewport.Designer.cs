@@ -1,3 +1,4 @@
+#nullable enable
 namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
 {
     partial class ImageViewport
@@ -5,7 +6,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
         /// <summary> 
         /// Обязательная переменная конструктора.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private System.ComponentModel.IContainer? components = null;
 
         /// <summary> 
         /// Освободить все используемые ресурсы.

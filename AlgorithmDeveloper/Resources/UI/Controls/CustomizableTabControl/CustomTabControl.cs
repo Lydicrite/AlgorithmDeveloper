@@ -1553,7 +1553,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
         /// <param name="graphics">Графический контекст для рисования</param>
         private void DrawTabImage(int index, Graphics graphics)
         {
-            Image tabImage = null;
+            Image? tabImage = null;
 
             if (TabPages[index].ImageIndex > -1 && ImageList != null && ImageList.Images.Count > TabPages[index].ImageIndex)
             {
@@ -1613,7 +1613,8 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
             format!.Alignment = StringAlignment.Center;
             format.LineAlignment = StringAlignment.Center;
 
-            if (FindForm() != null && FindForm().KeyPreview)
+            var form = FindForm();
+            if (form != null && form.KeyPreview)
                 format.HotkeyPrefix = System.Drawing.Text.HotkeyPrefix.Show;
             else
                 format.HotkeyPrefix = System.Drawing.Text.HotkeyPrefix.Hide;
@@ -1774,7 +1775,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
         private Rectangle HandleTabCloser(int index, Rectangle textRect, RectangleF tabBounds)
         {
             // If there is a closer allow for it
-            if (_StyleProvider.ShowTabCloser)
+            if (_StyleProvider!.ShowTabCloser)
             {
                 Rectangle closerRect = GetTabCloserRect(index);
 
@@ -2002,7 +2003,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
             // Ensure image is fully visible
             if (Alignment <= TabAlignment.Bottom)
             {
-                if ((_StyleProvider.ImageAlign & NativeUIUtils.AnyLeftAlign) != 0)
+                if ((_StyleProvider!.ImageAlign & NativeUIUtils.AnyLeftAlign) != 0)
                 {
                     imageRect = new Rectangle((int)rect.X, (int)rect.Y + (int)Math.Floor((double)((int)rect.Height - 16) / 2), 16, 16);
 
@@ -2011,7 +2012,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
 
                     imageRect.X += 4;
                 }
-                else if ((_StyleProvider.ImageAlign & NativeUIUtils.AnyCenterAlign) != 0)
+                else if ((_StyleProvider!.ImageAlign & NativeUIUtils.AnyCenterAlign) != 0)
                     imageRect = new Rectangle((int)rect.X + (int)Math.Floor((double)(((int)rect.Right - (int)rect.X - (int)rect.Height + 2) / 2)), (int)rect.Y + (int)Math.Floor((double)((int)rect.Height - 16) / 2), 16, 16);
                 else
                 {
@@ -2023,13 +2024,13 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
                     imageRect.X -= 4;
 
                     // Move it in further to allow for the tab closer
-                    if (_StyleProvider.ShowTabCloser && !RightToLeftLayout)
+                    if (_StyleProvider!.ShowTabCloser && !RightToLeftLayout)
                         imageRect.X -= 10;
                 }
             }
             else
             {
-                if ((_StyleProvider.ImageAlign & NativeUIUtils.AnyLeftAlign) != 0)
+                if ((_StyleProvider!.ImageAlign & NativeUIUtils.AnyLeftAlign) != 0)
                 {
                     imageRect = new Rectangle((int)rect.X + (int)Math.Floor((double)((int)rect.Width - 16) / 2), (int)rect.Y, 16, 16);
 
@@ -2038,7 +2039,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
 
                     imageRect.Y += 4;
                 }
-                else if ((_StyleProvider.ImageAlign & NativeUIUtils.AnyCenterAlign) != 0)
+                else if ((_StyleProvider!.ImageAlign & NativeUIUtils.AnyCenterAlign) != 0)
                     imageRect = new Rectangle((int)rect.X + (int)Math.Floor((double)((int)rect.Width - 16) / 2), (int)rect.Y + (int)Math.Floor((double)(((int)rect.Bottom - (int)rect.Y - (int)rect.Width + 2) / 2)), 16, 16);
                 else
                 {

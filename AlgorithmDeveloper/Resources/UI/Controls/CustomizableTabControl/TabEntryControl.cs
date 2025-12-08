@@ -83,7 +83,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
             _btnClose.Enabled = !isDisposed && hasPage && !disableForProtected && !forbidClose;
         }
 
-        private void SafeToggle(object sender, EventArgs e)
+        private void SafeToggle(object? sender, EventArgs e)
         {
             if (TabControl != null && TabPage != null && !TabPage.IsDisposed)
             {
@@ -100,7 +100,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
             }
         }
 
-        private void SafeClose(object sender, EventArgs e)
+        private void SafeClose(object? sender, EventArgs e)
         {
             if (TabControl != null && TabPage != null && !TabPage.IsDisposed)
             {

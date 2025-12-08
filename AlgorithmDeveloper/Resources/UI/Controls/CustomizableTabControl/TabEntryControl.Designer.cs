@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -105,8 +106,8 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl
             ResumeLayout(false);
             PerformLayout();
         }
-        private TextBox _textBox;
-        private Button _btnToggle;
-        private Button _btnClose;
+        private TextBox _textBox = null!;
+        private Button _btnToggle = null!;
+        private Button _btnClose = null!;
     }
 }

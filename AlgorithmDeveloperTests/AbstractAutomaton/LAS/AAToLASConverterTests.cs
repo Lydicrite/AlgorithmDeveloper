@@ -7,10 +7,10 @@ using System.Collections.Generic;
 
 namespace AlgorithmDeveloper.AAModel.LAS.Tests
 {
-    [TestClass]
+    [TestClass()]
     public class AAToLASConverterTests
     {
-        private static Type ParserType => typeof(AbstractAutomaton).Assembly.GetType("AlgorithmDeveloper.AAModel.LAS.LASParser", throwOnError: true)!;
+        private static Type ParserType => typeof(AbstractAutomata).Assembly.GetType("AlgorithmDeveloper.AAModel.LAS.LASParser", throwOnError: true)!;
 
         #region Тесты
 
@@ -174,31 +174,31 @@ namespace AlgorithmDeveloper.AAModel.LAS.Tests
 
         #region Вспомогательные методы
 
-        private static AbstractAutomaton ParseLAS(string las)
+        private static AbstractAutomata ParseLAS(string las)
         {
             var parse = ParserType.GetMethod("Parse", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)!;
-            return (AbstractAutomaton)parse.Invoke(null, new object[] { las })!;
+            return (AbstractAutomata)parse.Invoke(null, new object[] { las })!;
         }
 
-        private static bool TryParseLAS(string las, out AbstractAutomaton? model, out string errorsText)
+        private static bool TryParseLAS(string las, out AbstractAutomata? model, out string errorsText)
         {
             model = null;
             errorsText = string.Empty;
             var methods = ParserType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
                 .Where(m => m.Name == "TryParse");
 
-            var exType = typeof(AbstractAutomaton).Assembly.GetType("AlgorithmDeveloper.AAModel.LAS.ParsingAggregateException", throwOnError: true)!;
+            var exType = typeof(AbstractAutomata).Assembly.GetType("AlgorithmDeveloper.AAModel.LAS.ParsingAggregateException", throwOnError: true)!;
             var target = methods.First(m =>
             {
                 var p = m.GetParameters();
                 return p.Length == 3 && p[0].ParameterType == typeof(string)
-                       && p[1].IsOut && p[1].ParameterType == typeof(AbstractAutomaton).MakeByRefType()
+                       && p[1].IsOut && p[1].ParameterType == typeof(AbstractAutomata).MakeByRefType()
                        && p[2].IsOut && p[2].ParameterType == exType.MakeByRefType();
             });
 
             object?[] args = new object?[] { las, null, null };
             var ok = (bool)target.Invoke(null, args)!;
-            model = (AbstractAutomaton?)args[1];
+            model = (AbstractAutomata?)args[1];
             var ex = args[2];
             if (ex != null)
             {

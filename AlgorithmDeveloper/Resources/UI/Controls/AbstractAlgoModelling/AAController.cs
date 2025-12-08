@@ -19,14 +19,14 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling
 {
     public partial class AAController : UserControl
     {
-        private AbstractAutomaton? _model = null;
+        private AbstractAutomata? _model = null;
 
         /// <summary>
         /// Получает или задает модель алгоритма, связанного с этим контроллером.
         /// </summary>
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public AbstractAutomaton? Model
+        public AbstractAutomata? Model
         {
             get
             {

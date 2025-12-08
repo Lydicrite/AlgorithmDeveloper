@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -35,7 +35,7 @@ namespace AlgorithmDeveloper.AAModel.Utils
         public static string FormatUnreachableVerticesMessage(List<string> ids)
         {
             int count = ids?.Count ?? 0;
-            if (count == 0) return "Недостижимые вершины не обнаружены";
+            if (count == 0 || ids == null) return "Недостижимые вершины не обнаружены";
             if (count == 1) return $"Недостижимая вершина: '{ids[0]}'";
             var quoted = ids.Select(id => $"'{id}'");
             return $"Недостижимые вершины: [{string.Join(", ", quoted)}]";

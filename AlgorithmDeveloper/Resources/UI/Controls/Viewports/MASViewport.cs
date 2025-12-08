@@ -213,7 +213,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
             else
                 textFlags |= TextFormatFlags.HorizontalCenter;
 
-            TextRenderer.DrawText(e.Graphics, e.Header.Text, _lv.Font, new Rectangle(rect.X, rect.Y + 2, rect.Width, rect.Height), Color.Gainsboro, textFlags);
+            TextRenderer.DrawText(e.Graphics, e.Header?.Text ?? string.Empty, _lv.Font, new Rectangle(rect.X, rect.Y + 2, rect.Width, rect.Height), Color.Gainsboro, textFlags);
             if (e.ColumnIndex == 0)
             {
                 e.Graphics.DrawLine(GridPen, 0, rect.Top, 0, rect.Bottom);
@@ -233,7 +233,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
         private void _lv_DrawSubItem(object? sender, DrawListViewSubItemEventArgs e)
         {
             var rect = e.Bounds;
-            var isSelected = e.Item.Selected;
+            var isSelected = e.Item?.Selected ?? false;
 
             if (e.ColumnIndex == 0)
             {
@@ -260,7 +260,7 @@ namespace AlgorithmDeveloper.Resources.UI.Controls.Viewports
             else
                 flags |= TextFormatFlags.HorizontalCenter;
             var textColor = e.ColumnIndex == 0 ? Color.Gainsboro : (isSelected ? SystemColors.HighlightText : _lv.ForeColor);
-            TextRenderer.DrawText(e.Graphics, e.SubItem.Text ?? string.Empty, _lv.Font, new Rectangle(rect.X, rect.Y + 2, rect.Width, rect.Height), textColor, flags);
+            TextRenderer.DrawText(e.Graphics, e.SubItem?.Text ?? string.Empty, _lv.Font, new Rectangle(rect.X, rect.Y + 2, rect.Width, rect.Height), textColor, flags);
 
             if (e.ColumnIndex == 0)
             {
