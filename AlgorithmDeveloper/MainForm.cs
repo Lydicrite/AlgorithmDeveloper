@@ -1,5 +1,5 @@
-using AlgorithmDeveloper.Resources.UI.Controls.AbstractAlgoModelling;
-using AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl;
+using AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling;
+using AlgorithmDeveloper.UI.Elements.Controls.CustomizableTabControl;
 using WinRT;
 
 namespace AlgorithmDeveloper

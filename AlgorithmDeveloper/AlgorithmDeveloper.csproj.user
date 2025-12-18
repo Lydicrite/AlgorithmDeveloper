@@ -7,41 +7,41 @@
     <Compile Update="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Resources\UI\Controls\AbstractAlgoModelling\AAWorkspace.cs">
+    <Compile Update="UI\Elements\Controls\AbstractAlgoModelling\AAWorkspace.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="Resources\UI\Controls\AbstractAlgoModelling\AAController.cs">
+    <Compile Update="UI\Elements\Controls\AbstractAlgoModelling\AAController.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="Resources\UI\Controls\CustomizableTabControl\CustomTabControl.cs">
+    <Compile Update="UI\Elements\Controls\CustomizableTabControl\CustomizableTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="Resources\UI\Controls\CustomizableTabControl\TabEntryControl.cs">
+    <Compile Update="UI\Elements\Controls\CustomizableTabControl\TabEntryControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="Resources\UI\Controls\CustomizableToolStrip\CustomizableToolStrip.cs">
+    <Compile Update="UI\Elements\Controls\CustomizableToolStrip\CustomizableToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="Resources\UI\Controls\LASInputControls\LASGraphicKeyboard.cs">
+    <Compile Update="UI\Elements\Controls\LASInputControls\LASGraphicKeyboard.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="Resources\UI\Controls\LASInputControls\LASInputRichTextBox.cs">
+    <Compile Update="UI\Elements\Controls\LASInputControls\LASInputRichTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="Resources\UI\Controls\LASInputControls\LASInputTextBox.cs">
+    <Compile Update="UI\Elements\Controls\LASInputControls\LASInputTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="Resources\UI\Controls\Viewports\ImageViewport.cs">
+    <Compile Update="UI\Elements\Controls\Terminal\TerminalControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="Resources\UI\Controls\Viewports\MASViewport.cs">
+    <Compile Update="UI\Elements\Controls\Viewports\ImageViewport.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="Resources\UI\Controls\Viewports\SvgViewport.cs">
+    <Compile Update="UI\Elements\Controls\Viewports\MASViewport.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="Resources\UI\Forms\TerminalForm.cs">
-      <SubType>Form</SubType>
+    <Compile Update="UI\Elements\Controls\Viewports\SvgViewport.cs">
+      <SubType>UserControl</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup />

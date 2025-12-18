@@ -1,4 +1,4 @@
-using AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl.Styles;
+using AlgorithmDeveloper.UI.Elements.Controls.CustomizableTabControl.Styles;
 
 namespace AlgorithmDeveloper
 {
@@ -31,7 +31,7 @@ namespace AlgorithmDeveloper
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            _mainToolStrip = new AlgorithmDeveloper.Resources.UI.Controls.CustomizableToolStrip.CustomizableToolStrip();
+            _mainToolStrip = new AlgorithmDeveloper.UI.Elements.Controls.CustomizableToolStrip.CustomizableToolStrip();
             _mainToolStrip_File = new ToolStripDropDownButton();
             _mainToolStrip_File_Open = new ToolStripMenuItem();
             _mainToolStrip_File_S1 = new ToolStripSeparator();
@@ -49,7 +49,7 @@ namespace AlgorithmDeveloper
             _workspaceModelTypeCB = new ComboBox();
             _mainPage_TerminalGB = new GroupBox();
             _mainTerminal = new RichTextBox();
-            _mainTabControl = new AlgorithmDeveloper.Resources.UI.Controls.CustomizableTabControl.CustomTabControl();
+            _mainTabControl = new AlgorithmDeveloper.UI.Elements.Controls.CustomizableTabControl.CustomizableTabControl();
             _mainTabControl_SettingsPage = new TabPage();
             _mainToolStrip.SuspendLayout();
             _mainTabControl_MainPage.SuspendLayout();
@@ -393,7 +393,7 @@ namespace AlgorithmDeveloper
         }
 
         #endregion
-        private Resources.UI.Controls.CustomizableToolStrip.CustomizableToolStrip _mainToolStrip;
+        private UI.Elements.Controls.CustomizableToolStrip.CustomizableToolStrip _mainToolStrip;
         private ToolStripDropDownButton _mainToolStrip_File;
         private ToolStripDropDownButton _mainToolStrip_View;
         private ToolStripMenuItem _mainToolStrip_File_Open;
@@ -403,7 +403,7 @@ namespace AlgorithmDeveloper
         private TabPage _mainTabControl_MainPage;
         private TableLayoutPanel _mainTLP;
         private GroupBox _mainPage_TerminalGB;
-        private Resources.UI.Controls.CustomizableTabControl.CustomTabControl _mainTabControl;
+        private UI.Elements.Controls.CustomizableTabControl.CustomizableTabControl _mainTabControl;
         private TabPage _mainTabControl_SettingsPage;
         private TableLayoutPanel _subTLP;
         private GroupBox _pagesGB;
