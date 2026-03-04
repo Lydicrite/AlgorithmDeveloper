@@ -23,6 +23,7 @@ namespace AlgorithmDeveloper.Abstractions.AAModel.Vertices
             {
                 new Point(Center.X, Center.Y + IFigure.HalfHeight + IFigure.Indent) // [bottom]
             };
+
             _gridGeometry = new GridGeometry
             (
                 FigureShape.Ellipse,

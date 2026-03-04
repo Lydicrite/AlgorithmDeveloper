@@ -150,14 +150,17 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.CustomizableTabControl
         private Point _LastMousePosition;
 
         // Extender storage for per-TabPage permissions
-        private readonly Dictionary<TabPage, bool> _ForbidHide = new();
-        private readonly Dictionary<TabPage, bool> _ForbidClose = new();
-        private readonly Dictionary<TabPage, bool> _ForbidEntry = new();
+        private readonly Dictionary<TabPage, bool> _ForbidHide = [];
+        private readonly Dictionary<TabPage, bool> _ForbidClose = [];
+        private readonly Dictionary<TabPage, bool> _ForbidEntry = [];
 
         // Events fired when permissions change for a specific TabPage
         public event EventHandler<TabControlEventArgs>? TabHidePermissionChanged;
         public event EventHandler<TabControlEventArgs>? TabClosePermissionChanged;
         public event EventHandler<TabControlEventArgs>? TabEntryPermissionChanged;
+
+        // Backing fields for properties that need to be preserved when changing styles
+        private Color _TabBorderColorSelected = Color.Empty;
 
         #endregion Приватные переменные
 
@@ -244,7 +247,16 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.CustomizableTabControl
 
                 return _StyleProvider!;
             }
-            set { _StyleProvider = value; }
+            set
+            {
+                _StyleProvider = value;
+
+                // If the user assigns a new provider directly, check if we need to apply our stored color
+                if (_StyleProvider != null && !_TabBorderColorSelected.IsEmpty)
+                {
+                    _StyleProvider.BorderColorSelected = _TabBorderColorSelected;
+                }
+            }
         }
 
 
@@ -262,6 +274,11 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.CustomizableTabControl
                 {
                     _Style = value;
                     _StyleProvider = TabStyleProvider.CreateProvider(this);
+
+                    // Restore user-defined colors if they were set
+                    if (!_TabBorderColorSelected.IsEmpty)
+                        _StyleProvider.BorderColorSelected = _TabBorderColorSelected;
+
                     Invalidate();
                 }
             }
@@ -954,8 +971,15 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.CustomizableTabControl
         {
             IntPtr hFont = Font.ToHfont();
 
-            NativeUIUtils.SendMessage(Handle, NativeUIUtils.WM_SETFONT, hFont, (IntPtr)(-1));
-            NativeUIUtils.SendMessage(Handle, NativeUIUtils.WM_FONTCHANGE, IntPtr.Zero, IntPtr.Zero);
+            try
+            {
+                NativeUIUtils.SendMessage(Handle, NativeUIUtils.WM_SETFONT, hFont, (IntPtr)(-1));
+                NativeUIUtils.SendMessage(Handle, NativeUIUtils.WM_FONTCHANGE, IntPtr.Zero, IntPtr.Zero);
+            }
+            finally
+            {
+                NativeUIUtils.DeleteObject(hFont);
+            }
 
             UpdateStyles();
 
@@ -1419,7 +1443,11 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.CustomizableTabControl
 
                     // Вычисляем прямоугольник полосы вкладок (tab strip)
                     int itemThickness = (Alignment <= TabAlignment.Bottom) ? ItemSize.Height : ItemSize.Width;
-                    int tabStripThickness = 5 + (itemThickness * RowCount);
+
+                    // Увеличиваем область исключения клиппинга, чтобы не затирать нижнюю границу вкладки
+                    // (или верхнюю/левую/правую в зависимости от выравнивания)
+                    int tabStripThickness = itemThickness + 4;
+
                     Rectangle tabStripRect;
 
                     switch (Alignment)
@@ -1476,7 +1504,10 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.CustomizableTabControl
             Color borderColor;
 
             if (index == SelectedIndex)
-                borderColor = _StyleProvider!.BorderColorSelected;
+            {
+                // Ensure we use the user-defined color if available
+                borderColor = !_TabBorderColorSelected.IsEmpty ? _TabBorderColorSelected : _StyleProvider!.BorderColorSelected;
+            }
             else if (_StyleProvider!.HotTrack && index == ActiveIndex)
                 borderColor = _StyleProvider.BorderColorHot;
             else
@@ -2229,8 +2260,16 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.CustomizableTabControl
         [Description("Цвет границы выбранной вкладки")]
         public Color TabBorderColorSelected
         {
-            get { return DisplayStyleProvider.BorderColorSelected; }
-            set { DisplayStyleProvider.BorderColorSelected = value; }
+            get
+            {
+                if (!_TabBorderColorSelected.IsEmpty) return _TabBorderColorSelected;
+                return DisplayStyleProvider.BorderColorSelected;
+            }
+            set
+            {
+                _TabBorderColorSelected = value;
+                DisplayStyleProvider.BorderColorSelected = value;
+            }
         }
 
         /// <summary>

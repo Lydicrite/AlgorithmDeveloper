@@ -180,7 +180,7 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.CustomizableTabControl.Styles
         /// <summary>
         /// Цвет текста выбранной вкладки
         /// </summary>
-        protected Color _TextColorSelected = Color.Empty;     
+        protected Color _TextColorSelected = Color.Empty;
         /// <summary>
         /// Цвет текста отключенной вкладки
         /// </summary>
@@ -427,7 +427,7 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.CustomizableTabControl.Styles
             // Добавляем смешивание
             if (fillBrush != null)
                 fillBrush.Blend = GetBackgroundBlend();
-            
+
             return fillBrush ?? new LinearGradientBrush(tabBounds, light, dark, LinearGradientMode.Vertical);
         }
 

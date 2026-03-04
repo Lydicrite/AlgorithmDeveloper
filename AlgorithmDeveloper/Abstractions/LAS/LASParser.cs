@@ -68,7 +68,7 @@ namespace AlgorithmDeveloper.Abstractions.LAS
             if (errors.Count > 0)
                 throw new ParsingAggregateException(errors);
 
-            model.InitialLAS = input;
+            model.LAS = input;
             model.Update();
             return model;
         }
@@ -304,17 +304,15 @@ namespace AlgorithmDeveloper.Abstractions.LAS
         {
             while (position < tokens.Count)
             {
-                // Если предыдущий элемент — конечная вершина, дальнейшее связывание недопустимо
-                if (previousElement is EndVertex)
-                    break;
-
                 var token = tokens[position];
                 if (token == "Yк")
                 {
                     var end = HandleEndVertex(model, position, ref parsedPositions, ref errors);
                     LinkPrevious(previousElement, end, ref errors);
                     position++;
-                    break;
+                    // После Yк связывание прекращается, но парсинг должен продолжаться (на случай detached блоков)
+                    previousElement = null;
+                    continue;
                 }
 
                 // Обработка безусловного перехода на верхнем уровне: w↑i
@@ -698,6 +696,7 @@ namespace AlgorithmDeveloper.Abstractions.LAS
         private static void LinkPrevious(IBDVertex? previous, IBDVertex? current, ref List<ParsingError> errors)
         {
             if (previous == null || current == null) return;
+            if (previous is EndVertex) return; // Конечная вершина не может иметь продолжения
             // Защита от самосвязывания (например, когда w↑i непосредственно предшествует ↓i той же точки)
             if (ReferenceEquals(previous, current)) return;
             previous.Next = current;

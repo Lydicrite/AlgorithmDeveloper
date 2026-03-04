@@ -12,7 +12,6 @@ namespace AlgorithmDeveloper.Abstractions.AAModel.Vertices
         /// Уникальный идентификатор экземпляра вершины.
         /// </summary>
         Guid Uid { get; }
-
         /// <summary>
         /// Строковый идентификатор элемента.
         /// </summary>
@@ -45,7 +44,7 @@ namespace AlgorithmDeveloper.Abstractions.AAModel.Vertices
     {
         public Guid Uid { get; } = Guid.NewGuid();
 
-        public string? ID { get; protected set; }
+        public string? ID { get; set; }
         public abstract string Description { get; }
         public IBDVertex? Next { get; set; }
         public abstract IBDVertex? GetNext(AbstractAutomata? model = null);

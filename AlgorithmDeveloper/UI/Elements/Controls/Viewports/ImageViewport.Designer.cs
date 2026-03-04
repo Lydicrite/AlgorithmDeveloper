@@ -16,8 +16,14 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
         {
             if (disposing)
             {
-                _markCts?.Cancel();
-                _markCts?.Dispose();
+                _debounceTimer?.Dispose();
+                
+                _cachedNormalPen?.Dispose();
+                _cachedActivePen?.Dispose();
+                _cachedNormalBrush?.Dispose();
+                _cachedActiveBrush?.Dispose();
+                _cachedTextBrush?.Dispose();
+
                 components?.Dispose();
             }
 

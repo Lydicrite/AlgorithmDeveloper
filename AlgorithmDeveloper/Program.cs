@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using System.Runtime;
+
 namespace AlgorithmDeveloper
 {
     internal static class Program
@@ -8,8 +11,14 @@ namespace AlgorithmDeveloper
         [STAThread]
         static void Main()
         {
+            // Повышаем приоритет процесса для обеспечения максимальной отзывчивости макросов
+            Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.High;
+
+            // Настраиваем режим GC для интерактивного приложения
+            GCSettings.LatencyMode = GCLatencyMode.Interactive;
+
             ApplicationConfiguration.Initialize();
-            Application.Run(new MainFormV2());
+            Application.Run(new MainForm());
         }
     }
 }

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AlgorithmDeveloper.Abstractions.AAModel;
 using AlgorithmDeveloper.Abstractions.AAModel.Vertices;
+using AlgorithmDeveloper.Abstractions.AAModel.Vertices.Graph;
 using AlgorithmDeveloper.Abstractions.AAModel.Vertices.Graph.Layout;
 using AlgorithmDeveloper.Abstractions.AAModel.Vertices.Geometry;
 using AlgorithmDeveloper.UI.Elements.Controls.Terminal;
@@ -118,6 +119,11 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
             UpdateVisualization();
         }
 
+        public void ReapplyLayout()
+        {
+            UpdateVisualization();
+        }
+
         /// <summary>
         /// Обновляет визуализацию модели во Viewports.
         /// </summary>
@@ -127,14 +133,20 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
             if (_model == null || _model.Vertices.Count == 0)
             {
                 _viewport.Figures = null;
+                _viewport.Edges = null;
                 return;
             }
 
             // Размещаем вершины для визуализации
             ArrangeVertices();
 
+            // Построение маршрутов связей
+            var router = new OrthogonalEdgeRouter();
+            var edges = router.BuildRoutes(_model, _showJumpPoints);
+            _viewport.Edges = edges;
+
             _viewport.Figures = _model.Vertices.Where(v => _showJumpPoints || v is not JumpPoint).OfType<IFigure>();
-            _viewport.FitToWindow();
+            // _viewport.FitToWindow(); // Вызывается автоматически в сеттере Figures
         }
 
         /// <summary>
@@ -150,8 +162,8 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
             // Включаем нормализацию слоёв по несвязанным компонентам; стратегия по умолчанию: shortest-path
             ILayoutAlgorithm layout = new SugiyamaLayoutAlgorithm
             (
-                LayeringStrategy.ShortestPath,
-                normalizeComponents: true,
+                VisualizationSettings.LayoutLayeringStrategy,
+                normalizeComponents: VisualizationSettings.LayoutNormalizeComponents,
                 VisualizationSettings.HorizontalSpacing,
                 VisualizationSettings.VerticalSpacing,
                 VisualizationSettings.StartX,
@@ -333,6 +345,9 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
                 }
                 _model.ResetConditions();
             }
+            if (_viewport.Edges != null)
+                foreach (var e in _viewport.Edges) e.IsActive = false;
+
             _viewport.Invalidate();
             
             UpdateUIState();
@@ -371,6 +386,8 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
                 if (current is IFigure fig)
                 {
                     foreach (var v in _model.Vertices.OfType<IFigure>()) v.IsActive = false;
+                    if (_viewport.Edges != null) foreach (var e in _viewport.Edges) e.IsActive = false;
+
                     fig.IsActive = true;
                     _viewport.Invalidate();
                     
@@ -436,6 +453,36 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
                 }
 
                 var next = _model.GetNext(current);
+
+                if (_viewport.Edges != null)
+                {
+                    foreach (var e in _viewport.Edges) e.IsActive = false;
+
+                    if (next != null)
+                    {
+                        IBDVertex? visualTarget = next;
+                        if (!_showJumpPoints)
+                        {
+                            int safety = 0;
+                            while (visualTarget is JumpPoint jp)
+                            {
+                                visualTarget = jp.GetNext(_model);
+                                if (++safety > 1000) break;
+                            }
+                        }
+
+                        if (visualTarget != null)
+                        {
+                            var edge = _viewport.Edges.FirstOrDefault(e => e.Source == current && e.Target == visualTarget);
+                            if (edge != null)
+                            {
+                                edge.IsActive = true;
+                                _viewport.Invalidate();
+                            }
+                        }
+                    }
+                }
+
                 current = next;
                 step++;
             }
@@ -444,16 +491,48 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
         private void HighlightCycle(Dictionary<IBDVertex, int> visited, List<IBDVertex> path, IBDVertex cycleStart)
         {
             int startIndex = visited[cycleStart];
-            var cycleNodes = new HashSet<IBDVertex>();
+            var cycleNodes = new List<IBDVertex>();
             for (int i = startIndex; i < path.Count; i++)
             {
                 cycleNodes.Add(path[i]);
             }
 
+            // Подсветка вершин
             foreach (var v in cycleNodes.OfType<IFigure>())
             {
                 v.IsActive = true;
             }
+
+            // Подсветка ребер цикла
+            if (_viewport.Edges != null)
+            {
+                // Проходим по парам вершин в цикле
+                for (int i = 0; i < cycleNodes.Count; i++)
+                {
+                    var u = cycleNodes[i];
+                    var v = cycleNodes[(i + 1) % cycleNodes.Count]; // Замыкаем цикл
+
+                    // Находим соответствующее ребро во Viewport (учитывая возможные JumpPoints)
+                    // EdgeRouter строит ребра между вершинами модели. 
+                    // Если _showJumpPoints == false, то ребра могут соединять вершины через JumpPoints.
+                    // VisualEdge.Source и VisualEdge.Target - это вершины модели.
+                    
+                    // Однако, path содержит все вершины, включая JumpPoints, если они есть в visited?
+                    // В RunSimulationLoop: while (current is JumpPoint) current = GetNext(current);
+                    // То есть path НЕ содержит JumpPoints.
+                    
+                    // Значит, u и v - это "значимые" вершины.
+                    // VisualEdge также соединяет значимые вершины, если _showJumpPoints == false.
+                    
+                    // Ищем ребро от u к v
+                    var edge = _viewport.Edges.FirstOrDefault(e => e.Source == u && e.Target == v);
+                    if (edge != null)
+                    {
+                        edge.IsActive = true;
+                    }
+                }
+            }
+
             _viewport.Invalidate();
         }
 

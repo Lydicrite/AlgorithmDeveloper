@@ -101,8 +101,6 @@ namespace AlgorithmDeveloperTests.Tests
         [DataRow("Yн P0 ↑1 Y0 w↑1 ↓1 X1 ↑2 w↑4 ↓2 P1 ↑3 Y3 w↑4 ↓3 Y1 w↑4 ↓4 P2 ↑5 X2 ↑7 w↑8 ↓5 X0 ↑6 w↑8 ↓6 Y2 w↑8 ↓7 Y4 w↑8 ↓8 Yк",
             DisplayName = "(TestGroup J)\tAlgo 33 = Algo 31 + Algo 32\t(Миша)")]
 
-
-
         [DataRow("Yн Yк",
             DisplayName = "(TestGroup X)\tAlgo 88")]
         [DataRow("Yн Y1 P1 ↑1 Y2 w↑1 ↓1 X2 ↑2 Y3 P3 ↑3 Y4 w↑3 ↓3 X4 ↑4 w↑1 ↓4 P5 ↑5 w↑1 ↓5 Y5 w↑2 ↓2 Yк",
@@ -222,6 +220,10 @@ namespace AlgorithmDeveloperTests.Tests
                         $"\nОшибки:\n{errors2}"
                     );
             }
+
+            // Проверка корректности модели
+            bool correct = model2!.CheckCorrectness(out string msg);
+            Assert.IsTrue(correct, $"Актуальная модель имеет некорректную ЛСА\nОшибки: \n{msg}");
 
             // Логи теста
             Console.WriteLine

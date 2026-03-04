@@ -75,7 +75,7 @@ namespace AlgorithmDeveloper.Abstractions.AAModel.Vertices.Geometry
         /// <summary>
         /// Отступ для точек связи (одинаковый для всех вершин).
         /// </summary>
-        static int Indent { get; } = 5;
+        static int Indent { get { return (int)AlgorithmDeveloper.UI.Elements.Controls.Viewports.VisualizationSettings.LinkIndent; } }
         /// <summary>
         /// Геометрия сетки, содержащая форму и точки связи.
         /// </summary>

@@ -27,7 +27,7 @@ namespace AlgorithmDeveloper.Abstractions.AAModel.Utils
         {
             var results = FindMaximumCommonSubgraphs(aa1, aa2, strictLabels, resultLimit);
             var sb = new StringBuilder();
-            sb.AppendLine($"Общие подграфы для алгоритмов \"{aa1.InitialLAS}\" и \"{aa2.InitialLAS}\":");
+            sb.AppendLine($"Общие подграфы для алгоритмов \"{aa1.LAS}\" и \"{aa2.LAS}\":");
             sb.AppendLine("{");
             if (results.Count == 0)
             {

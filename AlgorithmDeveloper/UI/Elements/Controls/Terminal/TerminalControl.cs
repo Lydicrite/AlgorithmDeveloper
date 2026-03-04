@@ -158,7 +158,7 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Terminal
             LogMessage(message, _outputRTB.ForeColor);
         }
 
-        private void InputTB_KeyDown(object sender, KeyEventArgs e)
+        private void InputTB_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -187,7 +187,7 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Terminal
             }
         }
 
-        private void InputTB_KeyPress(object sender, KeyPressEventArgs e)
+        private void InputTB_KeyPress(object? sender, KeyPressEventArgs e)
         {
             if (_binaryInputMode)
             {

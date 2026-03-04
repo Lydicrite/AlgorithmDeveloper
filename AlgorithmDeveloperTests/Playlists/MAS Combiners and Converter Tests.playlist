@@ -1,0 +1,190 @@
+<Playlist Version="2.0">
+  <Rule Name="Includes" Match="Any">
+    <Rule Match="All">
+      <Property Name="Solution" />
+      <Rule Match="Any">
+        <Rule Match="All">
+          <Property Name="Project" Value="AlgorithmDeveloperTests" />
+          <Rule Match="Any">
+            <Rule Match="All">
+              <Property Name="Namespace" Value="AlgorithmDeveloperTests.Tests" />
+              <Rule Match="Any">
+                <Rule Match="All">
+                  <Property Name="Class" Value="MASCombinerTests" />
+                  <Rule Match="Any">
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="Combine_Models_CheckEquivalence(System.String,System.String[])" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="Test 1" />
+                        <Property Name="DisplayName" Value="Test 2" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="CombineTwoModels(System.String,System.String,System.String)" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="Algo 12 = Algo 10 + Algo 11" />
+                        <Property Name="DisplayName" Value="Algo 15 = Algo 13 + Algo 14" />
+                        <Property Name="DisplayName" Value="Algo 18 = Algo 16 + Algo 17" />
+                        <Property Name="DisplayName" Value="Algo 21 = Algo 19 + Algo 20" />
+                        <Property Name="DisplayName" Value="Algo 24 = Algo 22 + Algo 23" />
+                        <Property Name="DisplayName" Value="Algo 27 = Algo 25 + Algo 26" />
+                        <Property Name="DisplayName" Value="Algo 3 = Algo 1 + Algo 2" />
+                        <Property Name="DisplayName" Value="Algo 30 = Algo 28 + Algo 29" />
+                        <Property Name="DisplayName" Value="Algo 33 = Algo 31 + Algo 32" />
+                        <Property Name="DisplayName" Value="Algo 6 = Algo 4 + Algo 5" />
+                        <Property Name="DisplayName" Value="Algo 9 = Algo 7 + Algo 8" />
+                      </Rule>
+                    </Rule>
+                  </Rule>
+                </Rule>
+                <Rule Match="All">
+                  <Property Name="Class" Value="MASToAAConverterTests" />
+                  <Rule Match="Any">
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="SimpleModels_MASToAA(System.String)" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="(TestGroup A)&#x9;Algo 1" />
+                        <Property Name="DisplayName" Value="(TestGroup A)&#x9;Algo 2" />
+                        <Property Name="DisplayName" Value="(TestGroup A)&#x9;Algo 3" />
+                        <Property Name="DisplayName" Value="(TestGroup B)&#x9;Algo 4" />
+                        <Property Name="DisplayName" Value="(TestGroup B)&#x9;Algo 5" />
+                        <Property Name="DisplayName" Value="(TestGroup B)&#x9;Algo 6" />
+                        <Property Name="DisplayName" Value="(TestGroup C)&#x9;Algo 7" />
+                        <Property Name="DisplayName" Value="(TestGroup C)&#x9;Algo 8" />
+                        <Property Name="DisplayName" Value="(TestGroup C)&#x9;Algo 9" />
+                        <Property Name="DisplayName" Value="(TestGroup D)&#x9;Algo 10" />
+                        <Property Name="DisplayName" Value="(TestGroup D)&#x9;Algo 11" />
+                        <Property Name="DisplayName" Value="(TestGroup D)&#x9;Algo 12" />
+                        <Property Name="DisplayName" Value="(TestGroup E)&#x9;Algo 13" />
+                        <Property Name="DisplayName" Value="(TestGroup E)&#x9;Algo 14" />
+                        <Property Name="DisplayName" Value="(TestGroup E)&#x9;Algo 15" />
+                        <Property Name="DisplayName" Value="(TestGroup F)&#x9;Algo 16" />
+                        <Property Name="DisplayName" Value="(TestGroup F)&#x9;Algo 17" />
+                        <Property Name="DisplayName" Value="(TestGroup F)&#x9;Algo 18" />
+                        <Property Name="DisplayName" Value="(TestGroup G)&#x9;Algo 19" />
+                        <Property Name="DisplayName" Value="(TestGroup G)&#x9;Algo 20" />
+                        <Property Name="DisplayName" Value="(TestGroup G)&#x9;Algo 21" />
+                        <Property Name="DisplayName" Value="(TestGroup H)&#x9;Algo 22" />
+                        <Property Name="DisplayName" Value="(TestGroup H)&#x9;Algo 23" />
+                        <Property Name="DisplayName" Value="(TestGroup H)&#x9;Algo 24" />
+                        <Property Name="DisplayName" Value="(TestGroup J)&#x9;Algo 25" />
+                        <Property Name="DisplayName" Value="(TestGroup J)&#x9;Algo 26" />
+                        <Property Name="DisplayName" Value="(TestGroup J)&#x9;Algo 27" />
+                        <Property Name="DisplayName" Value="(TestGroup J)&#x9;Algo 28" />
+                        <Property Name="DisplayName" Value="(TestGroup J)&#x9;Algo 29" />
+                        <Property Name="DisplayName" Value="(TestGroup J)&#x9;Algo 30" />
+                        <Property Name="DisplayName" Value="(TestGroup J)&#x9;Algo 31" />
+                        <Property Name="DisplayName" Value="(TestGroup J)&#x9;Algo 32" />
+                        <Property Name="DisplayName" Value="(TestGroup J)&#x9;Algo 33" />
+                        <Property Name="DisplayName" Value="(TestGroup X)&#x9;Algo 88" />
+                        <Property Name="DisplayName" Value="(TestGroup X)&#x9;Algo 89" />
+                        <Property Name="DisplayName" Value="(TestGroup X)&#x9;Algo 90" />
+                        <Property Name="DisplayName" Value="(TestGroup X)&#x9;Algo 91" />
+                        <Property Name="DisplayName" Value="(TestGroup Z)&#x9;Algo 94" />
+                        <Property Name="DisplayName" Value="(TestGroup Z)&#x9;Algo 95" />
+                        <Property Name="DisplayName" Value="(TestGroup Z)&#x9;Algo 96" />
+                        <Property Name="DisplayName" Value="(TestGroup Z)&#x9;Algo 97" />
+                        <Property Name="DisplayName" Value="(TestGroup Z)&#x9;Algo 97 Rev" />
+                        <Property Name="DisplayName" Value="(TestGroup Z)&#x9;Algo 98" />
+                        <Property Name="DisplayName" Value="(TestGroup Z)&#x9;Algo 99" />
+                        <Property Name="DisplayName" Value="ComplexAlgo 1 Variant 1" />
+                        <Property Name="DisplayName" Value="ComplexAlgo 1 Variant 2" />
+                        <Property Name="DisplayName" Value="ComplexAlgo 2 Variant 1" />
+                        <Property Name="DisplayName" Value="ComplexAlgo 2 Variant 2" />
+                        <Property Name="DisplayName" Value="ComplexAlgo 3 Variant 1" />
+                        <Property Name="DisplayName" Value="ComplexAlgo 3 Variant 2" />
+                        <Property Name="DisplayName" Value="ComplexAlgo 4" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="StrangeModels_MASToAA(System.String)" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="Strange Algo 1" />
+                        <Property Name="DisplayName" Value="Strange Algo 2" />
+                        <Property Name="DisplayName" Value="Strange Algo 3" />
+                        <Property Name="DisplayName" Value="Strange Algo 4" />
+                        <Property Name="DisplayName" Value="Strange Algo 5" />
+                        <Property Name="DisplayName" Value="Strange Algo 6" />
+                      </Rule>
+                    </Rule>
+                  </Rule>
+                </Rule>
+                <Rule Match="All">
+                  <Property Name="Class" Value="StructuralMergerTests" />
+                  <Rule Match="Any">
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="Combine_ConditionalFalseBranch_InsertsJumpPoint" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="Combine_ConditionalFalseBranch_InsertsJumpPoint" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="Combine_IdenticalModels_ReturnsSameStructure" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="Combine_IdenticalModels_ReturnsSameStructure" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="Combine_Loop_InsertsJumpPoint" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="Combine_Loop_InsertsJumpPoint" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="Combine_MergePoint_InsertsJumpPoint" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="Combine_MergePoint_InsertsJumpPoint" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="Combine_Models_CheckEquivalence(System.String,System.String[])" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="Algo 12 = Algo 10 + Algo 11" />
+                        <Property Name="DisplayName" Value="Algo 15 = Algo 13 + Algo 14" />
+                        <Property Name="DisplayName" Value="Algo 18 = Algo 16 + Algo 17" />
+                        <Property Name="DisplayName" Value="Algo 21 = Algo 19 + Algo 20" />
+                        <Property Name="DisplayName" Value="Algo 24 = Algo 22 + Algo 23" />
+                        <Property Name="DisplayName" Value="Algo 27 = Algo 25 + Algo 26" />
+                        <Property Name="DisplayName" Value="Algo 3 = Algo 1 + Algo 2" />
+                        <Property Name="DisplayName" Value="Algo 30 = Algo 28 + Algo 29" />
+                        <Property Name="DisplayName" Value="Algo 33 = Algo 31 + Algo 32" />
+                        <Property Name="DisplayName" Value="Algo 6 = Algo 4 + Algo 5" />
+                        <Property Name="DisplayName" Value="Algo 9 = Algo 7 + Algo 8" />
+                        <Property Name="DisplayName" Value="Test 1" />
+                        <Property Name="DisplayName" Value="Test 2" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="Combine_SimpleDivergence_AddsConditional" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="Combine_SimpleDivergence_AddsConditional" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="Combine_SuffixMerging_MergesCommonTail" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="Combine_SuffixMerging_MergesCommonTail" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="Combine_ThreeModels_WithGrouping" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="Combine_ThreeModels_WithGrouping" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="BuildCommonSubgraphsReport(System.String,System.String)" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="TestGroup 1" />
+                      </Rule>
+                    </Rule>
+                  </Rule>
+                </Rule>
+              </Rule>
+            </Rule>
+          </Rule>
+        </Rule>
+      </Rule>
+    </Rule>
+  </Rule>
+</Playlist>

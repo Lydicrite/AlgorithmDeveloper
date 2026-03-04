@@ -1,5 +1,6 @@
 using AlgorithmDeveloper.Abstractions.AAModel.Vertices;
 using AlgorithmDeveloper.Abstractions.AAModel.Vertices.Geometry;
+using AlgorithmDeveloper.Abstractions.AAModel.Vertices.Graph;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,6 +19,7 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
     {
         private Image? _image;
         private IEnumerable<IFigure>? _figures;
+        private IEnumerable<VisualEdge>? _edges;
         private float _zoom = 1f;                       // масштаб: 1 = 100%
         private PointF _offset = new PointF(0, 0);      // сдвиг панорамирования в пикселях устройства
         private bool _panning;
@@ -25,12 +27,22 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
         private bool _spaceDown;
         private readonly object _renderLock = new object();
 
+        // Cached Graphics Resources
+        private Pen? _cachedNormalPen;
+        private Pen? _cachedActivePen;
+        private Pen? _cachedEdgeInactivePen;
+        private Pen? _cachedEdgeActivePen;
+        private AdjustableArrowCap? _cachedArrowCap;
+        private SolidBrush? _cachedNormalBrush;
+        private SolidBrush? _cachedActiveBrush;
+        private SolidBrush? _cachedTextBrush;
+
         private bool _updatingScrollBars = false;
 
         // Дебаунс для события метки
-        private CancellationTokenSource? _markCts;
+        private System.Windows.Forms.Timer _debounceTimer;
         private Point _lastMouseMovePoint;
-        private int _debounceMs = 1;
+        private int _debounceMs = 15;
 
         // Жест масштабирования Ctrl + Shift + ПКМ
         private bool _scalingGestureActive;
@@ -39,6 +51,30 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
 
         private bool IsInDesignMode => LicenseManager.UsageMode == LicenseUsageMode.Designtime || (Site?.DesignMode ?? DesignMode);
 
+        private bool _requiresFitToContent = false;
+
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            base.OnVisibleChanged(e);
+            if (Visible && _requiresFitToContent)
+            {
+                // Используем BeginInvoke, чтобы дать время на отработку layout (Resize),
+                // если контрол только что стал видимым и меняет размер (например, в TabControl).
+                if (IsHandleCreated)
+                {
+                    BeginInvoke(new Action(() =>
+                    {
+                        FitToContent();
+                        _requiresFitToContent = false;
+                    }));
+                }
+                else
+                {
+                    _requiresFitToContent = false;
+                }
+            }
+        }
+
         public ImageViewport()
         {
             InitializeComponent();
@@ -46,6 +82,58 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
             BackColor = Color.DimGray;
             TabStop = true;
             InitializeScrollBars();
+            InitializeContextMenu();
+
+            _debounceTimer = new System.Windows.Forms.Timer();
+            _debounceTimer.Interval = _debounceMs;
+            _debounceTimer.Tick += DebounceTimer_Tick;
+        }
+
+        private void DebounceTimer_Tick(object? sender, EventArgs e)
+        {
+            _debounceTimer.Stop();
+            if (_image == null) return;
+
+            var clientPt = _lastMouseMovePoint;
+            var imgPtF = ClientToImageF(clientPt);
+            var clamped = ClampToImage(imgPtF);
+            var rounded = new Point((int)Math.Round(clamped.X), (int)Math.Round(clamped.Y));
+
+            OnMarkChanged(rounded);
+        }
+
+        private void InitializeContextMenu()
+        {
+            var contextMenu = new ContextMenuStrip();
+
+            var fitToContentItem = new ToolStripMenuItem("Вписать в окно");
+            fitToContentItem.Click += (s, e) => FitToContent();
+
+            var helpItem = new ToolStripMenuItem("Справка по управлению");
+            helpItem.Click += (s, e) => ShowHelpMessageBox();
+
+            contextMenu.Items.Add(fitToContentItem);
+            contextMenu.Items.Add(new ToolStripSeparator());
+            contextMenu.Items.Add(helpItem);
+
+            this.ContextMenuStrip = contextMenu;
+        }
+
+        private void ShowHelpMessageBox()
+        {
+            var helpText = new StringBuilder();
+            helpText.AppendLine("Жесты управления:");
+            helpText.AppendLine("\n1) Панорамирование: ('Пробел' + ЛКМ + движение мыши) или (СКМ + движение мыши).\n");
+            helpText.AppendLine("\n2) Масштабирование: ('Ctrl' + колесо мыши);" +
+                                "\n\tвращение вверх - увеличение," +
+                                "\n\tвращение вниз - уменьшение.\n");
+            helpText.AppendLine("\n3) Быстрое масштабирование: ('Ctrl' + 'Shift' + ПКМ + движение мыши);" +
+                                "\n\tдвижение вверх - увеличение," +
+                                "\n\tдвижение вниз - уменьшение.\n");
+            helpText.AppendLine("\n4) Увеличение: двойной клик ЛКМ или клавиша '+'.\n");
+            helpText.AppendLine("\n5) Уменьшение: клавиша '-'.");
+            
+            MessageBox.Show(helpText.ToString(), "Справка по управлению", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /// <summary>
@@ -95,6 +183,7 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
             {
                 if (_image == value) return;
                 _image = value;
+                _requiresFitToContent = !Visible;
                 ResetView();
                 UpdateScrollBars();
                 Invalidate();
@@ -157,6 +246,26 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
                 if (_figures != value)
                 {
                     _figures = value;
+                    _requiresFitToContent = !Visible;
+                    FitToContent();
+                    Invalidate();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Коллекция связей (ребер) для отрисовки.
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IEnumerable<VisualEdge>? Edges
+        {
+            get => _edges;
+            set
+            {
+                if (_edges != value)
+                {
+                    _edges = value;
                     Invalidate();
                 }
             }
@@ -171,17 +280,40 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
         #region Векторная отрисовка фигур
 
         /// <summary>
+        /// Отрисовывает все связи (ребра).
+        /// </summary>
+        private void DrawEdges(Graphics g)
+        {
+            EnsureGraphicsResources();
+
+            if (_edges == null) return;
+
+            // Сначала рисуем неактивные ребра, чтобы они были на заднем плане
+            foreach (var edge in _edges)
+            {
+                if (edge.IsActive) continue;
+                if (edge.Points == null || edge.Points.Count < 2) continue;
+
+                g.DrawLines(_cachedEdgeInactivePen!, edge.Points.ToArray());
+            }
+
+            // Затем рисуем активные ребра поверх неактивных
+            foreach (var edge in _edges)
+            {
+                if (!edge.IsActive) continue;
+                if (edge.Points == null || edge.Points.Count < 2) continue;
+
+                g.DrawLines(_cachedEdgeActivePen!, edge.Points.ToArray());
+            }
+        }
+
+        /// <summary>
         /// Отрисовывает все векторные фигуры.
         /// </summary>
         private void DrawVectorFigures(Graphics g)
         {
-            using var normalPen = new Pen(_figureStrokeColor, _figureStrokeWidth) { Alignment = PenAlignment.Center };
-            using var activePen = new Pen(_figureStrokeActiveColor, _figureStrokeWidth) { Alignment = PenAlignment.Center };
-            
-            using var normalFillBrush = new SolidBrush(_figureFillColor);
-            using var activeFillBrush = new SolidBrush(_figureFillActiveColor);
-            
-            using var textBrush = new SolidBrush(_figureTextColor);
+            EnsureGraphicsResources();
+
             using var centeredFormat = new StringFormat
             {
                 Alignment = StringAlignment.Center,
@@ -191,9 +323,188 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
 
             foreach (var figure in _figures!)
             {
-                var pen = figure.IsActive ? activePen : normalPen;
-                var fillBrush = figure.IsActive ? activeFillBrush : normalFillBrush;
-                DrawFigure(g, figure, pen, fillBrush, textBrush, centeredFormat);
+                var pen = figure.IsActive ? _cachedActivePen! : _cachedNormalPen!;
+                var fillBrush = figure.IsActive ? _cachedActiveBrush! : _cachedNormalBrush!;
+                DrawFigure(g, figure, pen, fillBrush, _cachedTextBrush!, centeredFormat);
+            }
+
+            // Отрисовка меток ветвей (0 и 1)
+            DrawBranchLabels(g);
+        }
+
+        private void DrawBranchLabels(Graphics g)
+        {
+            if (_edges == null) return;
+
+            // Настройки шрифта для меток
+            float fontSize = VisualizationSettings.FontSize * 0.6f;
+            using var font = new Font(_figureFont.FontFamily, fontSize, _figureFont.Style);
+            
+            // Смещение меток
+            float offset = IFigure.HalfHeight * 2 * 0.25f;
+
+            foreach (var edge in _edges)
+            {
+                string? label = null;
+                if (edge.Type == EdgeType.FalseBranch) label = "0";
+                else if (edge.Type == EdgeType.TrueBranch) label = "1";
+
+                if (label != null && edge.Points != null && edge.Points.Count > 0)
+                {
+                    // Точка начала перехода
+                    var startPoint = edge.Points[0];
+                    var sourceCenter = edge.Source is IFigure fig ? fig.Center : startPoint;
+                    
+                    // Вычисляем позицию метки в зависимости от направления выхода
+                    float x = startPoint.X;
+                    float y = startPoint.Y;
+
+                    bool isLeft = startPoint.X < sourceCenter.X - 5;
+                    bool isRight = startPoint.X > sourceCenter.X + 5;
+                    bool isBottom = !isLeft && !isRight;
+
+                    if (isLeft)
+                    {
+                        // Выход влево: метка над линией, чуть левее
+                        x -= offset * 0.5f;
+                        y -= offset * 0.8f;
+                    }
+                    else if (isRight)
+                    {
+                        // Выход вправо: метка над линией, чуть правее
+                        x += offset * 0.5f;
+                        y -= offset * 0.8f;
+                    }
+                    else // isBottom
+                    {
+                        // Выход снизу:
+                        // Если "0" (False) - слева от линии
+                        // Если "1" (True) - справа от линии
+                        y += offset * 0.5f;
+                        if (edge.Type == EdgeType.FalseBranch) x -= offset * 0.8f;
+                        else x += offset * 0.8f;
+                    }
+
+                    // Цвет метки совпадает с цветом ребра
+                    var color = edge.IsActive ? VisualizationSettings.EdgeActiveColor : VisualizationSettings.EdgeInactiveColor;
+                    using var brush = new SolidBrush(color);
+
+                    // Центрируем текст относительно (x, y)
+                    var size = g.MeasureString(label, font);
+                    g.DrawString(label, font, brush, x - size.Width / 2, y - size.Height / 2);
+                }
+            }
+        }
+
+        private void EnsureGraphicsResources()
+        {
+            // Normal Pen
+            if (_cachedNormalPen == null)
+            {
+                _cachedNormalPen = new Pen(_figureStrokeColor, _figureStrokeWidth) { Alignment = PenAlignment.Center };
+            }
+            else
+            {
+                if (_cachedNormalPen.Color != _figureStrokeColor) _cachedNormalPen.Color = _figureStrokeColor;
+                if (Math.Abs(_cachedNormalPen.Width - _figureStrokeWidth) > 0.001f) _cachedNormalPen.Width = _figureStrokeWidth;
+            }
+
+            // Active Pen
+            if (_cachedActivePen == null)
+            {
+                _cachedActivePen = new Pen(_figureStrokeActiveColor, _figureStrokeWidth) { Alignment = PenAlignment.Center };
+            }
+            else
+            {
+                if (_cachedActivePen.Color != _figureStrokeActiveColor) _cachedActivePen.Color = _figureStrokeActiveColor;
+                if (Math.Abs(_cachedActivePen.Width - _figureStrokeWidth) > 0.001f) _cachedActivePen.Width = _figureStrokeWidth;
+            }
+
+            // Normal Brush
+            if (_cachedNormalBrush == null)
+            {
+                _cachedNormalBrush = new SolidBrush(_figureFillColor);
+            }
+            else if (_cachedNormalBrush.Color != _figureFillColor)
+            {
+                _cachedNormalBrush.Color = _figureFillColor;
+            }
+
+            // Active Brush
+            if (_cachedActiveBrush == null)
+            {
+                _cachedActiveBrush = new SolidBrush(_figureFillActiveColor);
+            }
+            else if (_cachedActiveBrush.Color != _figureFillActiveColor)
+            {
+                _cachedActiveBrush.Color = _figureFillActiveColor;
+            }
+
+            // Text Brush
+            if (_cachedTextBrush == null)
+            {
+                _cachedTextBrush = new SolidBrush(_figureTextColor);
+            }
+            else if (_cachedTextBrush.Color != _figureTextColor)
+            {
+                _cachedTextBrush.Color = _figureTextColor;
+            }
+
+            // Arrow Cap
+            if (_cachedArrowCap == null)
+            {
+                _cachedArrowCap = new AdjustableArrowCap(4, 4, true);
+            }
+
+            // Корректировка размера стрелок при малом масштабе
+            // GDI+ может ограничивать минимальную толщину линии в 1px, из-за чего стрелки (рассчитываемые от толщины) 
+            // становятся непропорционально большими. Мы уменьшаем их размер, чтобы компенсировать это.
+            float nominalEdgeWidth = VisualizationSettings.EdgeInactiveWidth;
+            float screenEdgeWidth = nominalEdgeWidth * _zoom;
+            float baseArrowSize = 4f; // Базовый размер (множитель толщины)
+
+            float targetArrowSize = baseArrowSize;
+            
+            // Если толщина линии на экране приближается к 1.35px или меньше,
+            // начинаем плавно уменьшать относительный размер стрелки.
+            // Порог 1.75 выбран экспериментально,чтобы сгладить переход и сделать стрелки визуально менее массивными при отдалении.
+            float threshold = 1.75f;
+            if (screenEdgeWidth < threshold && screenEdgeWidth > 0.001f)
+            {
+                // Линейная интерполяция: чем тоньше линия, тем меньше множитель стрелки.
+                targetArrowSize = baseArrowSize * (screenEdgeWidth / threshold);
+            }
+
+            if (Math.Abs(_cachedArrowCap.Width - targetArrowSize) > 0.001f)
+            {
+                _cachedArrowCap.Width = targetArrowSize;
+                _cachedArrowCap.Height = targetArrowSize;
+            }
+
+            // Edge Inactive Pen
+            if (_cachedEdgeInactivePen == null)
+            {
+                _cachedEdgeInactivePen = new Pen(VisualizationSettings.EdgeInactiveColor, VisualizationSettings.EdgeInactiveWidth);
+                _cachedEdgeInactivePen.CustomEndCap = _cachedArrowCap;
+            }
+            else
+            {
+                if (_cachedEdgeInactivePen.Color != VisualizationSettings.EdgeInactiveColor) _cachedEdgeInactivePen.Color = VisualizationSettings.EdgeInactiveColor;
+                if (Math.Abs(_cachedEdgeInactivePen.Width - VisualizationSettings.EdgeInactiveWidth) > 0.001f) _cachedEdgeInactivePen.Width = VisualizationSettings.EdgeInactiveWidth;
+                _cachedEdgeInactivePen.CustomEndCap = _cachedArrowCap;
+            }
+
+            // Edge Active Pen
+            if (_cachedEdgeActivePen == null)
+            {
+                _cachedEdgeActivePen = new Pen(VisualizationSettings.EdgeActiveColor, VisualizationSettings.EdgeActiveWidth);
+                _cachedEdgeActivePen.CustomEndCap = _cachedArrowCap;
+            }
+            else
+            {
+                if (_cachedEdgeActivePen.Color != VisualizationSettings.EdgeActiveColor) _cachedEdgeActivePen.Color = VisualizationSettings.EdgeActiveColor;
+                if (Math.Abs(_cachedEdgeActivePen.Width - VisualizationSettings.EdgeActiveWidth) > 0.001f) _cachedEdgeActivePen.Width = VisualizationSettings.EdgeActiveWidth;
+                _cachedEdgeActivePen.CustomEndCap = _cachedArrowCap;
             }
         }
 
@@ -574,6 +885,9 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
                 // Рисуем векторные фигуры
                 if (_figures != null)
                 {
+                    if (_edges != null)
+                        DrawEdges(g);
+
                     DrawVectorFigures(g);
                 }
 
@@ -718,10 +1032,11 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
             if (Math.Abs(newZoom - oldZoom) < 0.0001f)
                 return;
 
-            // До масштабирования: позиция якорной точки в клиентских координатах
+            // // До масштабирования: позиция якорной точки в клиентских координатах
             var anchorClientBefore = ImageToClient(anchorImg);
 
             Zoom = newZoom; // вызовет Invalidate
+            // Debug.WriteLine($"Масштаб: {Zoom}");
 
             // После масштабирования: вычислим новый offset так, чтобы anchorClient совпала
             var anchorClientAfter = ImageToClient(anchorImg);
@@ -820,16 +1135,13 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
                 return new PointF(x, y);
             }
 
-            // Если есть фигуры, находим границы контента
-            if (_figures != null && _figures.Any())
+            // Иначе границы векторного контента
+            var bounds = GetVectorContentBounds();
+            if (!bounds.IsEmpty)
             {
-                var bounds = GetFiguresBounds();
-                if (!bounds.IsEmpty)
-                {
-                    float x = Math.Max(bounds.Left, Math.Min(bounds.Right, worldPt.X));
-                    float y = Math.Max(bounds.Top, Math.Min(bounds.Bottom, worldPt.Y));
-                    return new PointF(x, y);
-                }
+                float x = Math.Max(bounds.Left, Math.Min(bounds.Right, worldPt.X));
+                float y = Math.Max(bounds.Top, Math.Min(bounds.Bottom, worldPt.Y));
+                return new PointF(x, y);
             }
 
             // Если нет контента, возвращаем точку как есть
@@ -883,36 +1195,8 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
         private void DebounceMarkUpdate()
         {
             if (IsInDesignMode) return;
-            _markCts?.Cancel();
-            var cts = new CancellationTokenSource();
-            _markCts = cts;
-            var token = cts.Token;
-            Task.Run(async () =>
-            {
-                try
-                {
-                    await Task.Delay(_debounceMs, token);
-                    if (token.IsCancellationRequested) return;
-
-                    // Выполняем доступ к изображению и вычисления ТОЛЬКО в Elements-потоке
-                    if (IsHandleCreated)
-                    {
-                        BeginInvoke(new Action(() =>
-                        {
-                            if (token.IsCancellationRequested) return;
-                            if (_image == null) return; // нет изображения — координаты метки не вычисляем
-
-                            var clientPt = _lastMouseMovePoint;
-                            var imgPtF = ClientToImageF(clientPt);
-                            var clamped = ClampToImage(imgPtF);
-                            var rounded = new Point((int)Math.Round(clamped.X), (int)Math.Round(clamped.Y));
-
-                            OnMarkChanged(rounded);
-                        }));
-                    }
-                }
-                catch (OperationCanceledException) { }
-            }, token);
+            _debounceTimer.Stop();
+            _debounceTimer.Start();
         }
 
 
@@ -944,9 +1228,67 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
 
         public void FitToWindow()
         {
-            ResetView();
+            if (_image == null && _figures != null && _figures.Any())
+            {
+                FitToContent();
+            }
+            else
+            {
+                ResetView();
+                UpdateScrollBars();
+                Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// Автоматически масштабирует и центрирует контент (изображение или фигуры) по центру области просмотра с отступами.
+        /// </summary>
+        public void FitToContent()
+        {
+            var bounds = GetContentBounds();
+            if (bounds.IsEmpty)
+            {
+                _zoom = 1f;
+                _offset = PointF.Empty;
+                UpdateScrollBars();
+                Invalidate();
+                return;
+            }
+
+            var viewRect = GetImageViewRect();
+            
+            // Если область просмотра слишком мала (например, при инициализации или сворачивании),
+            // отменяем пересчет масштаба, чтобы избежать некорректного (очень маленького) зума.
+            if (viewRect.Width < 20 || viewRect.Height < 20)
+                return;
+
+            float padding = 20f;
+            float availableW = Math.Max(1, viewRect.Width - 2 * padding);
+            float availableH = Math.Max(1, viewRect.Height - 2 * padding);
+
+            // Вычисляем необходимый зум для вмещения контента
+            float zoomX = availableW / bounds.Width;
+            float zoomY = availableH / bounds.Height;
+            float newZoom = Math.Min(zoomX, zoomY);
+            
+            // Ограничиваем зум разумными пределами
+            newZoom = Math.Max(0.01f, Math.Min(256f, newZoom));
+
+            _zoom = newZoom;
+
+            // Центрируем
+            float centerX = viewRect.Left + viewRect.Width / 2f;
+            float centerY = viewRect.Top + viewRect.Height / 2f;
+            
+            float contentCenterX = bounds.Left + bounds.Width / 2f;
+            float contentCenterY = bounds.Top + bounds.Height / 2f;
+
+            // Offset = Center - ContentCenter * Zoom
+            _offset = new PointF(centerX - contentCenterX * _zoom, centerY - contentCenterY * _zoom);
+
             UpdateScrollBars();
             Invalidate();
+            OnZoomChanged(EventArgs.Empty);
         }
 
         public void ZoomTo100Percent()
@@ -964,11 +1306,65 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
 
         #region Обновление позиций и размеров областей прокрутки
 
+        /// <summary>
+        /// Вычисляет границы контента (изображения или фигур).
+        /// </summary>
+        private RectangleF GetContentBounds()
+        {
+            if (_image != null)
+                return new RectangleF(0, 0, _image.Width, _image.Height);
+
+            return GetVectorContentBounds();
+        }
+
+        private RectangleF GetVectorContentBounds()
+        {
+            RectangleF bounds = RectangleF.Empty;
+
+            if (_figures != null && _figures.Any())
+                bounds = GetFiguresBounds();
+
+            if (_edges != null && _edges.Any())
+            {
+                var edgesBounds = GetEdgesBounds();
+                if (bounds.IsEmpty)
+                    bounds = edgesBounds;
+                else if (!edgesBounds.IsEmpty)
+                    bounds = RectangleF.Union(bounds, edgesBounds);
+            }
+            return bounds;
+        }
+
+        private RectangleF GetEdgesBounds()
+        {
+            float minX = float.MaxValue, minY = float.MaxValue;
+            float maxX = float.MinValue, maxY = float.MinValue;
+            bool hasPoints = false;
+
+            foreach (var edge in _edges!)
+            {
+                if (edge.Points == null) continue;
+                foreach (var pt in edge.Points)
+                {
+                    if (pt.X < minX) minX = pt.X;
+                    if (pt.Y < minY) minY = pt.Y;
+                    if (pt.X > maxX) maxX = pt.X;
+                    if (pt.Y > maxY) maxY = pt.Y;
+                    hasPoints = true;
+                }
+            }
+
+            if (!hasPoints) return RectangleF.Empty;
+            return new RectangleF(minX, minY, maxX - minX, maxY - minY);
+        }
+
         private void UpdateScrollBars()
         {
             if (_updatingScrollBars)
                 return;
-            if (_image == null || _zoom <= 0)
+            
+            var contentBounds = GetContentBounds();
+            if (contentBounds.IsEmpty || _zoom <= 0)
             {
                 if (_hScrollBar != null) _hScrollBar.Visible = false;
                 if (_vScrollBar != null) _vScrollBar.Visible = false;
@@ -978,22 +1374,33 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
             _updatingScrollBars = true;
 
             var viewRect = GetImageViewRect();
-            var imgW = _image.Width * _zoom;
-            var imgH = _image.Height * _zoom;
+            
+            // Размеры контента в масштабе
+            float contentW = contentBounds.Width * _zoom;
+            float contentH = contentBounds.Height * _zoom;
 
             // Горизонтальный
             if (_hScrollBar != null)
             {
-                if (imgW > viewRect.Width)
+                if (contentW > viewRect.Width)
                 {
                     _hScrollBar.Visible = true;
-                    int max = (int)Math.Ceiling(imgW - viewRect.Width);
+                    // Максимум скроллбара равен полному размеру контента
+                    _hScrollBar.Maximum = (int)Math.Ceiling(contentW);
+                    // LargeChange равен размеру видимой области
+                    _hScrollBar.LargeChange = Math.Max(1, viewRect.Width);
                     _hScrollBar.Minimum = 0;
-                    _hScrollBar.Maximum = Math.Max(0, max);
-                    _hScrollBar.LargeChange = Math.Max(1, viewRect.Width / 4);
                     _hScrollBar.SmallChange = Math.Max(1, viewRect.Width / 20);
-                    int val = (int)Math.Round(-(_offset.X - viewRect.Left));
-                    _hScrollBar.Value = Math.Max(_hScrollBar.Minimum, Math.Min(_hScrollBar.Maximum, val));
+                    
+                    float minX = contentBounds.Left;
+                    // Offset.X = viewRect.Left - Value - minX * zoom
+                    // Value = viewRect.Left - Offset.X - minX * zoom
+                    float valF = viewRect.Left - _offset.X - (minX * _zoom);
+                    
+                    int val = (int)Math.Round(valF);
+                    // Ограничиваем значение допустимым диапазоном скроллбара
+                    int maxVal = Math.Max(0, _hScrollBar.Maximum - _hScrollBar.LargeChange + 1);
+                    _hScrollBar.Value = Math.Max(_hScrollBar.Minimum, Math.Min(maxVal, val));
                 }
                 else
                 {
@@ -1005,16 +1412,22 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
             viewRect = GetImageViewRect(); // пересчитать, если поменялась видимость H
             if (_vScrollBar != null)
             {
-                if (imgH > viewRect.Height)
+                if (contentH > viewRect.Height)
                 {
                     _vScrollBar.Visible = true;
-                    int max = (int)Math.Ceiling(imgH - viewRect.Height);
+                    // Максимум скроллбара равен полному размеру контента
+                    _vScrollBar.Maximum = (int)Math.Ceiling(contentH);
+                    // LargeChange равен размеру видимой области
+                    _vScrollBar.LargeChange = Math.Max(1, viewRect.Height);
                     _vScrollBar.Minimum = 0;
-                    _vScrollBar.Maximum = Math.Max(0, max);
-                    _vScrollBar.LargeChange = Math.Max(1, viewRect.Height / 4);
                     _vScrollBar.SmallChange = Math.Max(1, viewRect.Height / 20);
-                    int val = (int)Math.Round(-(_offset.Y - viewRect.Top));
-                    _vScrollBar.Value = Math.Max(_vScrollBar.Minimum, Math.Min(_vScrollBar.Maximum, val));
+                    
+                    float minY = contentBounds.Top;
+                    float valF = viewRect.Top - _offset.Y - (minY * _zoom);
+                    
+                    int val = (int)Math.Round(valF);
+                    int maxVal = Math.Max(0, _vScrollBar.Maximum - _vScrollBar.LargeChange + 1);
+                    _vScrollBar.Value = Math.Max(_vScrollBar.Minimum, Math.Min(maxVal, val));
                 }
                 else
                 {
@@ -1031,7 +1444,12 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
             var viewRect = GetImageViewRect();
             if (_hScrollBar != null)
             {
-                SetOffsetClamped(new PointF(viewRect.Left - _hScrollBar.Value, _offset.Y));
+                var contentBounds = GetContentBounds();
+                float minX = contentBounds.IsEmpty ? 0 : contentBounds.Left;
+                
+                // Desired Offset.X = viewRect.Left - Value - minX * zoom
+                float desiredX = viewRect.Left - _hScrollBar.Value - (minX * _zoom);
+                SetOffsetClamped(new PointF(desiredX, _offset.Y));
             }
         }
 
@@ -1041,7 +1459,12 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
             var viewRect = GetImageViewRect();
             if (_vScrollBar != null)
             {
-                SetOffsetClamped(new PointF(_offset.X, viewRect.Top - _vScrollBar.Value));
+                var contentBounds = GetContentBounds();
+                float minY = contentBounds.IsEmpty ? 0 : contentBounds.Top;
+
+                // Desired Offset.Y = viewRect.Top - Value - minY * zoom
+                float desiredY = viewRect.Top - _vScrollBar.Value - (minY * _zoom);
+                SetOffsetClamped(new PointF(_offset.X, desiredY));
             }
         }
 
@@ -1102,9 +1525,9 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
             float clampedFx = desired.X;
             float clampedFy = desired.Y;
 
-            if (_figures != null && _figures.Any())
+            var bounds = GetVectorContentBounds();
+            if (!bounds.IsEmpty)
             {
-                var bounds = GetFiguresBounds();
                 float contW = bounds.Width * _zoom;
                 float contH = bounds.Height * _zoom;
 

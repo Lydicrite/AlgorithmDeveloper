@@ -66,7 +66,7 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
             // _aapMainTLP
             // 
             _aapMainTLP.ColumnCount = 2;
-            _aapMainTLP.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 425F));
+            _aapMainTLP.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 449F));
             _aapMainTLP.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             _aapMainTLP.Controls.Add(_viewportGB, 1, 0);
             _aapMainTLP.Controls.Add(_aapInteractionGB, 0, 0);
@@ -84,9 +84,9 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
             _viewportGB.Dock = DockStyle.Fill;
             _viewportGB.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
             _viewportGB.ForeColor = Color.Silver;
-            _viewportGB.Location = new Point(428, 3);
+            _viewportGB.Location = new Point(452, 3);
             _viewportGB.Name = "_viewportGB";
-            _viewportGB.Size = new Size(311, 431);
+            _viewportGB.Size = new Size(287, 431);
             _viewportGB.TabIndex = 1;
             _viewportGB.TabStop = false;
             _viewportGB.Text = "Визуализация";
@@ -99,7 +99,7 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
             _viewport.ForeColor = Color.Silver;
             _viewport.Location = new Point(3, 23);
             _viewport.Name = "_viewport";
-            _viewport.Size = new Size(305, 405);
+            _viewport.Size = new Size(281, 405);
             _viewport.TabIndex = 0;
             // 
             // _aapInteractionGB
@@ -110,7 +110,7 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
             _aapInteractionGB.ForeColor = Color.Silver;
             _aapInteractionGB.Location = new Point(3, 3);
             _aapInteractionGB.Name = "_aapInteractionGB";
-            _aapInteractionGB.Size = new Size(419, 431);
+            _aapInteractionGB.Size = new Size(443, 431);
             _aapInteractionGB.TabIndex = 0;
             _aapInteractionGB.TabStop = false;
             _aapInteractionGB.Text = "Взаимодействие";
@@ -151,7 +151,7 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
             _interactionTabControl.Margin = new Padding(1);
             _interactionTabControl.Name = "_interactionTabControl";
             _interactionTabControl.SelectedIndex = 0;
-            _interactionTabControl.Size = new Size(413, 405);
+            _interactionTabControl.Size = new Size(437, 405);
             _interactionTabControl.TabBackgroundColor = Color.FromArgb(48, 48, 48);
             _interactionTabControl.TabBackgroundColorDisabled = Color.DimGray;
             _interactionTabControl.TabBackgroundColorHot = Color.FromArgb(61, 61, 61);
@@ -266,10 +266,10 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
             _interactionTabControl_FastModeTab.Controls.Add(_fastModeTLP);
             _interactionTabControl.SetForbidClose(_interactionTabControl_FastModeTab, true);
             _interactionTabControl_FastModeTab.ForeColor = Color.FromArgb(214, 214, 214);
-            _interactionTabControl_FastModeTab.Location = new Point(4, 26);
+            _interactionTabControl_FastModeTab.Location = new Point(4, 27);
             _interactionTabControl_FastModeTab.Name = "_interactionTabControl_FastModeTab";
             _interactionTabControl_FastModeTab.Padding = new Padding(3);
-            _interactionTabControl_FastModeTab.Size = new Size(192, 70);
+            _interactionTabControl_FastModeTab.Size = new Size(429, 374);
             _interactionTabControl_FastModeTab.TabIndex = 1;
             _interactionTabControl_FastModeTab.Text = "Быстрый режим";
             // 
@@ -285,7 +285,7 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
             _fastModeTLP.RowCount = 2;
             _fastModeTLP.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             _fastModeTLP.RowStyles.Add(new RowStyle());
-            _fastModeTLP.Size = new Size(186, 64);
+            _fastModeTLP.Size = new Size(423, 368);
             _fastModeTLP.TabIndex = 1;
             // 
             // _fastModeButtonsTLP
@@ -300,7 +300,7 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
             _fastModeButtonsTLP.Name = "_fastModeButtonsTLP";
             _fastModeButtonsTLP.RowCount = 1;
             _fastModeButtonsTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            _fastModeButtonsTLP.Size = new Size(180, 44);
+            _fastModeButtonsTLP.Size = new Size(417, 44);
             _fastModeButtonsTLP.TabIndex = 0;
             // 
             // _btnFastStop
@@ -313,9 +313,9 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
             _btnFastStop.FlatAppearance.BorderColor = SystemColors.WindowFrame;
             _btnFastStop.FlatStyle = FlatStyle.Flat;
             _btnFastStop.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            _btnFastStop.Location = new Point(93, 3);
+            _btnFastStop.Location = new Point(211, 3);
             _btnFastStop.Name = "_btnFastStop";
-            _btnFastStop.Size = new Size(84, 38);
+            _btnFastStop.Size = new Size(203, 38);
             _btnFastStop.TabIndex = 11;
             _btnFastStop.Text = "Остановить";
             _btnFastStop.UseVisualStyleBackColor = false;
@@ -332,7 +332,7 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
             _btnFastStart.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 204);
             _btnFastStart.Location = new Point(3, 3);
             _btnFastStart.Name = "_btnFastStart";
-            _btnFastStart.Size = new Size(84, 38);
+            _btnFastStart.Size = new Size(202, 38);
             _btnFastStart.TabIndex = 10;
             _btnFastStart.Text = "Запустить";
             _btnFastStart.UseVisualStyleBackColor = false;
@@ -344,7 +344,7 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
             _fastTerminal.Dock = DockStyle.Fill;
             _fastTerminal.Location = new Point(3, 53);
             _fastTerminal.Name = "_fastTerminal";
-            _fastTerminal.Size = new Size(180, 354);
+            _fastTerminal.Size = new Size(417, 354);
             _fastTerminal.TabIndex = 1;
             // 
             // _interactionTabControl_AAInfoTab
@@ -353,9 +353,9 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
             _interactionTabControl_AAInfoTab.Controls.Add(_createReportButton);
             _interactionTabControl_AAInfoTab.Controls.Add(_infoLabel);
             _interactionTabControl_AAInfoTab.ForeColor = Color.FromArgb(214, 214, 214);
-            _interactionTabControl_AAInfoTab.Location = new Point(4, 27);
+            _interactionTabControl_AAInfoTab.Location = new Point(4, 26);
             _interactionTabControl_AAInfoTab.Name = "_interactionTabControl_AAInfoTab";
-            _interactionTabControl_AAInfoTab.Size = new Size(405, 374);
+            _interactionTabControl_AAInfoTab.Size = new Size(192, 70);
             _interactionTabControl_AAInfoTab.TabIndex = 2;
             _interactionTabControl_AAInfoTab.Text = "Создание отчёта";
             // 
@@ -369,9 +369,9 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
             _createReportButton.FlatAppearance.BorderColor = SystemColors.WindowFrame;
             _createReportButton.FlatStyle = FlatStyle.Flat;
             _createReportButton.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            _createReportButton.Location = new Point(0, 326);
+            _createReportButton.Location = new Point(0, 22);
             _createReportButton.Name = "_createReportButton";
-            _createReportButton.Size = new Size(405, 48);
+            _createReportButton.Size = new Size(192, 48);
             _createReportButton.TabIndex = 11;
             _createReportButton.Text = "Создать отчёт и сохранить как...";
             _createReportButton.UseVisualStyleBackColor = false;
@@ -425,45 +425,15 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.AbstractAlgoModelling
         private TableLayoutPanel _interactiveModeTLP;
         public Terminal.TerminalControl _terminal;
         private TableLayoutPanel _buttonsTLP;
-        private TableLayoutPanel _mainTLP;
         private TabPage _interactionTabControl_FastModeTab;
         private TableLayoutPanel _fastModeTLP;
         private TableLayoutPanel _fastModeButtonsTLP;
         private Button _btnFastStop;
         private Button _btnFastStart;
         public Terminal.TerminalControl _fastTerminal;
-        private TableLayoutPanel settingsTLP;
-        private FlowLayoutPanel settingsLeftFLP;
-        private GroupBox _workFieldParamsGB;
-        private Label label15;
-        private NumericUpDown drawStepDelayNUD;
-        private PictureBox _viewportCP;
-        private Label label14;
-        private GroupBox _verticesVisualParamsGB;
-        private PictureBox _vertexActInnerCP;
-        private Label _infoLabel;
-        private PictureBox _vertexInactInnerCP;
-        private Label label8;
-        private Label label6;
-        private Label label7;
-        private Label label5;
-        private PictureBox _inactiveBorderCP;
-        private PictureBox _activeBorderCP;
-        private Label label4;
-        private NumericUpDown _borderNUD;
-        private NumericUpDown _vertexSizeNUD;
-        private GroupBox _transitionsVisualParamsGB;
-        private GroupBox _inactTransitionsGB;
-        private Label label12;
-        private Label label13;
-        private PictureBox _transitionDarkPenCP;
-        private NumericUpDown _transitionDarkPenNUD;
-        private GroupBox _actTransitionsGB;
-        private Label label10;
-        private Label label11;
-        private PictureBox _transitionLightPenCP;
-        private NumericUpDown _transitionLightPenNUD;
-        private FlowLayoutPanel settingsRightFLP;
+
+       
+        private Label _infoLabel;      
         private Button _stopWorkImitation;
         private Button _startWorkImitation;
         private TabPage _interactionTabControl_AAInfoTab;

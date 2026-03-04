@@ -210,6 +210,7 @@ namespace AlgorithmDeveloper.Abstractions.LAS
                                 RegisterJumpPoint(lbsJp);
                                 if (lbsJp.Next is EndVertex)
                                 {
+                                    AddPending(lbsJp.JumpIndex, "JumpPoint to EndVertex deferred");
                                     if (_enableLogging) LogSnapshot("Условная ветвь", $"Левая ↓{lbsJp.JumpIndex} ведёт к Yк, закрытие отложено", $"newBounds: [{FormatSet(newBounds.Select(n => n.ToString()))}]");
                                     return lastBoundaryIndex;
                                 }
@@ -322,6 +323,12 @@ namespace AlgorithmDeveloper.Abstractions.LAS
                                     !(branchJp.Next is EndVertex) &&
                                     (leftJpMain == null || branchBoundaryIndex < leftJpMain.JumpIndex || (leftJpMain != null && leftJpMain.JumpIndex == 0)))
                                 {
+                                    if (leftJpMain != null)
+                                    {
+                                        RegisterJumpPoint(leftJpMain);
+                                        AddPending(leftJpMain.JumpIndex, "отложена левая граница (приоритет правой)");
+                                    }
+
                                     AppendJumpPoint(branchBoundaryIndex);
                                     RemovePending(branchBoundaryIndex, "закрыта после правой ветви (приоритет ранней границы)");
                                     currentMain = branchJp.Next;
@@ -336,8 +343,7 @@ namespace AlgorithmDeveloper.Abstractions.LAS
                                 bool shouldDeferLeftBoundary = false;
                                 if (leftJpMain != null && leftJpMain.Next is EndVertex)
                                 {
-                                    shouldDeferLeftBoundary = _pendingBoundaries.Any(b => b < leftJpMain.JumpIndex &&
-                                        _jumpPointByIndex.TryGetValue(b, out var jp) && !(jp.Next is EndVertex));
+                                    shouldDeferLeftBoundary = true;
                                 }
 
                                 // Возвращаем стандартную семантику: левую границу можно закрывать
@@ -455,6 +461,19 @@ namespace AlgorithmDeveloper.Abstractions.LAS
                                 if (jp.Next is EndVertex)
                                 {
                                     bool hasAltBoundary = _pendingBoundaries.Any(b => _jumpPointByIndex.TryGetValue(b, out var jpa) && !(jpa.Next is EndVertex));
+                                    
+                                    if (!hasAltBoundary && _pendingBoundaries.Count > 1)
+                                    {
+                                        Console.WriteLine($"DEBUG: hasAltBoundary=false. Current JP={jp.JumpIndex} (to End). Pending: {string.Join(",", _pendingBoundaries)}");
+                                        foreach(var b in _pendingBoundaries)
+                                        {
+                                            if (_jumpPointByIndex.TryGetValue(b, out var jpa))
+                                                Console.WriteLine($"  b={b}: Next is {jpa.Next?.GetType().Name} (ID={(jpa.Next != null ? GetID(jpa.Next) : "null")})");
+                                            else
+                                                Console.WriteLine($"  b={b}: Not in index!");
+                                        }
+                                    }
+
                                     if (hasAltBoundary)
                                     {
                                         var altBoundary = _pendingBoundaries.First(b => _jumpPointByIndex.TryGetValue(b, out var jpa) && !(jpa.Next is EndVertex));

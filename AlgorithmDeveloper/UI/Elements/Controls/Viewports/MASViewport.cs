@@ -19,6 +19,7 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
         private static readonly Color GridColor = Color.FromArgb(240, 240, 240);
         private static readonly SolidBrush DarkHeaderBrush = new SolidBrush(DarkHeaderColor);
         private static readonly Pen GridPen = new Pen(GridColor);
+        private SolidBrush? _cachedBackBrush;
 
         public MASViewport()
         {
@@ -247,10 +248,12 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.Viewports
                 }
                 else
                 {
-                     using (var back = new SolidBrush(_lv.BackColor))
+                     if (_cachedBackBrush == null || _cachedBackBrush.Color != _lv.BackColor)
                      {
-                         e.Graphics.FillRectangle(back, rect);
+                         _cachedBackBrush?.Dispose();
+                         _cachedBackBrush = new SolidBrush(_lv.BackColor);
                      }
+                     e.Graphics.FillRectangle(_cachedBackBrush, rect);
                 }
             }
 

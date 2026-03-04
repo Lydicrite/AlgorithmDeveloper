@@ -130,8 +130,8 @@
   <data name="InformationIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Pictures\InformationIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="AnalyzeButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Pictures\AnalyzeButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="SettingsFolder" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pictures\SettingsFolder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ButtonCopy" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Pictures\ButtonCopy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -151,28 +151,49 @@
   <data name="RandomSequence" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Pictures\RandomSequence.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ButtonShow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pictures\ButtonShow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TextIcon_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pictures\TextIcon_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ToggleStateIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pictures\ToggleStateIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TextIcon_11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pictures\TextIcon_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HideIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pictures\HideIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ErrorZipReport" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pictures\ErrorZipReport.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="LoadButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Pictures\LoadButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TableIcon_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Pictures\TableIcon_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="CloseIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pictures\CloseIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ErrorIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Pictures\ErrorIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TextIcon_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Pictures\TextIcon_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="TextIcon_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pictures\TextIcon_3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="WarningIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Pictures\WarningIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ButtonShow" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Pictures\ButtonShow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="AnalyzeButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pictures\AnalyzeButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TableIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Pictures\TableIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TextIcon_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Pictures\TextIcon_3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="WarningIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pictures\WarningIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TextIcon1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pictures\TextIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

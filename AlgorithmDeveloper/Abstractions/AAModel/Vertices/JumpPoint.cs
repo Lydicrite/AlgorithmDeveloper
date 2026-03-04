@@ -33,12 +33,12 @@ namespace AlgorithmDeveloper.Abstractions.AAModel.Vertices
 
             var inputPoints = new List<Point>
             {
-                new Point(Center.X, Center.Y - r - IFigure.Indent) // [top]
+                new Point(Center.X, Center.Y - r - 3) // [top]
             };
 
             var outputPoints = new List<Point>
             {
-                new Point(Center.X, Center.Y + r + IFigure.Indent) // [bottom]
+                new Point(Center.X, Center.Y + r + 3) // [bottom]
             };
 
             _gridGeometry = new GridGeometry

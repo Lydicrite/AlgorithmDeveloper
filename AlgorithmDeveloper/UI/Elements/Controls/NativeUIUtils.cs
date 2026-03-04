@@ -147,6 +147,19 @@ namespace AlgorithmDeveloper.UI.Elements.Controls
 
 
 
+        #region GDI32.dll
+
+        /// <summary>
+        /// Удаляет логическое перо, кисть, шрифт, растровое изображение, регион или палитру, освобождая все системные ресурсы, связанные с объектом.
+        /// </summary>
+        /// <param name="hObject">Дескриптор графического объекта</param>
+        /// <returns>Если функция выполняется успешно, возвращаемое значение не равно нулю.</returns>
+        [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool DeleteObject([In] IntPtr hObject);
+
+        #endregion GDI32.dll
+
         #region Вспомогательные функции
 
         /// <summary>

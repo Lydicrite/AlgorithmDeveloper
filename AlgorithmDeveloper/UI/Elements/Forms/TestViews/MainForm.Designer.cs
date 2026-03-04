@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace AlgorithmDeveloper
 {
-    partial class MainFormV2
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -32,6 +32,28 @@ namespace AlgorithmDeveloper
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            _headerStrip = new AlgorithmDeveloper.UI.Elements.Controls.CustomizableToolStrip.CustomizableToolStrip();
+            _headerTitle = new ToolStripLabel();
+            _closeButton = new ToolStripButton();
+            _maximizeButton = new ToolStripButton();
+            _minimizeButton = new ToolStripButton();
+            _tss1 = new ToolStripSeparator();
+            _actionsDropDownBtn = new ToolStripDropDownButton();
+            _loadToCombinePair = new ToolStripMenuItem();
+            _saveToCombinePair = new ToolStripMenuItem();
+            _saveToCombinePairAs = new ToolStripMenuItem();
+            _tss2 = new ToolStripSeparator();
+            _showLastToCombinePairs = new ToolStripMenuItem();
+            _tss3 = new ToolStripSeparator();
+            _gotoProgramFolder = new ToolStripMenuItem();
+            _makeErrorReport = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
+            _clearAllGAS = new ToolStripMenuItem();
+            _viewDropDownBtn = new ToolStripDropDownButton();
+            _themeMenuItem = new ToolStripMenuItem();
+            _tss4 = new ToolStripSeparator();
+            _gasVisualizationSettings = new ToolStripMenuItem();
             _mainTabControl = new AlgorithmDeveloper.UI.Elements.Controls.CustomizableTabControl.CustomizableTabControl();
             _mainTabControl_MainPage = new TabPage();
             _mainScrollPanel = new Panel();
@@ -69,7 +91,7 @@ namespace AlgorithmDeveloper
             _viewportCP = new PictureBox();
             label14 = new Label();
             _verticesVisualParamsGB = new GroupBox();
-            _drawJumpPoints = new CheckBox();
+            _drawJumpPointsCB = new CheckBox();
             _vertexActInnerCP = new PictureBox();
             label1 = new Label();
             _vertexInactInnerCP = new PictureBox();
@@ -83,6 +105,9 @@ namespace AlgorithmDeveloper
             _borderNUD = new NumericUpDown();
             _vertexSizeNUD = new NumericUpDown();
             _transitionsVisualParamsGB = new GroupBox();
+            _allowBranchSwappingCB = new CheckBox();
+            label2 = new Label();
+            _linkIndentNUD = new NumericUpDown();
             _inactTransitionsGB = new GroupBox();
             label12 = new Label();
             label13 = new Label();
@@ -94,8 +119,21 @@ namespace AlgorithmDeveloper
             _transitionLightPenCP = new PictureBox();
             _transitionLightPenNUD = new NumericUpDown();
             settingsRightFLP = new FlowLayoutPanel();
+            _layoutParamsGB = new GroupBox();
+            labelStartY = new Label();
+            _normalizeComponentsCB = new CheckBox();
+            _startYNUD = new NumericUpDown();
+            labelStartX = new Label();
+            _startXNUD = new NumericUpDown();
+            labelVSpacing = new Label();
+            _vSpacingNUD = new NumericUpDown();
+            labelHSpacing = new Label();
+            _hSpacingNUD = new NumericUpDown();
+            labelLayeringStrategy = new Label();
+            _layeringStrategyCB = new ComboBox();
             _toolTip = new ToolTip(components);
             _colorPicker = new ColorDialog();
+            _headerStrip.SuspendLayout();
             _mainTabControl.SuspendLayout();
             _mainTabControl_MainPage.SuspendLayout();
             _mainScrollPanel.SuspendLayout();
@@ -124,13 +162,266 @@ namespace AlgorithmDeveloper
             ((System.ComponentModel.ISupportInitialize)_borderNUD).BeginInit();
             ((System.ComponentModel.ISupportInitialize)_vertexSizeNUD).BeginInit();
             _transitionsVisualParamsGB.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)_linkIndentNUD).BeginInit();
             _inactTransitionsGB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)_transitionDarkPenCP).BeginInit();
             ((System.ComponentModel.ISupportInitialize)_transitionDarkPenNUD).BeginInit();
             _actTransitionsGB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)_transitionLightPenCP).BeginInit();
             ((System.ComponentModel.ISupportInitialize)_transitionLightPenNUD).BeginInit();
+            settingsRightFLP.SuspendLayout();
+            _layoutParamsGB.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)_startYNUD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)_startXNUD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)_vSpacingNUD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)_hSpacingNUD).BeginInit();
             SuspendLayout();
+            // 
+            // _headerStrip
+            // 
+            _headerStrip.ArrowColor = Color.FromArgb(214, 214, 214);
+            _headerStrip.AutoSize = false;
+            _headerStrip.BackColor = Color.FromArgb(48, 48, 48);
+            _headerStrip.CheckedBackColor = Color.Transparent;
+            _headerStrip.CheckedBackColor2 = null;
+            _headerStrip.CheckedBorderColor = Color.Transparent;
+            _headerStrip.CheckedTextColor = Color.FromArgb(214, 214, 214);
+            _headerStrip.DisabledArrowColor = SystemColors.ControlDarkDark;
+            _headerStrip.DisabledTextColor = SystemColors.ControlDarkDark;
+            _headerStrip.DropDownBackColor = Color.FromArgb(46, 46, 46);
+            _headerStrip.DropDownBorderColor = Color.FromArgb(66, 66, 66);
+            _headerStrip.DropDownBorderEnabled = true;
+            _headerStrip.DropDownCornerRadius = 0;
+            _headerStrip.DropDownOverrideBackground = true;
+            _headerStrip.GripStyle = ToolStripGripStyle.Hidden;
+            _headerStrip.HoverArrowColor = Color.FromArgb(250, 250, 250);
+            _headerStrip.HoverBackColor = Color.FromArgb(61, 61, 61);
+            _headerStrip.HoverBackColor2 = null;
+            _headerStrip.HoverBorderColor = Color.FromArgb(112, 112, 112);
+            _headerStrip.HoverTextColor = Color.FromArgb(250, 250, 250);
+            _headerStrip.Items.AddRange(new ToolStripItem[] { _headerTitle, _closeButton, _maximizeButton, _minimizeButton, _tss1, _actionsDropDownBtn, _viewDropDownBtn });
+            _headerStrip.Location = new Point(1, 1);
+            _headerStrip.Name = "_headerStrip";
+            _headerStrip.OutlineColor = Color.FromArgb(31, 31, 31);
+            _headerStrip.OutlineCornerRadius = 0;
+            _headerStrip.OutlineThickness = 4;
+            _headerStrip.OverrideBackground = true;
+            _headerStrip.PressedArrowColor = Color.FromArgb(214, 214, 214);
+            _headerStrip.PressedBackColor = Color.FromArgb(46, 46, 46);
+            _headerStrip.PressedBackColor2 = null;
+            _headerStrip.PressedBorderColor = Color.FromArgb(66, 66, 66);
+            _headerStrip.PressedTextColor = Color.FromArgb(214, 214, 214);
+            _headerStrip.SeparatorColor = Color.FromArgb(112, 112, 112);
+            _headerStrip.SeparatorLightColor = Color.FromArgb(80, 80, 80);
+            _headerStrip.Size = new Size(793, 32);
+            _headerStrip.TabIndex = 99;
+            _headerStrip.Text = "MainFormHeader";
+            _headerStrip.TextColor = Color.FromArgb(214, 214, 214);
+            // 
+            // _headerTitle
+            // 
+            _headerTitle.ForeColor = Color.FromArgb(214, 214, 214);
+            _headerTitle.Image = Properties.Resources.TextIcon_1;
+            _headerTitle.ImageScaling = ToolStripItemImageScaling.None;
+            _headerTitle.Margin = new Padding(2, 2, 0, 0);
+            _headerTitle.Name = "_headerTitle";
+            _headerTitle.Size = new Size(137, 30);
+            _headerTitle.Text = "Algorithm Developer";
+            // 
+            // _closeButton
+            // 
+            _closeButton.Alignment = ToolStripItemAlignment.Right;
+            _closeButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            _closeButton.ForeColor = Color.FromArgb(214, 214, 214);
+            _closeButton.Image = Properties.Resources.CloseIcon;
+            _closeButton.ImageScaling = ToolStripItemImageScaling.None;
+            _closeButton.ImageTransparentColor = Color.Magenta;
+            _closeButton.Margin = new Padding(0, 2, 2, 2);
+            _closeButton.Name = "_closeButton";
+            _closeButton.Overflow = ToolStripItemOverflow.Never;
+            _closeButton.Size = new Size(27, 28);
+            _closeButton.Text = "✕";
+            _closeButton.ToolTipText = "Закрыть";
+            // 
+            // _maximizeButton
+            // 
+            _maximizeButton.Alignment = ToolStripItemAlignment.Right;
+            _maximizeButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            _maximizeButton.ForeColor = Color.FromArgb(214, 214, 214);
+            _maximizeButton.Image = Properties.Resources.ToggleStateIcon;
+            _maximizeButton.ImageScaling = ToolStripItemImageScaling.None;
+            _maximizeButton.ImageTransparentColor = Color.Magenta;
+            _maximizeButton.Margin = new Padding(0, 2, 0, 2);
+            _maximizeButton.Name = "_maximizeButton";
+            _maximizeButton.Overflow = ToolStripItemOverflow.Never;
+            _maximizeButton.Size = new Size(27, 28);
+            _maximizeButton.Text = "☐";
+            _maximizeButton.ToolTipText = "Развернуть";
+            // 
+            // _minimizeButton
+            // 
+            _minimizeButton.Alignment = ToolStripItemAlignment.Right;
+            _minimizeButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            _minimizeButton.ForeColor = Color.FromArgb(214, 214, 214);
+            _minimizeButton.Image = Properties.Resources.HideIcon;
+            _minimizeButton.ImageScaling = ToolStripItemImageScaling.None;
+            _minimizeButton.ImageTransparentColor = Color.Magenta;
+            _minimizeButton.Margin = new Padding(0, 2, 0, 2);
+            _minimizeButton.Name = "_minimizeButton";
+            _minimizeButton.Overflow = ToolStripItemOverflow.Never;
+            _minimizeButton.Size = new Size(27, 28);
+            _minimizeButton.ToolTipText = "Свернуть";
+            // 
+            // _tss1
+            // 
+            _tss1.ForeColor = Color.FromArgb(214, 214, 214);
+            _tss1.Name = "_tss1";
+            _tss1.Size = new Size(6, 32);
+            // 
+            // _actionsDropDownBtn
+            // 
+            _actionsDropDownBtn.AutoToolTip = false;
+            _actionsDropDownBtn.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            _actionsDropDownBtn.DropDownItems.AddRange(new ToolStripItem[] { _loadToCombinePair, _saveToCombinePair, _saveToCombinePairAs, _tss2, _showLastToCombinePairs, _tss3, _gotoProgramFolder, _makeErrorReport, toolStripSeparator2, _clearAllGAS });
+            _actionsDropDownBtn.ForeColor = Color.FromArgb(214, 214, 214);
+            _actionsDropDownBtn.Image = (Image)resources.GetObject("_actionsDropDownBtn.Image");
+            _actionsDropDownBtn.ImageScaling = ToolStripItemImageScaling.None;
+            _actionsDropDownBtn.ImageTransparentColor = Color.Magenta;
+            _actionsDropDownBtn.Margin = new Padding(4, 2, 0, 2);
+            _actionsDropDownBtn.Name = "_actionsDropDownBtn";
+            _actionsDropDownBtn.ShowDropDownArrow = false;
+            _actionsDropDownBtn.Size = new Size(62, 28);
+            _actionsDropDownBtn.Text = "Действия";
+            // 
+            // _loadToCombinePair
+            // 
+            _loadToCombinePair.ForeColor = Color.FromArgb(214, 214, 214);
+            _loadToCombinePair.Image = Properties.Resources.LoadButton;
+            _loadToCombinePair.ImageAlign = ContentAlignment.MiddleLeft;
+            _loadToCombinePair.ImageScaling = ToolStripItemImageScaling.None;
+            _loadToCombinePair.Name = "_loadToCombinePair";
+            _loadToCombinePair.ShortcutKeyDisplayString = "Ctrl+L";
+            _loadToCombinePair.Size = new Size(350, 22);
+            _loadToCombinePair.Text = "Загрузить объединяемую пару...";
+            // 
+            // _saveToCombinePair
+            // 
+            _saveToCombinePair.ForeColor = Color.FromArgb(214, 214, 214);
+            _saveToCombinePair.Image = Properties.Resources.SaveButton;
+            _saveToCombinePair.ImageAlign = ContentAlignment.MiddleLeft;
+            _saveToCombinePair.ImageScaling = ToolStripItemImageScaling.None;
+            _saveToCombinePair.Name = "_saveToCombinePair";
+            _saveToCombinePair.ShortcutKeyDisplayString = "Ctrl+S";
+            _saveToCombinePair.Size = new Size(350, 22);
+            _saveToCombinePair.Text = "Сохранить объединяемую пару";
+            _saveToCombinePair.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // _saveToCombinePairAs
+            // 
+            _saveToCombinePairAs.ForeColor = Color.FromArgb(214, 214, 214);
+            _saveToCombinePairAs.Name = "_saveToCombinePairAs";
+            _saveToCombinePairAs.ShortcutKeyDisplayString = "Ctrl+Shift+S";
+            _saveToCombinePairAs.Size = new Size(350, 22);
+            _saveToCombinePairAs.Text = "Сохранить объединяемую пару как...";
+            // 
+            // _tss2
+            // 
+            _tss2.ForeColor = Color.FromArgb(214, 214, 214);
+            _tss2.Name = "_tss2";
+            _tss2.Size = new Size(347, 6);
+            // 
+            // _showLastToCombinePairs
+            // 
+            _showLastToCombinePairs.ForeColor = Color.FromArgb(214, 214, 214);
+            _showLastToCombinePairs.Name = "_showLastToCombinePairs";
+            _showLastToCombinePairs.Size = new Size(350, 22);
+            _showLastToCombinePairs.Text = "Последние объединяемые пары";
+            // 
+            // _tss3
+            // 
+            _tss3.ForeColor = Color.FromArgb(214, 214, 214);
+            _tss3.Name = "_tss3";
+            _tss3.Size = new Size(347, 6);
+            // 
+            // _gotoProgramFolder
+            // 
+            _gotoProgramFolder.ForeColor = Color.FromArgb(214, 214, 214);
+            _gotoProgramFolder.Image = Properties.Resources.SettingsFolder;
+            _gotoProgramFolder.ImageAlign = ContentAlignment.MiddleLeft;
+            _gotoProgramFolder.ImageScaling = ToolStripItemImageScaling.None;
+            _gotoProgramFolder.Name = "_gotoProgramFolder";
+            _gotoProgramFolder.Size = new Size(350, 22);
+            _gotoProgramFolder.Text = "Перейти к папке с данными программы";
+            // 
+            // _makeErrorReport
+            // 
+            _makeErrorReport.BackColor = Color.FromArgb(46, 46, 46);
+            _makeErrorReport.ForeColor = Color.FromArgb(214, 214, 214);
+            _makeErrorReport.Image = Properties.Resources.ErrorZipReport;
+            _makeErrorReport.ImageAlign = ContentAlignment.MiddleLeft;
+            _makeErrorReport.ImageScaling = ToolStripItemImageScaling.None;
+            _makeErrorReport.Name = "_makeErrorReport";
+            _makeErrorReport.Size = new Size(350, 22);
+            _makeErrorReport.Text = "Создать отчёт об ошибке";
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.ForeColor = Color.FromArgb(214, 214, 214);
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(347, 6);
+            // 
+            // _clearAllGAS
+            // 
+            _clearAllGAS.ForeColor = Color.FromArgb(214, 214, 214);
+            _clearAllGAS.Image = Properties.Resources.ResetButton;
+            _clearAllGAS.ImageAlign = ContentAlignment.MiddleLeft;
+            _clearAllGAS.ImageScaling = ToolStripItemImageScaling.None;
+            _clearAllGAS.Name = "_clearAllGAS";
+            _clearAllGAS.ShortcutKeyDisplayString = "Ctrl+D";
+            _clearAllGAS.Size = new Size(350, 22);
+            _clearAllGAS.Text = "Очистить введённые данные";
+            // 
+            // _viewDropDownBtn
+            // 
+            _viewDropDownBtn.AutoToolTip = false;
+            _viewDropDownBtn.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            _viewDropDownBtn.DropDownItems.AddRange(new ToolStripItem[] { _themeMenuItem, _tss4, _gasVisualizationSettings });
+            _viewDropDownBtn.ForeColor = Color.FromArgb(214, 214, 214);
+            _viewDropDownBtn.Image = (Image)resources.GetObject("_viewDropDownBtn.Image");
+            _viewDropDownBtn.ImageScaling = ToolStripItemImageScaling.None;
+            _viewDropDownBtn.ImageTransparentColor = Color.Magenta;
+            _viewDropDownBtn.Margin = new Padding(4, 2, 0, 2);
+            _viewDropDownBtn.Name = "_viewDropDownBtn";
+            _viewDropDownBtn.ShowDropDownArrow = false;
+            _viewDropDownBtn.Size = new Size(31, 28);
+            _viewDropDownBtn.Text = "Вид";
+            // 
+            // _themeMenuItem
+            // 
+            _themeMenuItem.ForeColor = Color.FromArgb(214, 214, 214);
+            _themeMenuItem.Image = Properties.Resources.TextIcon1;
+            _themeMenuItem.ImageAlign = ContentAlignment.MiddleLeft;
+            _themeMenuItem.ImageScaling = ToolStripItemImageScaling.None;
+            _themeMenuItem.Name = "_themeMenuItem";
+            _themeMenuItem.Size = new Size(294, 26);
+            _themeMenuItem.Text = "Тема";
+            // 
+            // _tss4
+            // 
+            _tss4.ForeColor = Color.FromArgb(214, 214, 214);
+            _tss4.Name = "_tss4";
+            _tss4.Size = new Size(291, 6);
+            // 
+            // _gasVisualizationSettings
+            // 
+            _gasVisualizationSettings.ForeColor = Color.FromArgb(214, 214, 214);
+            _gasVisualizationSettings.Image = Properties.Resources.TextIcon_2;
+            _gasVisualizationSettings.ImageAlign = ContentAlignment.MiddleLeft;
+            _gasVisualizationSettings.ImageScaling = ToolStripItemImageScaling.None;
+            _gasVisualizationSettings.Name = "_gasVisualizationSettings";
+            _gasVisualizationSettings.ShortcutKeyDisplayString = "Ctrl+G";
+            _gasVisualizationSettings.Size = new Size(294, 26);
+            _gasVisualizationSettings.Text = "Настройки отображения ГСА ...";
             // 
             // _mainTabControl
             // 
@@ -166,11 +457,11 @@ namespace AlgorithmDeveloper
             _mainTabControl.DisplayStyleProvider.TextColorSelected = Color.FromArgb(250, 250, 250);
             _mainTabControl.Dock = DockStyle.Fill;
             _mainTabControl.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            _mainTabControl.Location = new Point(0, 0);
+            _mainTabControl.Location = new Point(1, 33);
             _mainTabControl.Margin = new Padding(1);
             _mainTabControl.Name = "_mainTabControl";
             _mainTabControl.SelectedIndex = 0;
-            _mainTabControl.Size = new Size(779, 556);
+            _mainTabControl.Size = new Size(793, 561);
             _mainTabControl.TabBackgroundColor = Color.FromArgb(48, 48, 48);
             _mainTabControl.TabBackgroundColorDisabled = Color.DimGray;
             _mainTabControl.TabBackgroundColorHot = Color.FromArgb(61, 61, 61);
@@ -201,7 +492,7 @@ namespace AlgorithmDeveloper
             _mainTabControl_MainPage.Location = new Point(4, 31);
             _mainTabControl_MainPage.Name = "_mainTabControl_MainPage";
             _mainTabControl_MainPage.Padding = new Padding(3);
-            _mainTabControl_MainPage.Size = new Size(771, 521);
+            _mainTabControl_MainPage.Size = new Size(785, 526);
             _mainTabControl_MainPage.TabIndex = 0;
             _mainTabControl_MainPage.Text = "Редактор";
             // 
@@ -212,7 +503,7 @@ namespace AlgorithmDeveloper
             _mainScrollPanel.Dock = DockStyle.Fill;
             _mainScrollPanel.Location = new Point(3, 3);
             _mainScrollPanel.Name = "_mainScrollPanel";
-            _mainScrollPanel.Size = new Size(765, 515);
+            _mainScrollPanel.Size = new Size(779, 520);
             _mainScrollPanel.TabIndex = 0;
             // 
             // _mainTLP
@@ -229,12 +520,13 @@ namespace AlgorithmDeveloper
             _mainTLP.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
             _mainTLP.Location = new Point(0, 0);
             _mainTLP.Name = "_mainTLP";
-            _mainTLP.RowCount = 4;
+            _mainTLP.RowCount = 5;
             _mainTLP.RowStyles.Add(new RowStyle());
             _mainTLP.RowStyles.Add(new RowStyle());
             _mainTLP.RowStyles.Add(new RowStyle(SizeType.Absolute, 350F));
             _mainTLP.RowStyles.Add(new RowStyle());
-            _mainTLP.Size = new Size(748, 989);
+            _mainTLP.RowStyles.Add(new RowStyle());
+            _mainTLP.Size = new Size(762, 989);
             _mainTLP.TabIndex = 0;
             // 
             // _mainGB
@@ -248,7 +540,7 @@ namespace AlgorithmDeveloper
             _mainGB.Location = new Point(3, 3);
             _mainGB.MinimumSize = new Size(740, 276);
             _mainGB.Name = "_mainGB";
-            _mainGB.Size = new Size(742, 276);
+            _mainGB.Size = new Size(756, 276);
             _mainGB.TabIndex = 8;
             _mainGB.TabStop = false;
             _mainGB.Text = "Объединяемые АА";
@@ -287,7 +579,7 @@ namespace AlgorithmDeveloper
             _createGAS2_GB.ForeColor = Color.FromArgb(224, 224, 224);
             _createGAS2_GB.Location = new Point(175, 149);
             _createGAS2_GB.Name = "_createGAS2_GB";
-            _createGAS2_GB.Size = new Size(561, 117);
+            _createGAS2_GB.Size = new Size(575, 117);
             _createGAS2_GB.TabIndex = 11;
             _createGAS2_GB.TabStop = false;
             _createGAS2_GB.Text = "Ввод и обработка ЛСА второго АА";
@@ -302,7 +594,7 @@ namespace AlgorithmDeveloper
             _tryParseLAS2_B.FlatAppearance.BorderColor = SystemColors.WindowFrame;
             _tryParseLAS2_B.FlatStyle = FlatStyle.Flat;
             _tryParseLAS2_B.Font = new Font("Segoe UI", 9.75F);
-            _tryParseLAS2_B.Location = new Point(350, 17);
+            _tryParseLAS2_B.Location = new Point(364, 17);
             _tryParseLAS2_B.Name = "_tryParseLAS2_B";
             _tryParseLAS2_B.Size = new Size(205, 40);
             _tryParseLAS2_B.TabIndex = 9;
@@ -320,7 +612,7 @@ namespace AlgorithmDeveloper
             _createGAS2_B.FlatAppearance.BorderColor = SystemColors.WindowFrame;
             _createGAS2_B.FlatStyle = FlatStyle.Flat;
             _createGAS2_B.Font = new Font("Segoe UI", 9.75F);
-            _createGAS2_B.Location = new Point(350, 65);
+            _createGAS2_B.Location = new Point(364, 65);
             _createGAS2_B.Margin = new Padding(3, 1, 3, 3);
             _createGAS2_B.Name = "_createGAS2_B";
             _createGAS2_B.Size = new Size(205, 40);
@@ -341,10 +633,9 @@ namespace AlgorithmDeveloper
             _lasInputRTB2.PlaceholderColor = Color.FromArgb(96, 96, 96);
             _lasInputRTB2.PlaceholderText = "Yн X1 ↑1 w↑2 ↓1 Y3 w↑2 ↓2 X2 ↑3 w↑4 ↓3 Y2 w↑2 ↓4 Yк";
             _lasInputRTB2.ShortcutsEnabled = false;
-            _lasInputRTB2.Size = new Size(338, 88);
+            _lasInputRTB2.Size = new Size(352, 88);
             _lasInputRTB2.TabIndex = 8;
             _lasInputRTB2.Text = "";
-            _lasInputRTB2.TextChanged += EnableCheckLASButton;
             // 
             // _createGAS1_GB
             // 
@@ -357,7 +648,7 @@ namespace AlgorithmDeveloper
             _createGAS1_GB.Location = new Point(175, 26);
             _createGAS1_GB.Margin = new Padding(3, 14, 3, 3);
             _createGAS1_GB.Name = "_createGAS1_GB";
-            _createGAS1_GB.Size = new Size(561, 117);
+            _createGAS1_GB.Size = new Size(575, 117);
             _createGAS1_GB.TabIndex = 10;
             _createGAS1_GB.TabStop = false;
             _createGAS1_GB.Text = "Ввод и обработка ЛСА первого АА";
@@ -372,7 +663,7 @@ namespace AlgorithmDeveloper
             _tryParseLAS1_B.FlatAppearance.BorderColor = SystemColors.WindowFrame;
             _tryParseLAS1_B.FlatStyle = FlatStyle.Flat;
             _tryParseLAS1_B.Font = new Font("Segoe UI", 9.75F);
-            _tryParseLAS1_B.Location = new Point(350, 17);
+            _tryParseLAS1_B.Location = new Point(364, 17);
             _tryParseLAS1_B.Name = "_tryParseLAS1_B";
             _tryParseLAS1_B.Size = new Size(205, 40);
             _tryParseLAS1_B.TabIndex = 9;
@@ -390,7 +681,7 @@ namespace AlgorithmDeveloper
             _createGAS1_B.FlatAppearance.BorderColor = SystemColors.WindowFrame;
             _createGAS1_B.FlatStyle = FlatStyle.Flat;
             _createGAS1_B.Font = new Font("Segoe UI", 9.75F);
-            _createGAS1_B.Location = new Point(350, 65);
+            _createGAS1_B.Location = new Point(364, 65);
             _createGAS1_B.Margin = new Padding(3, 1, 3, 3);
             _createGAS1_B.Name = "_createGAS1_B";
             _createGAS1_B.Size = new Size(205, 40);
@@ -411,10 +702,9 @@ namespace AlgorithmDeveloper
             _lasInputRTB1.PlaceholderColor = Color.FromArgb(96, 96, 96);
             _lasInputRTB1.PlaceholderText = "Yн X0 ↑1 Y0 w↑2 ↓1 Y1 w↑2 ↓2 X2 ↑3 w↑4 ↓3 Y2 w↑2 ↓4 Yк";
             _lasInputRTB1.ShortcutsEnabled = false;
-            _lasInputRTB1.Size = new Size(338, 88);
+            _lasInputRTB1.Size = new Size(352, 88);
             _lasInputRTB1.TabIndex = 8;
             _lasInputRTB1.Text = "";
-            _lasInputRTB1.TextChanged += EnableCheckLASButton;
             // 
             // _combinedAlgoGB
             // 
@@ -427,7 +717,7 @@ namespace AlgorithmDeveloper
             _combinedAlgoGB.Margin = new Padding(3, 14, 3, 3);
             _combinedAlgoGB.MinimumSize = new Size(740, 123);
             _combinedAlgoGB.Name = "_combinedAlgoGB";
-            _combinedAlgoGB.Size = new Size(742, 123);
+            _combinedAlgoGB.Size = new Size(756, 123);
             _combinedAlgoGB.TabIndex = 13;
             _combinedAlgoGB.TabStop = false;
             _combinedAlgoGB.Text = "Синтезированный АА";
@@ -465,7 +755,7 @@ namespace AlgorithmDeveloper
             _lasInputRTB3.PlaceholderText = "Здесь появится ЛСА объединённого АА";
             _lasInputRTB3.ReadOnly = true;
             _lasInputRTB3.ShortcutsEnabled = false;
-            _lasInputRTB3.Size = new Size(484, 88);
+            _lasInputRTB3.Size = new Size(498, 88);
             _lasInputRTB3.TabIndex = 8;
             _lasInputRTB3.Text = "";
             // 
@@ -479,7 +769,7 @@ namespace AlgorithmDeveloper
             _masGB.Margin = new Padding(3, 14, 3, 3);
             _masGB.MinimumSize = new Size(740, 179);
             _masGB.Name = "_masGB";
-            _masGB.Size = new Size(742, 333);
+            _masGB.Size = new Size(756, 333);
             _masGB.TabIndex = 14;
             _masGB.TabStop = false;
             _masGB.Text = "Матричные схемы алгоритмов";
@@ -491,7 +781,7 @@ namespace AlgorithmDeveloper
             _masFLP.FlowDirection = FlowDirection.TopDown;
             _masFLP.Location = new Point(3, 23);
             _masFLP.Name = "_masFLP";
-            _masFLP.Size = new Size(736, 307);
+            _masFLP.Size = new Size(750, 307);
             _masFLP.TabIndex = 0;
             _masFLP.WrapContents = false;
             // 
@@ -504,7 +794,7 @@ namespace AlgorithmDeveloper
             _infoGB.Margin = new Padding(3, 14, 3, 3);
             _infoGB.MinimumSize = new Size(740, 200);
             _infoGB.Name = "_infoGB";
-            _infoGB.Size = new Size(742, 200);
+            _infoGB.Size = new Size(756, 200);
             _infoGB.TabIndex = 15;
             _infoGB.TabStop = false;
             _infoGB.Text = "Журнал";
@@ -521,7 +811,7 @@ namespace AlgorithmDeveloper
             _mainInfoPort.Margin = new Padding(3, 5, 3, 3);
             _mainInfoPort.Name = "_mainInfoPort";
             _mainInfoPort.ReadOnly = true;
-            _mainInfoPort.Size = new Size(736, 172);
+            _mainInfoPort.Size = new Size(750, 172);
             _mainInfoPort.TabIndex = 3;
             _mainInfoPort.Text = "";
             _mainInfoPort.WordWrap = false;
@@ -530,9 +820,9 @@ namespace AlgorithmDeveloper
             // 
             _mainTabControl_GAS1.BackColor = Color.FromArgb(31, 31, 31);
             _mainTabControl_GAS1.Controls.Add(_algoController1);
-            _mainTabControl_GAS1.Location = new Point(4, 31);
+            _mainTabControl_GAS1.Location = new Point(4, 26);
             _mainTabControl_GAS1.Name = "_mainTabControl_GAS1";
-            _mainTabControl_GAS1.Size = new Size(771, 521);
+            _mainTabControl_GAS1.Size = new Size(192, 70);
             _mainTabControl_GAS1.TabIndex = 2;
             _mainTabControl_GAS1.Text = "ГСА 1";
             // 
@@ -544,16 +834,16 @@ namespace AlgorithmDeveloper
             _algoController1.ForeColor = Color.FromArgb(224, 224, 224);
             _algoController1.Location = new Point(0, 0);
             _algoController1.Name = "_algoController1";
-            _algoController1.Size = new Size(771, 521);
+            _algoController1.Size = new Size(192, 70);
             _algoController1.TabIndex = 0;
             // 
             // _mainTabControl_GAS2
             // 
             _mainTabControl_GAS2.BackColor = Color.FromArgb(31, 31, 31);
             _mainTabControl_GAS2.Controls.Add(_algoController2);
-            _mainTabControl_GAS2.Location = new Point(4, 31);
+            _mainTabControl_GAS2.Location = new Point(4, 26);
             _mainTabControl_GAS2.Name = "_mainTabControl_GAS2";
-            _mainTabControl_GAS2.Size = new Size(771, 521);
+            _mainTabControl_GAS2.Size = new Size(192, 70);
             _mainTabControl_GAS2.TabIndex = 3;
             _mainTabControl_GAS2.Text = "ГСА 2";
             // 
@@ -565,16 +855,16 @@ namespace AlgorithmDeveloper
             _algoController2.ForeColor = Color.FromArgb(224, 224, 224);
             _algoController2.Location = new Point(0, 0);
             _algoController2.Name = "_algoController2";
-            _algoController2.Size = new Size(771, 521);
+            _algoController2.Size = new Size(192, 70);
             _algoController2.TabIndex = 1;
             // 
             // _mainTabControl_GAS3
             // 
             _mainTabControl_GAS3.BackColor = Color.FromArgb(31, 31, 31);
             _mainTabControl_GAS3.Controls.Add(_algoController3);
-            _mainTabControl_GAS3.Location = new Point(4, 31);
+            _mainTabControl_GAS3.Location = new Point(4, 26);
             _mainTabControl_GAS3.Name = "_mainTabControl_GAS3";
-            _mainTabControl_GAS3.Size = new Size(771, 521);
+            _mainTabControl_GAS3.Size = new Size(192, 70);
             _mainTabControl_GAS3.TabIndex = 4;
             _mainTabControl_GAS3.Text = "ГСА 3";
             // 
@@ -586,7 +876,7 @@ namespace AlgorithmDeveloper
             _algoController3.ForeColor = Color.FromArgb(224, 224, 224);
             _algoController3.Location = new Point(0, 0);
             _algoController3.Name = "_algoController3";
-            _algoController3.Size = new Size(771, 521);
+            _algoController3.Size = new Size(192, 70);
             _algoController3.TabIndex = 1;
             // 
             // _mainTabControl_SettingsPage
@@ -595,10 +885,10 @@ namespace AlgorithmDeveloper
             _mainTabControl_SettingsPage.Controls.Add(settingsTLP);
             _mainTabControl.SetForbidClose(_mainTabControl_SettingsPage, true);
             _mainTabControl_SettingsPage.ForeColor = Color.FromArgb(214, 214, 214);
-            _mainTabControl_SettingsPage.Location = new Point(4, 31);
+            _mainTabControl_SettingsPage.Location = new Point(4, 26);
             _mainTabControl_SettingsPage.Name = "_mainTabControl_SettingsPage";
             _mainTabControl_SettingsPage.Padding = new Padding(3);
-            _mainTabControl_SettingsPage.Size = new Size(771, 521);
+            _mainTabControl_SettingsPage.Size = new Size(192, 70);
             _mainTabControl_SettingsPage.TabIndex = 1;
             _mainTabControl_SettingsPage.Text = "Настройки";
             // 
@@ -614,7 +904,7 @@ namespace AlgorithmDeveloper
             settingsTLP.Name = "settingsTLP";
             settingsTLP.RowCount = 1;
             settingsTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            settingsTLP.Size = new Size(765, 515);
+            settingsTLP.Size = new Size(186, 64);
             settingsTLP.TabIndex = 0;
             // 
             // settingsLeftFLP
@@ -627,7 +917,7 @@ namespace AlgorithmDeveloper
             settingsLeftFLP.FlowDirection = FlowDirection.TopDown;
             settingsLeftFLP.Location = new Point(3, 3);
             settingsLeftFLP.Name = "settingsLeftFLP";
-            settingsLeftFLP.Size = new Size(376, 509);
+            settingsLeftFLP.Size = new Size(87, 58);
             settingsLeftFLP.TabIndex = 0;
             settingsLeftFLP.WrapContents = false;
             // 
@@ -707,7 +997,7 @@ namespace AlgorithmDeveloper
             // 
             // _verticesVisualParamsGB
             // 
-            _verticesVisualParamsGB.Controls.Add(_drawJumpPoints);
+            _verticesVisualParamsGB.Controls.Add(_drawJumpPointsCB);
             _verticesVisualParamsGB.Controls.Add(_vertexActInnerCP);
             _verticesVisualParamsGB.Controls.Add(label1);
             _verticesVisualParamsGB.Controls.Add(_vertexInactInnerCP);
@@ -731,22 +1021,23 @@ namespace AlgorithmDeveloper
             _verticesVisualParamsGB.TabStop = false;
             _verticesVisualParamsGB.Text = "Параметры отрисовки вершин";
             // 
-            // _drawJumpPoints
+            // _drawJumpPointsCB
             // 
-            _drawJumpPoints.Appearance = Appearance.Button;
-            _drawJumpPoints.BackColor = Color.FromArgb(48, 48, 48);
-            _drawJumpPoints.CheckAlign = ContentAlignment.MiddleRight;
-            _drawJumpPoints.FlatAppearance.BorderColor = Color.Maroon;
-            _drawJumpPoints.FlatAppearance.CheckedBackColor = Color.FromArgb(64, 64, 64);
-            _drawJumpPoints.FlatStyle = FlatStyle.Flat;
-            _drawJumpPoints.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            _drawJumpPoints.ForeColor = Color.FromArgb(224, 224, 224);
-            _drawJumpPoints.Location = new Point(6, 217);
-            _drawJumpPoints.Name = "_drawJumpPoints";
-            _drawJumpPoints.Size = new Size(334, 27);
-            _drawJumpPoints.TabIndex = 33;
-            _drawJumpPoints.Text = "Отрисовывать точки перехода на ГСА";
-            _drawJumpPoints.UseVisualStyleBackColor = false;
+            _drawJumpPointsCB.Appearance = Appearance.Button;
+            _drawJumpPointsCB.BackColor = Color.FromArgb(48, 48, 48);
+            _drawJumpPointsCB.CheckAlign = ContentAlignment.MiddleRight;
+            _drawJumpPointsCB.FlatAppearance.BorderColor = Color.Maroon;
+            _drawJumpPointsCB.FlatAppearance.CheckedBackColor = Color.FromArgb(64, 64, 64);
+            _drawJumpPointsCB.FlatStyle = FlatStyle.Flat;
+            _drawJumpPointsCB.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            _drawJumpPointsCB.ForeColor = Color.FromArgb(224, 224, 224);
+            _drawJumpPointsCB.Location = new Point(6, 217);
+            _drawJumpPointsCB.Name = "_drawJumpPointsCB";
+            _drawJumpPointsCB.Size = new Size(334, 27);
+            _drawJumpPointsCB.TabIndex = 33;
+            _drawJumpPointsCB.Text = "Отрисовывать точки перехода на ГСА";
+            _drawJumpPointsCB.TextAlign = ContentAlignment.MiddleCenter;
+            _drawJumpPointsCB.UseVisualStyleBackColor = false;
             // 
             // _vertexActInnerCP
             // 
@@ -912,6 +1203,9 @@ namespace AlgorithmDeveloper
             // 
             // _transitionsVisualParamsGB
             // 
+            _transitionsVisualParamsGB.Controls.Add(_allowBranchSwappingCB);
+            _transitionsVisualParamsGB.Controls.Add(label2);
+            _transitionsVisualParamsGB.Controls.Add(_linkIndentNUD);
             _transitionsVisualParamsGB.Controls.Add(_inactTransitionsGB);
             _transitionsVisualParamsGB.Controls.Add(_actTransitionsGB);
             _transitionsVisualParamsGB.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
@@ -919,10 +1213,58 @@ namespace AlgorithmDeveloper
             _transitionsVisualParamsGB.Location = new Point(3, 362);
             _transitionsVisualParamsGB.Margin = new Padding(3, 3, 10, 3);
             _transitionsVisualParamsGB.Name = "_transitionsVisualParamsGB";
-            _transitionsVisualParamsGB.Size = new Size(346, 210);
+            _transitionsVisualParamsGB.Size = new Size(346, 270);
             _transitionsVisualParamsGB.TabIndex = 35;
             _transitionsVisualParamsGB.TabStop = false;
             _transitionsVisualParamsGB.Text = "Параметры отрисовки переходов";
+            // 
+            // _allowBranchSwappingCB
+            // 
+            _allowBranchSwappingCB.Appearance = Appearance.Button;
+            _allowBranchSwappingCB.BackColor = Color.FromArgb(48, 48, 48);
+            _allowBranchSwappingCB.CheckAlign = ContentAlignment.MiddleRight;
+            _allowBranchSwappingCB.Checked = true;
+            _allowBranchSwappingCB.CheckState = CheckState.Checked;
+            _allowBranchSwappingCB.FlatAppearance.BorderColor = Color.FromArgb(0, 170, 0);
+            _allowBranchSwappingCB.FlatAppearance.CheckedBackColor = Color.FromArgb(64, 64, 64);
+            _allowBranchSwappingCB.FlatStyle = FlatStyle.Flat;
+            _allowBranchSwappingCB.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            _allowBranchSwappingCB.ForeColor = Color.FromArgb(224, 224, 224);
+            _allowBranchSwappingCB.Location = new Point(6, 60);
+            _allowBranchSwappingCB.Name = "_allowBranchSwappingCB";
+            _allowBranchSwappingCB.Size = new Size(334, 27);
+            _allowBranchSwappingCB.TabIndex = 28;
+            _allowBranchSwappingCB.Text = "Разрешить смену сторон ветвей (0/1)";
+            _allowBranchSwappingCB.TextAlign = ContentAlignment.MiddleCenter;
+            _allowBranchSwappingCB.UseVisualStyleBackColor = false;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 9.75F);
+            label2.ForeColor = Color.Gainsboro;
+            label2.Location = new Point(9, 31);
+            label2.Margin = new Padding(1, 0, 1, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(182, 17);
+            label2.TabIndex = 27;
+            label2.Text = "Отдаление начала перехода:";
+            // 
+            // _linkIndentNUD
+            // 
+            _linkIndentNUD.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            _linkIndentNUD.BackColor = Color.FromArgb(48, 48, 48);
+            _linkIndentNUD.Enabled = false;
+            _linkIndentNUD.Font = new Font("Segoe UI", 9.75F);
+            _linkIndentNUD.ForeColor = Color.Gainsboro;
+            _linkIndentNUD.Location = new Point(263, 29);
+            _linkIndentNUD.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
+            _linkIndentNUD.MaximumSize = new Size(77, 0);
+            _linkIndentNUD.MinimumSize = new Size(77, 0);
+            _linkIndentNUD.Name = "_linkIndentNUD";
+            _linkIndentNUD.Size = new Size(77, 25);
+            _linkIndentNUD.TabIndex = 26;
+            _linkIndentNUD.Value = new decimal(new int[] { 6, 0, 0, 0 });
             // 
             // _inactTransitionsGB
             // 
@@ -932,7 +1274,7 @@ namespace AlgorithmDeveloper
             _inactTransitionsGB.Controls.Add(_transitionDarkPenNUD);
             _inactTransitionsGB.Font = new Font("Segoe UI", 9.75F);
             _inactTransitionsGB.ForeColor = Color.LightGray;
-            _inactTransitionsGB.Location = new Point(6, 114);
+            _inactTransitionsGB.Location = new Point(6, 181);
             _inactTransitionsGB.Name = "_inactTransitionsGB";
             _inactTransitionsGB.Size = new Size(334, 82);
             _inactTransitionsGB.TabIndex = 25;
@@ -1004,7 +1346,7 @@ namespace AlgorithmDeveloper
             _actTransitionsGB.Controls.Add(_transitionLightPenNUD);
             _actTransitionsGB.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 204);
             _actTransitionsGB.ForeColor = Color.LightGray;
-            _actTransitionsGB.Location = new Point(6, 26);
+            _actTransitionsGB.Location = new Point(6, 93);
             _actTransitionsGB.Name = "_actTransitionsGB";
             _actTransitionsGB.Size = new Size(334, 82);
             _actTransitionsGB.TabIndex = 24;
@@ -1071,13 +1413,175 @@ namespace AlgorithmDeveloper
             // settingsRightFLP
             // 
             settingsRightFLP.AutoScroll = true;
+            settingsRightFLP.Controls.Add(_layoutParamsGB);
             settingsRightFLP.Dock = DockStyle.Fill;
             settingsRightFLP.FlowDirection = FlowDirection.TopDown;
-            settingsRightFLP.Location = new Point(385, 3);
+            settingsRightFLP.Location = new Point(96, 3);
             settingsRightFLP.Name = "settingsRightFLP";
-            settingsRightFLP.Size = new Size(377, 509);
+            settingsRightFLP.Size = new Size(87, 58);
             settingsRightFLP.TabIndex = 1;
             settingsRightFLP.WrapContents = false;
+            // 
+            // _layoutParamsGB
+            // 
+            _layoutParamsGB.Controls.Add(labelStartY);
+            _layoutParamsGB.Controls.Add(_normalizeComponentsCB);
+            _layoutParamsGB.Controls.Add(_startYNUD);
+            _layoutParamsGB.Controls.Add(labelStartX);
+            _layoutParamsGB.Controls.Add(_startXNUD);
+            _layoutParamsGB.Controls.Add(labelVSpacing);
+            _layoutParamsGB.Controls.Add(_vSpacingNUD);
+            _layoutParamsGB.Controls.Add(labelHSpacing);
+            _layoutParamsGB.Controls.Add(_hSpacingNUD);
+            _layoutParamsGB.Controls.Add(labelLayeringStrategy);
+            _layoutParamsGB.Controls.Add(_layeringStrategyCB);
+            _layoutParamsGB.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            _layoutParamsGB.ForeColor = Color.LightGray;
+            _layoutParamsGB.Location = new Point(3, 3);
+            _layoutParamsGB.Margin = new Padding(3, 3, 10, 3);
+            _layoutParamsGB.Name = "_layoutParamsGB";
+            _layoutParamsGB.Size = new Size(346, 216);
+            _layoutParamsGB.TabIndex = 37;
+            _layoutParamsGB.TabStop = false;
+            _layoutParamsGB.Text = "Параметры алгоритма компоновки";
+            // 
+            // labelStartY
+            // 
+            labelStartY.AutoSize = true;
+            labelStartY.Font = new Font("Segoe UI", 9.75F);
+            labelStartY.ForeColor = Color.Gainsboro;
+            labelStartY.Location = new Point(10, 121);
+            labelStartY.Name = "labelStartY";
+            labelStartY.Size = new Size(89, 17);
+            labelStartY.TabIndex = 9;
+            labelStartY.Text = "Начальный Y:";
+            // 
+            // _normalizeComponentsCB
+            // 
+            _normalizeComponentsCB.Appearance = Appearance.Button;
+            _normalizeComponentsCB.BackColor = Color.FromArgb(48, 48, 48);
+            _normalizeComponentsCB.Checked = true;
+            _normalizeComponentsCB.CheckState = CheckState.Checked;
+            _normalizeComponentsCB.FlatAppearance.BorderColor = Color.FromArgb(0, 170, 0);
+            _normalizeComponentsCB.FlatAppearance.CheckedBackColor = Color.FromArgb(64, 64, 64);
+            _normalizeComponentsCB.FlatStyle = FlatStyle.Flat;
+            _normalizeComponentsCB.Font = new Font("Segoe UI", 9.75F);
+            _normalizeComponentsCB.ForeColor = Color.FromArgb(224, 224, 224);
+            _normalizeComponentsCB.Location = new Point(6, 181);
+            _normalizeComponentsCB.Name = "_normalizeComponentsCB";
+            _normalizeComponentsCB.Size = new Size(334, 27);
+            _normalizeComponentsCB.TabIndex = 2;
+            _normalizeComponentsCB.Text = "Нормализовать компоненты";
+            _normalizeComponentsCB.TextAlign = ContentAlignment.MiddleCenter;
+            _normalizeComponentsCB.UseVisualStyleBackColor = false;
+            // 
+            // _startYNUD
+            // 
+            _startYNUD.BackColor = Color.FromArgb(48, 48, 48);
+            _startYNUD.Font = new Font("Segoe UI", 9.75F);
+            _startYNUD.ForeColor = Color.Gainsboro;
+            _startYNUD.Location = new Point(263, 119);
+            _startYNUD.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
+            _startYNUD.Name = "_startYNUD";
+            _startYNUD.Size = new Size(77, 25);
+            _startYNUD.TabIndex = 10;
+            _startYNUD.Value = new decimal(new int[] { 100, 0, 0, 0 });
+            // 
+            // labelStartX
+            // 
+            labelStartX.AutoSize = true;
+            labelStartX.Font = new Font("Segoe UI", 9.75F);
+            labelStartX.ForeColor = Color.Gainsboro;
+            labelStartX.Location = new Point(9, 90);
+            labelStartX.Name = "labelStartX";
+            labelStartX.Size = new Size(90, 17);
+            labelStartX.TabIndex = 7;
+            labelStartX.Text = "Начальный X:";
+            // 
+            // _startXNUD
+            // 
+            _startXNUD.BackColor = Color.FromArgb(48, 48, 48);
+            _startXNUD.Font = new Font("Segoe UI", 9.75F);
+            _startXNUD.ForeColor = Color.Gainsboro;
+            _startXNUD.Location = new Point(263, 88);
+            _startXNUD.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
+            _startXNUD.Name = "_startXNUD";
+            _startXNUD.Size = new Size(77, 25);
+            _startXNUD.TabIndex = 8;
+            _startXNUD.Value = new decimal(new int[] { 100, 0, 0, 0 });
+            // 
+            // labelVSpacing
+            // 
+            labelVSpacing.AutoSize = true;
+            labelVSpacing.Font = new Font("Segoe UI", 9.75F);
+            labelVSpacing.ForeColor = Color.Gainsboro;
+            labelVSpacing.Location = new Point(9, 59);
+            labelVSpacing.Name = "labelVSpacing";
+            labelVSpacing.Size = new Size(136, 17);
+            labelVSpacing.TabIndex = 5;
+            labelVSpacing.Text = "Вертикальный отступ:";
+            // 
+            // _vSpacingNUD
+            // 
+            _vSpacingNUD.BackColor = Color.FromArgb(48, 48, 48);
+            _vSpacingNUD.Font = new Font("Segoe UI", 9.75F);
+            _vSpacingNUD.ForeColor = Color.Gainsboro;
+            _vSpacingNUD.Location = new Point(263, 57);
+            _vSpacingNUD.Maximum = new decimal(new int[] { 500, 0, 0, 0 });
+            _vSpacingNUD.Minimum = new decimal(new int[] { 100, 0, 0, 0 });
+            _vSpacingNUD.Name = "_vSpacingNUD";
+            _vSpacingNUD.Size = new Size(77, 25);
+            _vSpacingNUD.TabIndex = 6;
+            _vSpacingNUD.Value = new decimal(new int[] { 120, 0, 0, 0 });
+            // 
+            // labelHSpacing
+            // 
+            labelHSpacing.AutoSize = true;
+            labelHSpacing.Font = new Font("Segoe UI", 9.75F);
+            labelHSpacing.ForeColor = Color.Gainsboro;
+            labelHSpacing.Location = new Point(9, 30);
+            labelHSpacing.Name = "labelHSpacing";
+            labelHSpacing.Size = new Size(151, 17);
+            labelHSpacing.TabIndex = 3;
+            labelHSpacing.Text = "Горизонтальный отступ:";
+            // 
+            // _hSpacingNUD
+            // 
+            _hSpacingNUD.BackColor = Color.FromArgb(48, 48, 48);
+            _hSpacingNUD.Font = new Font("Segoe UI", 9.75F);
+            _hSpacingNUD.ForeColor = Color.Gainsboro;
+            _hSpacingNUD.Location = new Point(263, 26);
+            _hSpacingNUD.Maximum = new decimal(new int[] { 500, 0, 0, 0 });
+            _hSpacingNUD.Minimum = new decimal(new int[] { 100, 0, 0, 0 });
+            _hSpacingNUD.Name = "_hSpacingNUD";
+            _hSpacingNUD.Size = new Size(77, 25);
+            _hSpacingNUD.TabIndex = 4;
+            _hSpacingNUD.Value = new decimal(new int[] { 140, 0, 0, 0 });
+            // 
+            // labelLayeringStrategy
+            // 
+            labelLayeringStrategy.AutoSize = true;
+            labelLayeringStrategy.Font = new Font("Segoe UI", 9.75F);
+            labelLayeringStrategy.ForeColor = Color.Gainsboro;
+            labelLayeringStrategy.Location = new Point(9, 154);
+            labelLayeringStrategy.Name = "labelLayeringStrategy";
+            labelLayeringStrategy.Size = new Size(147, 17);
+            labelLayeringStrategy.TabIndex = 0;
+            labelLayeringStrategy.Text = "Стратегия компоновки:";
+            // 
+            // _layeringStrategyCB
+            // 
+            _layeringStrategyCB.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            _layeringStrategyCB.BackColor = Color.FromArgb(48, 48, 48);
+            _layeringStrategyCB.DropDownStyle = ComboBoxStyle.DropDownList;
+            _layeringStrategyCB.FlatStyle = FlatStyle.Flat;
+            _layeringStrategyCB.Font = new Font("Segoe UI", 9.75F);
+            _layeringStrategyCB.ForeColor = Color.Gainsboro;
+            _layeringStrategyCB.FormattingEnabled = true;
+            _layeringStrategyCB.Location = new Point(162, 150);
+            _layeringStrategyCB.Name = "_layeringStrategyCB";
+            _layeringStrategyCB.Size = new Size(178, 25);
+            _layeringStrategyCB.TabIndex = 1;
             // 
             // _toolTip
             // 
@@ -1093,18 +1597,23 @@ namespace AlgorithmDeveloper
             _colorPicker.FullOpen = true;
             _colorPicker.ShowHelp = true;
             // 
-            // MainFormV2
+            // MainForm
             // 
             AutoScaleMode = AutoScaleMode.None;
             BackColor = Color.FromArgb(31, 31, 31);
-            ClientSize = new Size(779, 556);
+            ClientSize = new Size(795, 595);
             Controls.Add(_mainTabControl);
+            Controls.Add(_headerStrip);
             DoubleBuffered = true;
             ForeColor = Color.FromArgb(224, 224, 224);
+            FormBorderStyle = FormBorderStyle.None;
             MinimumSize = new Size(795, 595);
-            Name = "MainFormV2";
+            Name = "MainForm";
+            Padding = new Padding(1);
             StartPosition = FormStartPosition.CenterScreen;
             Text = "AlgoDev 1.1 - программа для имитации работы моделей абстрактных алгоритмов";
+            _headerStrip.ResumeLayout(false);
+            _headerStrip.PerformLayout();
             _mainTabControl.ResumeLayout(false);
             _mainTabControl_MainPage.ResumeLayout(false);
             _mainScrollPanel.ResumeLayout(false);
@@ -1136,6 +1645,8 @@ namespace AlgorithmDeveloper
             ((System.ComponentModel.ISupportInitialize)_borderNUD).EndInit();
             ((System.ComponentModel.ISupportInitialize)_vertexSizeNUD).EndInit();
             _transitionsVisualParamsGB.ResumeLayout(false);
+            _transitionsVisualParamsGB.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)_linkIndentNUD).EndInit();
             _inactTransitionsGB.ResumeLayout(false);
             _inactTransitionsGB.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)_transitionDarkPenCP).EndInit();
@@ -1144,15 +1655,19 @@ namespace AlgorithmDeveloper
             _actTransitionsGB.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)_transitionLightPenCP).EndInit();
             ((System.ComponentModel.ISupportInitialize)_transitionLightPenNUD).EndInit();
+            settingsRightFLP.ResumeLayout(false);
+            _layoutParamsGB.ResumeLayout(false);
+            _layoutParamsGB.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)_startYNUD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)_startXNUD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)_vSpacingNUD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)_hSpacingNUD).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
         private UI.Elements.Controls.CustomizableTabControl.CustomizableTabControl _mainTabControl;
         private TabPage _mainTabControl_SettingsPage;
-        private TableLayoutPanel settingsTLP;
-        private FlowLayoutPanel settingsLeftFLP;
-        private FlowLayoutPanel settingsRightFLP;
         private TabPage _mainTabControl_GAS1;
         private TabPage _mainTabControl_GAS2;
         private TabPage _mainTabControl_GAS3;
@@ -1176,7 +1691,6 @@ namespace AlgorithmDeveloper
         private GroupBox _masGB;
         private FlowLayoutPanel _masFLP;
         private GroupBox _infoGB;
-        public RichTextBox _mainInfoPort;
         private UI.Elements.Controls.LASInputControls.LASGraphicKeyboard lasGraphicKeyboard1;
         private UI.Elements.Controls.AbstractAlgoModelling.AAController _algoController1;
         private UI.Elements.Controls.AbstractAlgoModelling.AAController _algoController2;
@@ -1211,6 +1725,46 @@ namespace AlgorithmDeveloper
         private ColorDialog _colorPicker;
         private PictureBox _vertexActInnerCP;
         private Label label1;
-        private CheckBox _drawJumpPoints;
+        private CheckBox _drawJumpPointsCB;
+        public RichTextBox _mainInfoPort;
+        private GroupBox _layoutParamsGB;
+        private Label labelLayeringStrategy;
+        private ComboBox _layeringStrategyCB;
+        private CheckBox _normalizeComponentsCB;
+        private Label labelHSpacing;
+        private NumericUpDown _hSpacingNUD;
+        private Label labelVSpacing;
+        private NumericUpDown _vSpacingNUD;
+        private Label labelStartX;
+        private NumericUpDown _startXNUD;
+        private Label labelStartY;
+        private NumericUpDown _startYNUD;
+        private Label label2;
+        private NumericUpDown _linkIndentNUD;
+        private TableLayoutPanel settingsTLP;
+        private FlowLayoutPanel settingsLeftFLP;
+        private FlowLayoutPanel settingsRightFLP;
+        private CheckBox _allowBranchSwappingCB;
+        private AlgorithmDeveloper.UI.Elements.Controls.CustomizableToolStrip.CustomizableToolStrip _headerStrip;
+        private ToolStripLabel _headerTitle;
+        private ToolStripButton _minimizeButton;
+        private ToolStripButton _maximizeButton;
+        private ToolStripButton _closeButton;
+        private ToolStripSeparator _tss1;
+        private ToolStripDropDownButton _actionsDropDownBtn;
+        private ToolStripMenuItem _saveToCombinePair;
+        private ToolStripMenuItem _saveToCombinePairAs;
+        private ToolStripSeparator _tss2;
+        private ToolStripMenuItem _showLastToCombinePairs;
+        private ToolStripSeparator _tss3;
+        private ToolStripMenuItem _gotoProgramFolder;
+        private ToolStripDropDownButton _viewDropDownBtn;
+        private ToolStripMenuItem _themeMenuItem;
+        private ToolStripSeparator _tss4;
+        private ToolStripMenuItem _gasVisualizationSettings;
+        private ToolStripMenuItem _makeErrorReport;
+        private ToolStripMenuItem _loadToCombinePair;
+        private ToolStripMenuItem _clearAllGAS;
+        private ToolStripSeparator toolStripSeparator2;
     }
 }

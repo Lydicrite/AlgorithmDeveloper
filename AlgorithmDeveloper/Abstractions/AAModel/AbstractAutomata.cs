@@ -8,6 +8,7 @@ using AlgorithmDeveloper.Abstractions.TransitionSystem.MAS;
 using AlgorithmDeveloper.Abstractions.AAModel.Vertices.Graph;
 using AlgorithmDeveloper.Abstractions.AAModel.Vertices.Graph.Layout;
 using AlgorithmDeveloper.Abstractions.AAModel.Utils;
+using AlgorithmDeveloper.Abstractions.LAS;
 
 namespace AlgorithmDeveloper.Abstractions.AAModel
 {
@@ -27,9 +28,9 @@ namespace AlgorithmDeveloper.Abstractions.AAModel
         private MatrixAlgorithmSchema? _mas = null;
 
         /// <summary>
-        /// Логическая схема (ЛСА), описывающая эту модель алгоритма, переданная из парсера.
+        /// Логическая схема (ЛСА), описывающая эту модель алгоритма.
         /// </summary>
-        public string InitialLAS { get; set; } = string.Empty;
+        public string LAS { get; set; } = string.Empty;
         /// <summary>
         /// Информация об алгоритме.
         /// </summary>
@@ -148,7 +149,84 @@ namespace AlgorithmDeveloper.Abstractions.AAModel
 
 
 
+        #region Клонирование
 
+        /// <summary>
+        /// Создает глубокую копию модели автомата.
+        /// Копирует все вершины и восстанавливает связи между ними.
+        /// </summary>
+        public AbstractAutomata Clone()
+        {
+            var clone = new AbstractAutomata();
+            clone.LAS = this.LAS;
+            
+            // 1. Создаем копии всех вершин и сохраняем маппинг старая -> новая
+            var vertexMap = new Dictionary<IBDVertex, IBDVertex>(ReferenceEqualityComparer.Instance);
+
+            foreach (var originalVertex in this.Vertices)
+            {
+                IBDVertex newVertex = CloneVertex(originalVertex);
+                clone.AddVertex(newVertex);
+                vertexMap[originalVertex] = newVertex;
+            }
+
+            // 2. Восстанавливаем связи
+            foreach (var originalVertex in this.Vertices)
+            {
+                var newVertex = vertexMap[originalVertex];
+
+                // Копируем Next
+                if (originalVertex.Next != null && vertexMap.TryGetValue(originalVertex.Next, out var nextCopy))
+                {
+                    newVertex.Next = nextCopy;
+                }
+
+                // Для условных вершин копируем LBS и RBS
+                if (originalVertex is ConditionalVertex originalCond && newVertex is ConditionalVertex newCond)
+                {
+                    if (originalCond.LBS != null && vertexMap.TryGetValue(originalCond.LBS, out var lbsCopy))
+                        newCond.LBS = lbsCopy;
+                    
+                    if (originalCond.RBS != null && vertexMap.TryGetValue(originalCond.RBS, out var rbsCopy))
+                        newCond.RBS = rbsCopy;
+                    
+                    newCond.Value = originalCond.Value;
+                }
+            }
+
+            // 3. Обновляем модель (строим формулы и т.д.)
+            clone.Update();
+            return clone;
+        }
+
+        private static IBDVertex CloneVertex(IBDVertex original)
+        {
+            return original switch
+            {
+                StartVertex => new StartVertex(),
+                EndVertex => new EndVertex(),
+                OperatorVertex op => new OperatorVertex(op.Index) { ID = op.ID },
+                ConditionalVertex cond => new ConditionalVertex(cond.Prefix, cond.Index) { ID = cond.ID },
+                JumpPoint jp => new JumpPoint(jp.JumpIndex) { ID = jp.ID },
+                _ => throw new NotSupportedException($"Unknown vertex type: {original.GetType().Name}")
+            };
+        }
+
+        #endregion
+
+
+
+        public bool CheckCorrectness(out string message)
+        {
+            message = string.Empty;
+            ParsingAggregateException? ex = null;
+            bool correct = LASParser.TryParse(LAS, out ex);
+
+            if (ex != null)
+               message = ex.Message;
+
+            return correct;
+        }
 
         public void Update(bool UseJumpPoints = false)
         {
@@ -157,11 +235,14 @@ namespace AlgorithmDeveloper.Abstractions.AAModel
             var comparer = new VertexComparer(order);
             _vertices.Sort(comparer);
 
-            // Назначаем компаратор для условных вершин, согласованный с общим порядком (VertexSorter)
-            ConditionalsBindingComparer = Comparer<ConditionalVertex>.Create((a, b) => comparer.Compare(a, b));
+            // Исключаем переопределение компаратора для условных вершин, чтобы порядок в RunsInfo
+            // всегда зависел только от ID (алфавитный порядок), а не от топологии графа.
+            // Это критически важно для корректной работы Equals() при сравнении моделей с разной структурой, но одинаковой логикой.
+            // ConditionalsBindingComparer = Comparer<ConditionalVertex>.Create((a, b) => comparer.Compare(a, b));
 
             _transitionFormulas = TransitionSystemBuilder.BuildAll(this, TransitionBuildMode.NoParadox);
             _mas = MatrixAlgorithmSchema.FromFormulas(_transitionFormulas);
+            LAS = LAS == string.Empty ? AAToLASConverter.Convert(this, out _, false) : LAS;
             UpdateAllGraphFigures(UseJumpPoints);
         }
 
@@ -197,6 +278,26 @@ namespace AlgorithmDeveloper.Abstractions.AAModel
             }
 
             return vertex;
+        }
+
+        /// <summary>
+        /// Удаляет вершину из модели.
+        /// </summary>
+        public bool RemoveVertex(IBDVertex vertex)
+        {
+            if (vertex == null) return false;
+            
+            bool removed = _vertices.Remove(vertex);
+            if (removed && !string.IsNullOrEmpty(vertex.ID))
+            {
+                if (_byId.TryGetValue(vertex.ID!, out var list))
+                {
+                    list.Remove(vertex);
+                    if (list.Count == 0)
+                        _byId.Remove(vertex.ID!);
+                }
+            }
+            return removed;
         }
 
         /// <summary>
@@ -482,7 +583,7 @@ namespace AlgorithmDeveloper.Abstractions.AAModel
                 .GroupBy(v => v.ID)
                 .OrderBy(g => g.First(), ConditionalsBindingComparer)
                 .ToList();
-        
+
             if (binaryValues == "[любой исход]" || (conditionalGroups.Count == 0))
                 return;
         
@@ -536,9 +637,7 @@ namespace AlgorithmDeveloper.Abstractions.AAModel
                 var next = current.GetNext(this);
                 if (next == null) break;
 
-                if (!showPoints && !(next is JumpPoint))
-                    tokens.Add(next.ID ?? "?");
-                else
+                if (showPoints || (!(next is JumpPoint) && !(next is ConditionalVertex)))
                     tokens.Add(next.ID ?? "?");
 
                 if (visited.TryGetValue(next, out int idx))
@@ -645,7 +744,8 @@ namespace AlgorithmDeveloper.Abstractions.AAModel
             unreachableVertexIds = new List<string>();
 
             // Собираем все ходы работы алгоритма для возможных комбинаций условий
-            var runs = FindRuns(showPoints);
+            // Для проверки достижимости нужно видеть все вершины, включая точки перехода
+            var runs = FindRuns(true);
             var seen = new HashSet<string>(StringComparer.Ordinal);
 
             foreach (var (_, path) in runs)
@@ -686,7 +786,7 @@ namespace AlgorithmDeveloper.Abstractions.AAModel
         public string BuildAlgorithmInfo(bool showPoints = false)
         {
             var lines = new List<string>();
-            var lsa = InitialLAS;
+            var lsa = LAS;
 
             // Заголовок
             lines.Add($"►► Информация об алгоритме \"{lsa}\" ◄◄");
@@ -737,26 +837,15 @@ namespace AlgorithmDeveloper.Abstractions.AAModel
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            // 1) Сравнение наборов условных и операторных вершин (по ID)
-            var opIds1 = Vertices.OfType<OperatorVertex>().Select(v => v.ID ?? string.Empty).OrderBy(x => x, StringComparer.Ordinal).ToArray();
-            var opIds2 = other.Vertices.OfType<OperatorVertex>().Select(v => v.ID ?? string.Empty).OrderBy(x => x, StringComparer.Ordinal).ToArray();
-            if (opIds1.Length != opIds2.Length) return false;
-            for (int i = 0; i < opIds1.Length; i++)
-                if (!string.Equals(opIds1[i], opIds2[i], StringComparison.Ordinal))
-                    return false;
-
-            var condIds1 = Vertices.OfType<ConditionalVertex>().Select(v => v.ID ?? string.Empty).OrderBy(x => x, StringComparer.Ordinal).ToArray();
-            var condIds2 = other.Vertices.OfType<ConditionalVertex>().Select(v => v.ID ?? string.Empty).OrderBy(x => x, StringComparer.Ordinal).ToArray();
-            if (condIds1.Length != condIds2.Length) return false;
-            for (int i = 0; i < condIds1.Length; i++)
-                if (!string.Equals(condIds1[i], condIds2[i], StringComparison.Ordinal))
-                    return false;
-
+            // 1) Сравнение ходов работы алгоритма на основе текстового представления RunsInfo
+            // Мы не проверяем совпадение множеств вершин (Vertices), так как функциональная эквивалентность
+            // определяется поведением (выходными данными) при одинаковых входных данных.
+            // Если вершина недостижима и не влияет на ход выполнения, алгоритмы всё равно считаются эквивалентными.
+            
             // Начальная и конечная вершины: наличие должно совпадать
             if ((Start is null) != (other.Start is null)) return false;
             if ((End is null) != (other.End is null)) return false;
 
-            // 2) Сравнение ходов работы алгоритма на основе текстового представления RunsInfo
             var runsInfo1 = RunsInfo;
             var runsInfo2 = other.RunsInfo;
             if (!string.Equals(runsInfo1, runsInfo2, StringComparison.Ordinal))
@@ -779,7 +868,7 @@ namespace AlgorithmDeveloper.Abstractions.AAModel
             hc.Add(opIds.Length);
             for (int i = 0; i < opIds.Length; i++) hc.Add(opIds[i]);
 
-            var condIds = Vertices.OfType<ConditionalVertex>().Select(v => v.ID ?? string.Empty).OrderBy(x => x, StringComparer.Ordinal).ToArray();
+            var condIds = Vertices.OfType<ConditionalVertex>().Select(v => v.ID ?? string.Empty).Distinct(StringComparer.Ordinal).OrderBy(x => x, StringComparer.Ordinal).ToArray();
             hc.Add(condIds.Length);
             for (int i = 0; i < condIds.Length; i++) hc.Add(condIds[i]);
 

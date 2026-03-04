@@ -23,7 +23,7 @@ namespace AlgorithmDeveloper.UI.Elements.Controls.CustomizableTabControl.Styles
             _TextColorSelected = Color.FromArgb(250, 250, 250);
             _TextColorDisabled = Color.FromArgb(128, 128, 128);
             _CloserColor = Color.FromArgb(255, 58, 58);
-            _CloserColorActive = Color.FromArgb(255, 0,0);
+            _CloserColorActive = Color.FromArgb(255, 0, 0);
 
             _HotTrack = true;
             _FocusTrack = true;
